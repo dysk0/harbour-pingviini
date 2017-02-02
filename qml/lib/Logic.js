@@ -27,7 +27,8 @@ var OAUTH_CONSUMER_KEY = "BsVdhEDHrLgE8SUfAUEoVdnwD"
 var OAUTH_CONSUMER_SECRET = "UtGso4Buc2bX3FlBmYrwamKIuPRfwBfptO0we935jyRF90RboK"
 var OAUTH_TOKEN
 var OAUTH_TOKEN_SECRET
-var USER_AGENT
+var USER_AGENT = "Pingviini Client"
+var SCREEN_NAME
 
 // OAUTH
 var REQUEST_TOKEN_URL = "https://api.twitter.com/oauth/request_token"
@@ -584,6 +585,13 @@ function initialize() {
             //    favouriteItems = JSON.parse(rs.rows.item(i).value);
             if ( rs.rows.item(i).key === "conf" && rs.rows.item(i).value !== null){
                 conf= JSON.parse(rs.rows.item(i).value);
+                if (conf.OAUTH_TOKEN)
+                    OAUTH_TOKEN = conf.OAUTH_TOKEN;
+                if (conf.OAUTH_TOKEN_SECRET)
+                    OAUTH_TOKEN_SECRET = conf.OAUTH_TOKEN_SECRET;
+                if (conf.SCREEN_NAME)
+                    SCREEN_NAME = conf.SCREEN_NAME;
+
             }
         }
     });

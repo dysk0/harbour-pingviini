@@ -7,10 +7,6 @@
         <source>Add Account</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Hello Sailors</source>
-        <translation type="unfinished">Hallo Matrosen</translation>
-    </message>
 </context>
 <context>
     <name>CoverPage</name>
@@ -22,15 +18,11 @@
 <context>
     <name>FirstPage</name>
     <message>
-        <source>UI Template</source>
-        <translation>UI-Vorlage</translation>
-    </message>
-    <message>
-        <source>Hello Sailors</source>
-        <translation>Hallo Matrosen</translation>
-    </message>
-    <message>
         <source>Add account</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pingviini</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

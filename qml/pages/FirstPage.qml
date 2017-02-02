@@ -4,6 +4,9 @@ import "../lib/Logic.js" as Logic
 
 Page {
     id: page
+    PageHeader {
+        title: qsTr("Pingviini")
+    }
 
     // The effective value will be restricted by ApplicationWindow.allowedOrientations
     allowedOrientations: Orientation.All
@@ -20,30 +23,53 @@ Page {
             }
         }
 
-        // Tell SilicaFlickable the height of its content.
-        contentHeight: column.height
 
-        // Place our content in a Column.  The PageHeader is always placed at the top
-        // of the page, followed by our content.
-        Column {
-            id: column
+        ListModel {
+            id: homeTimeLine
+        }
 
-            width: page.width
-            spacing: Theme.paddingLarge
-            PageHeader {
-                title: qsTr("UI Template")
+        SilicaListView {
+            anchors {
+                fill: parent
             }
-            Label {
-                x: Theme.horizontalPageMargin
-                text: qsTr("Hello Sailors")
-                color: Theme.secondaryHighlightColor
-                font.pixelSize: Theme.fontSizeExtraLarge
+
+            id: firstColumn
+            width: parent.width
+            model: homeTimeLine
+            delegate: CmpTweet {
+
+            }
+
+
+            footer:    Button {
+                text: "go!"
+                onClicked: {
+                    console.log(JSON.stringify([Logic.OAUTH_CONSUMER_KEY, Logic.OAUTH_CONSUMER_SECRET, Logic.OAUTH_TOKEN, Logic.OAUTH_TOKEN_SECRET]))
+                    Logic.getHomeTimeline(false, false, function(data) {
+
+                        for (var i=0; i < data.length; i++) {
+                            homeTimeLine.append(data[i])
+                            if (i < 10)
+                                console.log(JSON.stringify(data[i]));
+                        }
+                    }, function(status, statusText) {
+                        if (status === 401){
+                            console.log("Error: Unable to authorize with Twitter. Make sure the time/date of your phone is set correctly.")
+                        } else {
+                            showHttpError(status, statusText)
+                        }
+                    })
+                }
             }
         }
+
+
     }
     Component.onCompleted: {
         console.log("-------------getConf")
         console.log(JSON.stringify(Logic.conf))
+
+        /**/
     }
     Component.onDestruction: {
         Logic.saveData()

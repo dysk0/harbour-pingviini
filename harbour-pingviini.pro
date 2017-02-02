@@ -21,6 +21,7 @@ OTHER_FILES += qml/harbour-pingviini.qml \
     qml/pages/FirstPage.qml \
     lib/* \
     qml/pages/SecondPage.qml \
+    qml/pages/CmpTweet.qml \
     rpm/harbour-pingviini.changes.in \
     rpm/harbour-pingviini.spec \
     rpm/harbour-pingviini.yaml \
@@ -43,4 +44,5 @@ DISTFILES += \
     Logic.js \
     oauth.js \
     sha1.js \
-    qml/pages/AccountAdd.qml
+    qml/pages/AccountAdd.qml \
+    qml/component/Tweet.qml
