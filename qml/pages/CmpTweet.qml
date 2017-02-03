@@ -12,7 +12,7 @@ BackgroundItem {
         x: Theme.horizontalPageMargin
         y: Theme.paddingLarge
         asynchronous: true
-        width: Theme.iconSizeLarge
+        width: Theme.iconSizeMedium
         height: width
         source: user.profile_image_url_https
     }
@@ -25,14 +25,16 @@ BackgroundItem {
             leftMargin: Theme.paddingMedium
         }
         text: user.name
-        font.pixelSize: Theme.fontSizeMedium
+        font.weight: Font.Bold
+        font.pixelSize: Theme.fontSizeSmall
         color: (pressed ? Theme.highlightColor : Theme.primaryColor)
     }
     Label {
         id: lblScreenName
         anchors {
-            left: lblName.left
-            top: lblName.bottom
+            left: lblName.right
+            leftMargin: Theme.paddingMedium
+            baseline: lblName.baseline
         }
         text: '@'+user.screen_name
         font.pixelSize: Theme.fontSizeExtraSmall
@@ -49,7 +51,7 @@ BackgroundItem {
             rightMargin: Theme.paddingLarge
         }
         height: paintedHeight
-        text: model.text
+        text: Theme.highlightText(model.text, "@", Theme.highlightColor)
         wrapMode: Text.Wrap
         font.pixelSize: Theme.fontSizeSmall
         color: (pressed ? Theme.highlightColor : Theme.primaryColor)
@@ -101,7 +103,7 @@ BackgroundItem {
             height: width
             source: (retweeted ?
                          "image://theme/icon-s-retweet?" + (pressed ? Theme.primaryColor : Theme.secondaryColor)
-                           :
+                       :
                          "image://theme/icon-s-retweet?" + (pressed ? Theme.highlightColor: Theme.secondaryHighlightColor)
                      )
         }
@@ -120,7 +122,7 @@ BackgroundItem {
             height: width
             source: (favorited ?
                          "image://theme/icon-s-new?" + (pressed ? Theme.primaryColor : Theme.secondaryColor)
-                           :
+                       :
                          "image://theme/icon-s-new?" + (pressed ? Theme.highlightColor: Theme.secondaryHighlightColor)
                      )
         }
@@ -133,5 +135,7 @@ BackgroundItem {
         }
 
     }
-
+    onClicked: {
+        console.log(JSON.stringify(model.id))
+    }
 }
