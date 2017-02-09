@@ -26,6 +26,7 @@ Page {
         }
         anchors {
             fill: parent
+            bottom: infoPanel.top
         }
 
         width: parent.width
@@ -105,6 +106,11 @@ Page {
         console.log(JSON.stringify(Logic.conf))
 
         /**/
+    }
+    onStatusChanged: {
+        if (status === PageStatus.Active) {
+            pageStack.pushAttached(Qt.resolvedUrl("Navigation.qml"), {"settings": {}})
+        }
     }
     function showError(status, statusText) {
         infoPanel.open = true;
