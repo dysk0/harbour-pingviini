@@ -22,6 +22,7 @@ OTHER_FILES += qml/harbour-pingviini.qml \
     lib/* \
     qml/pages/SecondPage.qml \
     qml/pages/CmpTweet.qml \
+    qml/pages/TweetToolBar.qml \
     rpm/harbour-pingviini.changes.in \
     rpm/harbour-pingviini.spec \
     rpm/harbour-pingviini.yaml \

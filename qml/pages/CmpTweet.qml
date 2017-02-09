@@ -85,56 +85,19 @@ BackgroundItem {
 
     }
 
-
-    Row {
+    TweetToolBar {
         id: details
-        height: Theme.iconSizeExtraSmall
         anchors {
             left: lblName.left
             right: parent.right
             top: mediaImg.bottom
-            topMargin: Theme.paddingMedium
+            topMargin: Theme.paddingSmall
             rightMargin: Theme.paddingLarge
         }
-        spacing: Theme.paddingSmall
-        Image {
-            id: iconRT
-            width: Theme.iconSizeExtraSmall
-            height: width
-            source: (retweeted ?
-                         "image://theme/icon-s-retweet?" + (pressed ? Theme.primaryColor : Theme.secondaryColor)
-                       :
-                         "image://theme/icon-s-retweet?" + (pressed ? Theme.highlightColor: Theme.secondaryHighlightColor)
-                     )
-        }
-        Label {
-            anchors.verticalCenter: parent.verticalCenter
-            height: paintedHeight
-            text: retweet_count
-            font.pixelSize: Theme.fontSizeExtraSmall
-            color: (pressed ? Theme.highlightColor : Theme.secondaryHighlightColor)
-        }
-        Label { text: " "}
-
-        Image {
-            id: iconFav
-            width: Theme.iconSizeExtraSmall
-            height: width
-            source: (favorited ?
-                         "image://theme/icon-s-new?" + (pressed ? Theme.primaryColor : Theme.secondaryColor)
-                       :
-                         "image://theme/icon-s-new?" + (pressed ? Theme.highlightColor: Theme.secondaryHighlightColor)
-                     )
-        }
-        Label {
-            anchors.verticalCenter: parent.verticalCenter
-            height: paintedHeight
-            text: favorite_count
-            font.pixelSize: Theme.fontSizeExtraSmall
-            color: (pressed ? Theme.highlightColor : Theme.secondaryHighlightColor)
-        }
-
+        //width:
     }
+
+
     onClicked: {
         console.log(JSON.stringify(model.id))
     }
