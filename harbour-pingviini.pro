@@ -47,4 +47,5 @@ DISTFILES += \
     sha1.js \
     qml/pages/AccountAdd.qml \
     qml/component/Tweet.qml \
-    qml/pages/Navigation.qml
+    qml/pages/Navigation.qml \
+    qml/pages/Messages.qml

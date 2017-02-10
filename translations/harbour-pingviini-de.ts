@@ -25,11 +25,15 @@
         <source>Pingviini</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Messagess</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
-    <name>Navigation</name>
+    <name>Messages</name>
     <message>
-        <source>Navigation</source>
+        <source>Messages</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
