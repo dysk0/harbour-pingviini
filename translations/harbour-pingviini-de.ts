@@ -18,11 +18,11 @@
 <context>
     <name>FirstPage</name>
     <message>
-        <source>Add account</source>
+        <source>Pingviini</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Pingviini</source>
+        <source>Add account</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

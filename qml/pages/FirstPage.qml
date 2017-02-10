@@ -4,10 +4,10 @@ import "../lib/Logic.js" as Logic
 
 Page {
     id: page
+    property var locale: Qt.locale()
     property bool loadStarted: false
     property int scrollOffset: 0
     property string activeView: "timeline"
-    // The effective value will be restricted by ApplicationWindow.allowedOrientations
     allowedOrientations: Orientation.All
 
     Loader {
@@ -46,7 +46,14 @@ Page {
     }
     onStatusChanged: {
         if (status === PageStatus.Active) {
+
+
             //pageStack.pushAttached(Qt.resolvedUrl("Navigation.qml"), {"settings": {}})
+            var str = "Fri Feb 10 14:16:37 +0000 2017"
+            //2017-02-10T13:47:17.000Z
+
+            print(Date.fromLocaleString(locale, str, "ddd MMM dd HH:mm:ss +0000 yyyy"));
+            //console.log(parseISO8601(str))
         }
     }
     function showError(status, statusText) {
@@ -55,14 +62,71 @@ Page {
         if (status === 401){
             lblMsg.text = "Error: Unable to authorize with Twitter. Make sure the time/date of your phone is set correctly."
         } else {
-            lblMsg.text = statusText
+            console.log(statusText)
         }
     }
 
     Component {
         id: timelineViewComponent
+
         SilicaListView {
+            Component.onCompleted: {
+                timeline.loadData("aaa")
+            }
+
             id: timeline
+            function parseISO8601(str) {
+                try {
+                    // we assume str is a UTC date ending in 'Z'
+                    var _date = new Date();
+                    var parts = str.split(' '),
+                            timeParts = parts[3].split(":"),
+                            monthPart = parts[1].replace("Jan", "1").replace("Feb", "2").replace("Mar", "3").replace("Apr", "4").replace("May", "5").replace("Jun", "6").replace("Jul", "7").replace("Aug", "8").replace("Sep", "9").replace("Oct", "10").replace("Nov", "11").replace("Dec", "12");
+                    //console.log(JSON.stringify([parts, timeParts]))
+
+                    _date.setUTCFullYear(Number(parts[5]));
+                    _date.setUTCMonth(Number(monthPart)-1);
+                    _date.setUTCDate(Number(parts[2]));
+                    _date.setUTCHours(Number(timeParts[0]));
+                    _date.setUTCMinutes(Number(timeParts[1]));
+                    _date.setUTCSeconds(Number(timeParts[2]));
+
+                    return _date;
+                }
+                catch (error) {
+                    return null;
+                }
+            }
+            function loadData(placement){
+                console.log(placement)
+                var sinceId = false;
+                var maxId = false;
+                if (homeTimeLine.count){
+                    maxId = homeTimeLine.get(homeTimeLine.count-1).id
+                    if (placement === "prepend"){
+                        maxId = false;
+                        sinceId = homeTimeLine.get(0).id
+                    }
+                }
+
+
+                Logic.getHomeTimeline(sinceId, maxId, function(data) {
+
+                    var now = new Date().getTime()
+                    for (var i=0; i < data.length; i++) {
+                        data[i].created_at = parseISO8601(data[i].created_at) //Date.fromLocaleString(locale, data[i].created_at, "ddd MMM dd HH:mm:ss +0000 yyyy")
+                        if (placement === "prepend"){
+                            homeTimeLine.insert(0, data[i])
+                        } else {
+                            homeTimeLine.append(data[i])
+                        }
+                        if (i < 1){
+                            console.log(JSON.stringify(data[i]));
+                        }
+                    }
+                    loadStarted = false;
+                }, showError)
+            }
             anchors.fill: parent
             header: PageHeader {
                 title: qsTr("Pingviini")
@@ -93,21 +157,7 @@ Page {
                     anchors.margins: Theme.paddingSmall
                     onClicked: {
                         //console.log(JSON.stringify([Logic.OAUTH_CONSUMER_KEY, Logic.OAUTH_CONSUMER_SECRET, Logic.OAUTH_TOKEN, Logic.OAUTH_TOKEN_SECRET]))
-                        var sinceId = false;
-                        var maxId = false;
-                        if (homeTimeLine.count){
-                            maxId = homeTimeLine.get(homeTimeLine.count-1).id
-                        }
-
-
-                        Logic.getHomeTimeline(sinceId, maxId, function(data) {
-                            for (var i=0; i < data.length; i++) {
-                                homeTimeLine.append(data[i])
-                                if (i < 1){
-                                    console.log(JSON.stringify(data[i]));
-                                }
-                            }
-                        }, showError)
+                        timeline.loadData("aaa")
                     }
                 }
                 BusyIndicator {
@@ -128,6 +178,10 @@ Page {
                 if (contentY > scrollOffset) {
                     infoPanel.open = false
                 } else {
+                    if (contentY < 100 && !loadStarted){
+                        timeline.loadData("prepend")
+                        loadStarted = true;
+                    }
                     infoPanel.open = true
                 }
 
@@ -164,6 +218,7 @@ Page {
                     infoPanel.open = false
                 } else {
                     infoPanel.open = true
+
                 }
 
                 scrollOffset = contentY;

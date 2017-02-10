@@ -33,12 +33,31 @@ BackgroundItem {
         id: lblScreenName
         anchors {
             left: lblName.right
+            right: lblDate.left
             leftMargin: Theme.paddingMedium
             baseline: lblName.baseline
         }
+        truncationMode: TruncationMode.Fade
         text: '@'+user.screen_name
         font.pixelSize: Theme.fontSizeExtraSmall
         color: (pressed ? Theme.secondaryHighlightColor : Theme.secondaryColor)
+    }
+    Label {
+        function timestamp() {
+            var txt = Format.formatDate(created_at, Formatter.Timepoint)
+            var elapsed = Format.formatDate(created_at, Formatter.DurationElapsedShort)
+            return (elapsed ? elapsed  : txt )
+        }
+        id: lblDate
+        color: (pressed ? Theme.highlightColor : Theme.primaryColor)
+        text: timestamp()
+        font.pixelSize: Theme.fontSizeExtraSmall
+        horizontalAlignment: Text.AlignRight
+        anchors {
+            right: parent.right
+            baseline: lblName.baseline
+            rightMargin: Theme.paddingLarge
+       }
     }
 
     Label {
