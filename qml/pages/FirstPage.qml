@@ -1,6 +1,8 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
+import "../lib/Mediator.js" as Mediator
 import "../lib/Logic.js" as Logic
+
 
 Page {
     id: page
@@ -42,7 +44,15 @@ Page {
         console.log("-------------getConf")
         console.log(JSON.stringify(Logic.conf))
 
-        /**/
+        var obj = {};
+        Logic.mediator.installTo(obj);
+        obj.subscribe('confLoaded', function(){
+            console.log(typeof arguments)
+            console.log('confLoaded');
+            console.log(JSON.stringify(arguments));
+        });
+
+
     }
     onStatusChanged: {
         if (status === PageStatus.Active) {
@@ -69,9 +79,18 @@ Page {
     Component {
         id: timelineViewComponent
 
+
         SilicaListView {
             Component.onCompleted: {
-                timeline.loadData("aaa")
+                var obj = {};
+                Logic.mediator.installTo(obj);
+                obj.subscribe('confLoaded', function(){
+                    console.log(typeof arguments)
+                    console.log('confLoaded');
+                    timeline.loadData("append")
+                    console.log(JSON.stringify(arguments));
+                });
+
             }
 
             id: timeline
@@ -121,7 +140,7 @@ Page {
                             homeTimeLine.append(data[i])
                         }
                         if (i < 1){
-                            console.log(JSON.stringify(data[i]));
+                            //console.log(JSON.stringify(data[i]));
                         }
                     }
                     loadStarted = false;

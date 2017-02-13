@@ -40,10 +40,19 @@ ApplicationWindow
     allowedOrientations: defaultAllowedOrientations
     Component.onCompleted: {
         Logic.initialize();
-        console.log("App Window")
+
+        var obj = { name : 'John' };
+        Logic.mediator.installTo(obj);
+
+        obj.subscribe('nameChange', function(arg){
+             console.log(this.name);
+             this.name = arg;
+             console.log(JSON.stringify(arg));
+        });
     }
     Component.onDestruction: {
         Logic.saveData()
+        Logic.mediator.publish('nameChange', 'Sam');
     }
     function showHttpError(status, statusText){
         console.log(JSON.stringify([status, statusText]))

@@ -15,21 +15,25 @@ SilicaGridView {
             icon: "image://theme/icon-m-home?"
             slug: "timeline"
             name: "Timeline"
+            active: true
         }
         ListElement {
             icon: "image://theme/icon-m-region?"
             slug: "mentions"
             name: "Mentions"
+            active: false
         }
         ListElement {
             icon: "image://theme/icon-m-message?"
             slug: "msgs"
             name: "Messagess"
+            active: false
         }
         ListElement {
             icon: "image://theme/icon-m-search?"
             slug: "search"
             name: "Search"
+            active: false
         }
     }
     model: listModel
@@ -49,6 +53,19 @@ SilicaGridView {
         }
         GridView.onRemove: RemoveAnimation {
             target: rectangle
+        }
+        GlassItem {
+            id: effect
+            visible: active
+            objectName: "menuitem"
+            height: Theme.paddingSmall
+            width: parent.width
+            dimmed: true
+            radius: 0.06
+            falloffRadius: 0.19
+            ratio: 0.0
+            color: Theme.highlightColor
+            cache: false
         }
 
         OpacityRampEffect {

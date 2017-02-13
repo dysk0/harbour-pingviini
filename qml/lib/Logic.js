@@ -19,6 +19,31 @@
 .pragma library
 .import QtQuick.LocalStorage 2.0 as LS
 Qt.include("oauth.js")
+var mediator = (function(){
+     var subscribe = function(channel, fn){
+          if(!mediator.channels[channel]) mediator.channels[channel] = [];
+          mediator.channels[channel].push({ context : this, callback : fn });
+          return this;
+     };
+     var publish = function(channel){
+          if(!mediator.channels[channel]) return false;
+          var args = Array.prototype.slice.call(arguments, 1);
+          for(var i = 0, l = mediator.channels[channel].length; i < l; i++){
+               var subscription = mediator.channels[channel][i];
+               subscription.callback.apply(subscription.context.args);
+          };
+          return this;
+     };
+     return {
+          channels : {},
+          publish : publish,
+          subscribe : subscribe,
+          installTo : function(obj){
+               obj.subscribe = subscribe;
+               obj.publish = publish;
+          }
+     };
+}());
 
 var db = LS.LocalStorage.openDatabaseSync("pingviini", "", "pingviini", 100000);
 var conf = {}
@@ -134,6 +159,7 @@ OAuthRequest.prototype.sendRequest = function(onSuccess, onFailure) {
 }
 
 function getHomeTimeline(sinceId, maxId, onSuccess, onFailure) {
+    mediator.publish('nameChange', 'Sam');
     var timelineRequest = new OAuthRequest("GET", GET_TIMELIME_URL)
     var parameters = [["count", "200"], ["include_rts", true]]
     if (maxId) parameters.push(["max_id", maxId])
@@ -594,6 +620,7 @@ function initialize() {
 
             }
         }
+        mediator.publish('confLoaded', { loaded: true});
     });
 }
 
