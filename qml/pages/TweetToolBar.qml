@@ -21,7 +21,7 @@ Row {
             console.log(JSON.stringify(model.id))
         }
     }
-    Row {
+    /*Row {
         IconButton {
             id: iconRT
             width: iconReply.width
@@ -40,7 +40,7 @@ Row {
             font.pixelSize: Theme.fontSizeExtraSmall
             color: Theme.highlightColor
         }
-    }
+    }*/
 
     Row {
         IconButton {
@@ -63,7 +63,7 @@ Row {
         }
     }
 
-    IconButton {
+    /*IconButton {
         id: iconDM
         anchors {
             top: delegate.top
@@ -75,6 +75,6 @@ Row {
                         :
                           "image://theme/icon-s-message?" + (pressed ? Theme.highlightColor: Theme.secondaryHighlightColor)
                       )
-    }
+    }*/
 
 }

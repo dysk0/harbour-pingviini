@@ -56,7 +56,7 @@ SilicaGridView {
         }
         GlassItem {
             id: effect
-            visible: active
+            visible: false
             objectName: "menuitem"
             height: Theme.paddingSmall
             width: parent.width
@@ -74,7 +74,7 @@ SilicaGridView {
         }
 
         Image {
-            source: model.icon + (highlighted
+            source: model.icon + (highlighted||model.active
                                   ? Theme.highlightColor
                                   : Theme.primaryColor)
             anchors.centerIn: parent

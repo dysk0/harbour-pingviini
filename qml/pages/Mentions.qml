@@ -6,10 +6,10 @@ import "../lib/Logic.js" as Logic
 Component {
     SilicaListView {
         Component.onCompleted: {
-            if (modelTL.count === 0){
+            if (modelMN.count === 0){
                 loadData("append")
             } else {
-                timeline.contentY = scrollOffsetTL
+                timeline.contentY = scrollOffsetMN
             }
 
             var obj = {};
@@ -50,24 +50,24 @@ Component {
             console.log(placement)
             var sinceId = false;
             var maxId = false;
-            if (modelTL.count){
-                maxId = modelTL.get(modelTL.count-1).id
+            if (modelMN.count){
+                maxId = model.get(modelMN.count-1).id
                 if (placement === "prepend"){
                     maxId = false;
-                    sinceId = modelTL.get(0).id
+                    sinceId = modelMN.get(0).id
                 }
             }
 
 
-            Logic.getHomeTimeline(sinceId, maxId, function(data) {
+            Logic.getMentions(sinceId, maxId, function(data) {
 
                 var now = new Date().getTime()
                 for (var i=0; i < data.length; i++) {
                     data[i].created_at = parseISO8601(data[i].created_at) //Date.fromLocaleString(locale, data[i].created_at, "ddd MMM dd HH:mm:ss +0000 yyyy")
                     if (placement === "prepend"){
-                        modelTL.insert(0, data[i])
+                        modelMN.insert(0, data[i])
                     } else {
-                        modelTL.append(data[i])
+                        modelMN.append(data[i])
                     }
                     if (i < 1){
                         //console.log(JSON.stringify(data[i]));
@@ -78,13 +78,9 @@ Component {
         }
         anchors.fill: parent
         header: PageHeader {
-            title: qsTr("Pingviini")
+            title: qsTr("Mentions")
         }
         PullDownMenu {
-            MenuItem {
-                text: qsTr("Add account")
-                onClicked: pageStack.push(Qt.resolvedUrl("AccountAdd.qml"))
-            }
             MenuItem {
                 text: qsTr("Show navigation")
                 onClicked: {
@@ -97,7 +93,7 @@ Component {
         clip: isPortrait && (infoPanel.expanded)
 
 
-        model: modelTL
+        model: modelMN
         delegate: CmpTweet {
 
         }
@@ -125,16 +121,15 @@ Component {
         VerticalScrollDecorator {}
 
         onMovementEnded: {
-            scrollOffsetTL = contentY
+            scrollOffsetMN  = contentY
         }
 
         onContentYChanged: {
-
             if(contentY+200 > timeline.contentHeight-timeline.height-timeline.footerItem.height && !loadStarted){
                 loadStarted = true;
             }
             //console.log((contentY+200) + ' ' + listView.contentHeight)
-            if (contentY > scrollOffsetTL) {
+            if (contentY > scrollOffsetMN) {
                 infoPanel.open = false
             } else {
                 if (contentY < 100 && !loadStarted){

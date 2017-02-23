@@ -27,17 +27,13 @@
     </message>
 </context>
 <context>
-    <name>FirstPage</name>
-    <message>
-        <source>Pingviini</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Add account</source>
-        <translation type="unfinished"></translation>
-    </message>
+    <name>Mentions</name>
     <message>
         <source>Show navigation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mentions</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -55,11 +51,15 @@
 <context>
     <name>Timeline</name>
     <message>
-        <source>Mentions</source>
+        <source>Show navigation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Show navigation</source>
+        <source>Pingviini</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add account</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

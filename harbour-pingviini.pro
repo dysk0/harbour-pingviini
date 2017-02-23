@@ -25,6 +25,7 @@ OTHER_FILES += qml/harbour-pingviini.qml \
     qml/pages/JSONListModel.qml \
     qml/pages/TweetToolBar.qml \
     qml/pages/Timeline.qml \
+    qml/pages/Mentions.qml \
     rpm/harbour-pingviini.changes.in \
     rpm/harbour-pingviini.spec \
     rpm/harbour-pingviini.yaml \

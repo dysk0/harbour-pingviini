@@ -12,10 +12,10 @@ Component {
             title: qsTr("Direct Messages")
         }
         ListModel {
-            id: modelDM
+            id: modelDMfiltered
         }
 
-        model: Logic.modelDM
+        model: modelDMfiltered
 
 
         PullDownMenu {
@@ -27,7 +27,11 @@ Component {
             }
         }
         Component.onCompleted: {
-            listView.loadData()
+            if (modelDM.count === 0){
+                listView.loadData()
+            } else {
+                listView.contentY = scrollOffsetDM
+            }
 
         }
 
@@ -42,20 +46,26 @@ Component {
                 //jsonModel1.json = data;
                 //var now = new Date().getTime()
                 //data =JSON.flatten(data);
+
+                var unique = [];
                 for (var i=0; i < data.length; i++) {
-                    data[i] =JSON.flatten(data[i]);
-                    Logic.modelDM.append(data[i])
+                    //data[i] =JSON.flatten(data[i]);
+                    if (!unique[data[i].sender.screen_name]){
+                        modelDMfiltered.append(data[i])
+                        unique[data[i].sender.screen_name] = true;
+                    }
                     modelDM.append(data[i])
                 }
-                Logic.modelDM.sync()
                 console.log(JSON.stringify(data))
                 //Logic.modelDM.append(data)
                 loadStarted = false;
             }, showError)
         }
         delegate: BackgroundItem {
+            id: delegate
+            //property string text: "0"
             width: parent.width
-            height: Theme.itemSizeExtraLarge
+            height: lblText.paintedHeight + lblName.paintedHeight + lblScreenName.paintedHeight + Theme.paddingLarge
             Image {
                 id: avatar
                 x: Theme.horizontalPageMargin
@@ -63,7 +73,7 @@ Component {
                 asynchronous: true
                 width: Theme.iconSizeMedium
                 height: width
-                source: model['sender.profile_image_url_https']
+                source: sender.profile_image_url_https
             }
 
             Label {
@@ -73,13 +83,60 @@ Component {
                     left: avatar.right
                     leftMargin: Theme.paddingMedium
                 }
-                text: model.text
+                text: sender.name
                 font.weight: Font.Bold
                 font.pixelSize: Theme.fontSizeSmall
                 color: (pressed ? Theme.highlightColor : Theme.primaryColor)
             }
+            Label {
+                id: lblScreenName
+                anchors {
+                    left: lblName.right
+                    right: lblDate.left
+                    leftMargin: Theme.paddingMedium
+                    baseline: lblName.baseline
+                }
+                truncationMode: TruncationMode.Fade
+                text: '@'+sender.screen_name
+                font.pixelSize: Theme.fontSizeExtraSmall
+                color: (pressed ? Theme.secondaryHighlightColor : Theme.secondaryColor)
+            }
+            Label {
+                function timestamp() {
+                    var txt = Format.formatDate(created_at, Formatter.Timepoint)
+                    var elapsed = Format.formatDate(created_at, Formatter.DurationElapsedShort)
+                    return (elapsed ? elapsed  : txt )
+                }
+                id: lblDate
+                color: (pressed ? Theme.highlightColor : Theme.primaryColor)
+                text: timestamp()
+                font.pixelSize: Theme.fontSizeExtraSmall
+                horizontalAlignment: Text.AlignRight
+                anchors {
+                    right: parent.right
+                    baseline: lblName.baseline
+                    rightMargin: Theme.paddingLarge
+                }
+            }
+
+            Label {
+                id: lblText
+                anchors {
+                    left: lblName.left
+                    right: parent.right
+                    top: lblScreenName.bottom
+                    topMargin: Theme.paddingSmall
+                    rightMargin: Theme.paddingLarge
+                }
+                height: paintedHeight
+                text: Theme.highlightText(model.text, "@", Theme.highlightColor)
+                wrapMode: Text.Wrap
+                font.pixelSize: Theme.fontSizeSmall
+                color: (pressed ? Theme.highlightColor : Theme.primaryColor)
+            }
+
             onClicked: {
-                console.log(JSON.stringify(model))
+                console.log(JSON.stringify(model.id))
             }
         }
 
@@ -90,19 +147,21 @@ Component {
 
         VerticalScrollDecorator {}
 
+        onMovementEnded: {
+            scrollOffsetDM  = contentY
+        }
+
         onContentYChanged: {
             if(contentY+200 > listView.contentHeight-listView.height && !loadStarted){
                 loadStarted = true;
             }
             //console.log((contentY+200) + ' ' + listView.contentHeight)
-            if (contentY > scrollOffset) {
+            if (contentY > scrollOffsetDM) {
                 infoPanel.open = false
             } else {
                 infoPanel.open = true
 
             }
-
-            scrollOffset = contentY;
         }
     }
 }
