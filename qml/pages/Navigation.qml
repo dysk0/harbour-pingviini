@@ -29,12 +29,12 @@ SilicaGridView {
             name: "Messagess"
             active: false
         }
-        ListElement {
+        /*ListElement {
             icon: "image://theme/icon-m-search?"
             slug: "search"
             name: "Search"
             active: false
-        }
+        }*/
     }
     model: listModel
     anchors.fill: parent
@@ -100,12 +100,20 @@ SilicaGridView {
             }
         }
         onClicked: {
+            for(var i = 0; i < listModel.count; i++){
+                listModel.setProperty(i, 'active', false);
+            }
+            listModel.setProperty(index, 'active', true);
             if (model.slug === "msgs"){
-                componentLoader.sourceComponent = messagessViewComponent
+                componentLoader.sourceComponent = dmsgViewComponent
             }
             if (model.slug === "timeline"){
                 componentLoader.sourceComponent = timelineViewComponent
             }
+            if (model.slug === "mentions"){
+                componentLoader.sourceComponent = mentionsViewComponent
+            }
+
 
             console.log(model.slug)
 

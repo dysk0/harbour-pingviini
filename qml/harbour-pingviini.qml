@@ -38,6 +38,15 @@ ApplicationWindow
     initialPage: Component { FirstPage { } }
     cover: Qt.resolvedUrl("cover/CoverPage.qml")
     allowedOrientations: defaultAllowedOrientations
+    ListModel {
+        id: modelTL
+    }
+    ListModel {
+        id: modelMN
+    }
+    ListModel {
+        id: modelDM
+    }
     Component.onCompleted: {
         Logic.initialize();
 

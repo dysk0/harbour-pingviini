@@ -9,6 +9,17 @@
     </message>
 </context>
 <context>
+    <name>CmpDirectMessages</name>
+    <message>
+        <source>Direct Messages</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show navigation</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CoverPage</name>
     <message>
         <source>My Cover</source>
@@ -26,14 +37,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Messagess</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>Messages</name>
-    <message>
-        <source>Messages</source>
+        <source>Show navigation</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -45,6 +49,17 @@
     </message>
     <message>
         <source>Item</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Timeline</name>
+    <message>
+        <source>Mentions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show navigation</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

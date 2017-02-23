@@ -19,6 +19,31 @@
 .pragma library
 .import QtQuick.LocalStorage 2.0 as LS
 Qt.include("oauth.js")
+JSON.flatten = function(data) {
+    var result = {};
+    function recurse (cur, prop) {
+        if (Object(cur) !== cur) {
+            result[prop] = cur;
+        } else if (Array.isArray(cur)) {
+             for(var i=0, l=cur.length; i<l; i++)
+                 recurse(cur[i], prop + "[" + i + "]");
+            if (l == 0)
+                result[prop] = [];
+        } else {
+            var isEmpty = true;
+            for (var p in cur) {
+                isEmpty = false;
+                recurse(cur[p], prop ? prop+"."+p : p);
+            }
+            if (isEmpty && prop)
+                result[prop] = {};
+        }
+    }
+    recurse(data, "");
+    return result;
+}
+var modelDM = Qt.createQmlObject('import QtQuick 2.0; ListModel {  ListElement { username: "Apple"; } }', Qt.application, 'InternalQmlObject');
+var modelTL = Qt.createQmlObject('import QtQuick 2.0; ListModel {  ListElement { username: "Apple"; } }', Qt.application, 'InternalQmlObject');
 var mediator = (function(){
      var subscribe = function(channel, fn){
           if(!mediator.channels[channel]) mediator.channels[channel] = [];

@@ -4,6 +4,7 @@ import "../lib/Mediator.js" as Mediator
 import "../lib/Logic.js" as Logic
 
 
+
 Page {
     id: page
     property var locale: Qt.locale()
@@ -87,7 +88,7 @@ Page {
                 obj.subscribe('confLoaded', function(){
                     console.log(typeof arguments)
                     console.log('confLoaded');
-                    timeline.loadData("append")
+                    //timeline.loadData("append")
                     console.log(JSON.stringify(arguments));
                 });
 
@@ -155,12 +156,18 @@ Page {
                     text: qsTr("Add account")
                     onClicked: pageStack.push(Qt.resolvedUrl("AccountAdd.qml"))
                 }
+                MenuItem {
+                    text: qsTr("Show navigation")
+                    onClicked: {
+                        infoPanel.open = true;
+                    }
+                }
             }
 
 
             clip: isPortrait && (infoPanel.expanded)
 
-            width: parent.width
+
             model: homeTimeLine
             delegate: CmpTweet {
 
@@ -175,8 +182,7 @@ Page {
                     width: parent.width
                     anchors.margins: Theme.paddingSmall
                     onClicked: {
-                        //console.log(JSON.stringify([Logic.OAUTH_CONSUMER_KEY, Logic.OAUTH_CONSUMER_SECRET, Logic.OAUTH_TOKEN, Logic.OAUTH_TOKEN_SECRET]))
-                        timeline.loadData("aaa")
+                        timeline.loadData("append")
                     }
                 }
                 BusyIndicator {
@@ -198,8 +204,8 @@ Page {
                     infoPanel.open = false
                 } else {
                     if (contentY < 100 && !loadStarted){
-                        timeline.loadData("prepend")
-                        loadStarted = true;
+                        //timeline.loadData("prepend")
+                        //loadStarted = true;
                     }
                     infoPanel.open = true
                 }
@@ -209,40 +215,11 @@ Page {
         }
     }
 
-
-    Component {
-        id: messagessViewComponent
-        SilicaListView {
-            id: timeline
-            anchors.fill: parent
-            header: PageHeader {
-                title: qsTr("Messagess")
-            }
-
-
-
-            clip: isPortrait && (infoPanel.expanded)
-
-            width: parent.width
-
-
-            VerticalScrollDecorator {}
-
-            onContentYChanged: {
-                if(contentY+200 > timeline.contentHeight-timeline.height-timeline.footerItem.height && !loadStarted){
-                    loadStarted = true;
-                }
-                //console.log((contentY+200) + ' ' + listView.contentHeight)
-                if (contentY > scrollOffset) {
-                    infoPanel.open = false
-                } else {
-                    infoPanel.open = true
-
-                }
-
-                scrollOffset = contentY;
-            }
-        }
+    Timeline {
+        id: mentionsViewComponent
+    }
+    CmpDirectMessages {
+        id: dmsgViewComponent
     }
 
 

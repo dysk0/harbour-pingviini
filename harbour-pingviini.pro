@@ -22,7 +22,9 @@ OTHER_FILES += qml/harbour-pingviini.qml \
     lib/* \
     qml/pages/SecondPage.qml \
     qml/pages/CmpTweet.qml \
+    qml/pages/JSONListModel.qml \
     qml/pages/TweetToolBar.qml \
+    qml/pages/Timeline.qml \
     rpm/harbour-pingviini.changes.in \
     rpm/harbour-pingviini.spec \
     rpm/harbour-pingviini.yaml \
@@ -48,4 +50,6 @@ DISTFILES += \
     qml/pages/AccountAdd.qml \
     qml/component/Tweet.qml \
     qml/pages/Navigation.qml \
-    qml/pages/Messages.qml
+    qml/pages/CmpDirectMessages.qml \
+    qml/pages/jsonpath.js
+
