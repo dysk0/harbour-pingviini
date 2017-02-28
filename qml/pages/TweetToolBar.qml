@@ -47,17 +47,17 @@ Row {
             id: iconFav
             width: iconReply.width
             height: width
-            icon.source: (favorited ?
+            icon.source: (isFavourited ?
                               "image://theme/icon-s-favorite?" + (pressed ? Theme.primaryColor : Theme.secondaryColor)
                             :
                               "image://theme/icon-s-new?" + (pressed ? Theme.highlightColor: Theme.secondaryHighlightColor)
                           )
         }
         Label {
-            visible: favorite_count
+            visible: favoriteCount
             anchors.verticalCenter: parent.verticalCenter
             height: paintedHeight
-            text: favorite_count
+            text: favoriteCount
             font.pixelSize: Theme.fontSizeExtraSmall
             color: Theme.highlightColor
         }

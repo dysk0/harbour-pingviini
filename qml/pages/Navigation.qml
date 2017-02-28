@@ -74,9 +74,9 @@ SilicaGridView {
         }
 
         Image {
-            source: model.icon + (highlighted||model.active
+            source: model.icon + (highlighted
                                   ? Theme.highlightColor
-                                  : Theme.primaryColor)
+                                  : (model.active ? Theme.primaryColor : Theme.secondaryHighlightColor))
             anchors.centerIn: parent
         }
 

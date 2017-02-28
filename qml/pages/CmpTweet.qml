@@ -14,7 +14,7 @@ BackgroundItem {
         asynchronous: true
         width: Theme.iconSizeMedium
         height: width
-        source: user.profile_image_url_https
+        source: profileImageUrl
     }
 
     Label {
@@ -24,7 +24,7 @@ BackgroundItem {
             left: avatar.right
             leftMargin: Theme.paddingMedium
         }
-        text: user.name
+        text: name
         font.weight: Font.Bold
         font.pixelSize: Theme.fontSizeSmall
         color: (pressed ? Theme.highlightColor : Theme.primaryColor)
@@ -38,14 +38,14 @@ BackgroundItem {
             baseline: lblName.baseline
         }
         truncationMode: TruncationMode.Fade
-        text: '@'+user.screen_name
+        text: '@'+screenName
         font.pixelSize: Theme.fontSizeExtraSmall
         color: (pressed ? Theme.secondaryHighlightColor : Theme.secondaryColor)
     }
     Label {
         function timestamp() {
-            var txt = Format.formatDate(created_at, Formatter.Timepoint)
-            var elapsed = Format.formatDate(created_at, Formatter.DurationElapsedShort)
+            var txt = Format.formatDate(createdAt, Formatter.Timepoint)
+            var elapsed = Format.formatDate(createdAt, Formatter.DurationElapsedShort)
             return (elapsed ? elapsed  : txt )
         }
         id: lblDate
@@ -70,7 +70,7 @@ BackgroundItem {
             rightMargin: Theme.paddingLarge
         }
         height: paintedHeight
-        text: Theme.highlightText(model.text, "@", Theme.highlightColor)
+        text: richText //Theme.highlightText(plainText, "@", Theme.highlightColor)
         wrapMode: Text.Wrap
         font.pixelSize: Theme.fontSizeSmall
         color: (pressed ? Theme.highlightColor : Theme.primaryColor)
@@ -91,8 +91,8 @@ BackgroundItem {
         width: 200
         height: 0
         visible: {
-            if (entities.media){
-                source = entities.media[0].media_url
+            if (mediaUrl){
+                source = mediaUrl
                 height = 200
                 return true
             } else {

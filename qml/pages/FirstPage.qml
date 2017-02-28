@@ -26,6 +26,11 @@ Page {
             bottomMargin: page.isPortrait ? infoPanel.visibleSize : 0
         }
     }
+    WorkerScript {
+        id: worker
+        source: "../lib/Worker.js"
+        onMessage: myText.text = messageObject.reply
+    }
 
 
 

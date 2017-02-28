@@ -27,6 +27,33 @@
     </message>
 </context>
 <context>
+    <name>Logic</name>
+    <message>
+        <source>Now</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Just now</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n min(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n hr(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Yesterday %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Mentions</name>
     <message>
         <source>Show navigation</source>
@@ -60,6 +87,37 @@
     </message>
     <message>
         <source>Add account</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Load more</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Worker</name>
+    <message>
+        <source>Now</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Just now</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n min(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n hr(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Yesterday %1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
