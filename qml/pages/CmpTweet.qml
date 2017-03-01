@@ -70,7 +70,8 @@ BackgroundItem {
             rightMargin: Theme.paddingLarge
         }
         height: paintedHeight
-        text: richText //Theme.highlightText(plainText, "@", Theme.highlightColor)
+        text: (highlights.length > 0 ? Theme.highlightText(plainText, new RegExp(highlights, "igm"), Theme.highlightColor) : plainText)
+        textFormat:Text.RichText
         wrapMode: Text.Wrap
         font.pixelSize: Theme.fontSizeSmall
         color: (pressed ? Theme.highlightColor : Theme.primaryColor)
@@ -118,6 +119,6 @@ BackgroundItem {
 
 
     onClicked: {
-        console.log(JSON.stringify(model.id))
+        console.log(JSON.stringify(model.highlights))
     }
 }

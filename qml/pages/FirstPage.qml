@@ -12,6 +12,7 @@ Page {
     property int scrollOffset: 0
     property string activeView: "timeline"
     property double scrollOffsetTL: 0
+    property int currentIndexTL: 0
     property double scrollOffsetMN: 0
     property double scrollOffsetDM: 0
     allowedOrientations: Orientation.All

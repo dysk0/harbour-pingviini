@@ -16,6 +16,21 @@ function __unescapeHtml(text) {
     })
 }
 
+function __toHighlights(text, entities) {
+    var highlightText = []
+    entities.urls.forEach(function(urlObject) {
+        highlightText.push('('+urlObject.url+')')
+    })
+    entities.hashtags.forEach(function(hashtagObject) {
+        highlightText.push('(#'+hashtagObject.text+')')
+    })
+
+    entities.user_mentions.forEach(function(mentionsObject) {
+        highlightText.push('(@'+mentionsObject.screen_name + ')')
+    })
+    return highlightText.join("|");
+}
+
 function __toRichText(text, entities) {
     if (!entities) return;
 
@@ -24,7 +39,7 @@ function __toRichText(text, entities) {
 
     entities.urls.forEach(function(urlObject) {
         console.log(urlObject.url)
-        //richText = richText.replace(urlObject.url, linkText(urlObject.display_url, urlObject.expanded_url, true));
+        richText = richText.replace(urlObject.url, linkText(urlObject.display_url, urlObject.expanded_url, true));
     })
 
     /*if (entities.hasOwnProperty("media")) {
@@ -34,7 +49,7 @@ function __toRichText(text, entities) {
         })
     }
     */
-    //richText = __linkUserMentions(richText, entities.user_mentions);
+    richText = __linkUserMentions(richText, entities.user_mentions);
     //richText = __linkCashtag(richText);
     return richText;
 }
@@ -77,7 +92,13 @@ function __linkHashtags(text, hashtagsEntities) {
 // Following RegExp took and modified from:
 // https://github.com/twitter/twitter-text-js/blob/b93ae29/twitter-text.js#L279
 var CASHTAG_REGEXP = /(?:^|\s)(\$[a-z]{1,6}(?:[._][a-z]{1,2})?)(?=$|[\s\!'#%&"\(\)*\+,\\\-\.\/:;<=>\?@\[\]\^_{|}~\$])/gi;
+function linkText(text, href, italic) {
+    var html = "";
+    if (italic) html = "<i><a style=\"color: LightSeaGreen; text-decoration: none\" href=\"%1\">%2</a></i>";
+    else html = "<a style=\"color: LightSeaGreen; text-decoration: none\" href=\"%1\">%2</a>";
 
+    return html.arg(href).arg(text);
+}
 function __linkCashtag(text) {
     return text.replace(CASHTAG_REGEXP, function(matched) {
         var text = matched;
@@ -120,6 +141,7 @@ function parseTweet(tweetJson) {
         favoriteCount: tweetJson.favorite_count,
         isRetweet: tweetJson.retweeted,
         retweetCount: tweetJson.retweet_count,
+        highlights: "",
         retweetScreenName: tweetJson.user.screen_name,
         timeDiff: timeDiff(tweetJson.created_at)
     }
@@ -131,6 +153,8 @@ function parseTweet(tweetJson) {
     else originalTweetJson = tweetJson;
     tweet.plainText = __unescapeHtml(originalTweetJson.text);
     tweet.richText = __toRichText(originalTweetJson.text, originalTweetJson.entities);
+    tweet.highlights = __toHighlights(originalTweetJson.text, originalTweetJson.entities);
+
     tweet.name = originalTweetJson.user.name;
     tweet.screenName = originalTweetJson.user.screen_name;
     tweet.profileImageUrl = originalTweetJson.user.profile_image_url;

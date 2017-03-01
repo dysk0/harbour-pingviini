@@ -85,9 +85,14 @@ Component {
 
         onMovementEnded: {
             scrollOffsetTL = contentY
+            currentIndexTL = currentIndex
         }
-
+        onCountChanged: {
+            // contentY = scrollOffsetTL
+            // currentIndex  = currentIndexTL
+        }
         onContentYChanged: {
+            //console.log(".....contentY: " + contentY)
 
             if(contentY+200 > timeline.contentHeight-timeline.height&& !loadStarted){
                 loadStarted = true;
