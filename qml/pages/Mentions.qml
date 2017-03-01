@@ -5,14 +5,15 @@ import "../lib/Logic.js" as Logic
 
 Component {
     SilicaListView {
-        id: timeline
+        id: timeline2
         anchors.fill: parent
 
         Component.onCompleted: {
             if (modelMN.count === 0){
                 loadData("append")
             } else {
-                timeline.contentY = scrollOffsetMN
+                if (scrollOffsetMN)
+                    contentY = scrollOffsetMN
             }
             var obj = {};
             Logic.mediator.installTo(obj);
@@ -49,7 +50,7 @@ Component {
             MenuItem {
                 text: qsTr("Load more")
                 onClicked: {
-                    timeline.loadData("prepend")
+                    timeline2.loadData("prepend")
                 }
             }
         }
@@ -58,7 +59,7 @@ Component {
             MenuItem {
                 text: qsTr("Load more")
                 onClicked: {
-                    timeline.loadData("append")
+                    timeline2.loadData("append")
                 }
             }
         }
@@ -74,18 +75,19 @@ Component {
 
         VerticalScrollDecorator {}
 
+
         onMovementEnded: {
             scrollOffsetMN = contentY
             currentIndexMN = currentIndex
         }
         onCountChanged: {
-            contentY = scrollOffsetMN
+            if (scrollOffsetMN)
+                contentY = scrollOffsetMN
             // currentIndex  = currentIndexMN
         }
         onContentYChanged: {
-            //console.log(".....contentY: " + contentY)
 
-            if(contentY+200 > timeline.contentHeight-timeline.height&& !loadStarted){
+            if(contentY+200 > timeline2.contentHeight-timeline2.height&& !loadStarted){
                 loadStarted = true;
             }
             //console.log((contentY+200) + ' ' + listView.contentHeight)
@@ -93,11 +95,13 @@ Component {
                 infoPanel.open = false
             } else {
                 if (contentY < 100 && !loadStarted){
-                    //timeline.loadData("prepend")
+                    //timeline2.loadData("prepend")
                     //loadStarted = true;
                 }
                 infoPanel.open = true
             }
+            scrollOffsetMN = contentY
+            currentIndexMN = currentIndex
         }
     }
 }

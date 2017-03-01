@@ -59,6 +59,7 @@ Page {
             console.log(typeof arguments)
             console.log('confLoaded');
             componentLoader.sourceComponent = timelineViewComponent
+            pageStack.pushAttached(Qt.resolvedUrl("SecondPage.qml"), {"model": model})
             console.log(JSON.stringify(arguments));
         });
 

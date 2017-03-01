@@ -5,6 +5,7 @@ import "../lib/Logic.js" as Logic
 
 Component {
     SilicaListView {
+        //property type name: value
         id: timeline
         anchors.fill: parent
 
@@ -12,7 +13,10 @@ Component {
             if (modelTL.count === 0){
                 loadData("append")
             } else {
+
+                console.log("positioning")
                 timeline.contentY = scrollOffsetTL
+
             }
             var obj = {};
             Logic.mediator.installTo(obj);
@@ -84,16 +88,11 @@ Component {
 
         VerticalScrollDecorator {}
 
-        onMovementEnded: {
-            scrollOffsetTL = contentY
-            currentIndexTL = currentIndex
-        }
         onCountChanged: {
-            contentY = scrollOffsetTL
+            timeline.contentY = scrollOffsetTL
             // currentIndex  = currentIndexTL
         }
         onContentYChanged: {
-            //console.log(".....contentY: " + contentY)
 
             if(contentY+200 > timeline.contentHeight-timeline.height&& !loadStarted){
                 loadStarted = true;
@@ -108,6 +107,8 @@ Component {
                 }
                 infoPanel.open = true
             }
+            scrollOffsetTL = contentY
+            currentIndexTL = currentIndex
         }
     }
 }

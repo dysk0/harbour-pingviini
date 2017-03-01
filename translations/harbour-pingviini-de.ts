@@ -64,12 +64,23 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Load more</source>
+        <source>Pingviini</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Pingviini</source>
+        <source>Load more</source>
         <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>NewTweet</name>
+    <message>
+        <source>New tweet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Item</source>
+        <translation type="unfinished">Element</translation>
     </message>
 </context>
 <context>

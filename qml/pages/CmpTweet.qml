@@ -119,6 +119,7 @@ BackgroundItem {
 
 
     onClicked: {
+        pageStack.push(Qt.resolvedUrl("SecondPage.qml"), {"model": model})
         console.log(JSON.stringify(model.highlights))
     }
 }

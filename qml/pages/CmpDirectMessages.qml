@@ -5,21 +5,21 @@ import "../lib/Logic.js" as Logic
 
 Component {
     SilicaListView {
-        id: timeline
+        id: timelineDM
         anchors.fill: parent
 
         Component.onCompleted: {
             if (modelDM.count === 0){
                 loadData("append")
             } else {
-                timeline.contentY = scrollOffsetDM
+                timelineDM.contentY = scrollOffsetDM
             }
             var obj = {};
             Logic.mediator.installTo(obj);
             obj.subscribe('confLoaded', function(){
                 console.log(typeof arguments)
                 console.log('confLoaded');
-                //timeline.loadData("append")
+                //timelineDM.loadData("append")
                 console.log(JSON.stringify(arguments));
             });
         }
@@ -49,7 +49,7 @@ Component {
             MenuItem {
                 text: qsTr("Load more")
                 onClicked: {
-                    timeline.loadData("prepend")
+                    timelineDM.loadData("prepend")
                 }
             }
         }
@@ -58,7 +58,7 @@ Component {
             MenuItem {
                 text: qsTr("Load more")
                 onClicked: {
-                    timeline.loadData("append")
+                    timelineDM.loadData("append")
                 }
             }
         }
@@ -85,7 +85,7 @@ Component {
         onContentYChanged: {
             //console.log(".....contentY: " + contentY)
 
-            if(contentY+200 > timeline.contentHeight-timeline.height&& !loadStarted){
+            if(contentY+200 > timelineDM.contentHeight-timelineDM.height&& !loadStarted){
                 loadStarted = true;
             }
             //console.log((contentY+200) + ' ' + listView.contentHeight)
@@ -93,7 +93,7 @@ Component {
                 infoPanel.open = false
             } else {
                 if (contentY < 100 && !loadStarted){
-                    //timeline.loadData("prepend")
+                    //timelineDM.loadData("prepend")
                     //loadStarted = true;
                 }
                 infoPanel.open = true
