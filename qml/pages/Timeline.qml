@@ -41,7 +41,8 @@ Component {
         }
 
         header: PageHeader {
-            title: qsTr("Pingviini")
+            title: qsTr("Timeline")
+            description: qsTr("Pingviini")
         }
         PullDownMenu {
             spacing: Theme.paddingLarge
@@ -88,7 +89,7 @@ Component {
             currentIndexTL = currentIndex
         }
         onCountChanged: {
-            // contentY = scrollOffsetTL
+            contentY = scrollOffsetTL
             // currentIndex  = currentIndexTL
         }
         onContentYChanged: {

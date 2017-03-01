@@ -11,11 +11,15 @@
 <context>
     <name>CmpDirectMessages</name>
     <message>
-        <source>Direct Messages</source>
+        <source>Messages</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Show navigation</source>
+        <source>Pingviini</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Load more</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -56,11 +60,15 @@
 <context>
     <name>Mentions</name>
     <message>
-        <source>Show navigation</source>
+        <source>Mentions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Mentions</source>
+        <source>Load more</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pingviini</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -91,6 +99,10 @@
     </message>
     <message>
         <source>Load more</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Timeline</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

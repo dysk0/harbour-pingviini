@@ -14,7 +14,9 @@ Page {
     property double scrollOffsetTL: 0
     property int currentIndexTL: 0
     property double scrollOffsetMN: 0
+    property int currentIndexMN: 0
     property double scrollOffsetDM: 0
+    property int currentIndexDM: 0
     allowedOrientations: Orientation.All
 
     Loader {
