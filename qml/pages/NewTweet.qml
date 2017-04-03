@@ -1,61 +1,80 @@
-/*
-  Copyright (C) 2013 Jolla Ltd.
-  Contact: Thomas Perl <thomas.perl@jollamobile.com>
-  All rights reserved.
-
-  You may use this file under the terms of BSD license as follows:
-
-  Redistribution and use in source and binary forms, with or without
-  modification, are permitted provided that the following conditions are met:
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
-    * Redistributions in binary form must reproduce the above copyright
-      notice, this list of conditions and the following disclaimer in the
-      documentation and/or other materials provided with the distribution.
-    * Neither the name of the Jolla Ltd nor the
-      names of its contributors may be used to endorse or promote products
-      derived from this software without specific prior written permission.
-
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-  DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDERS OR CONTRIBUTORS BE LIABLE FOR
-  ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-  (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
-
 import QtQuick 2.0
 import Sailfish.Silica 1.0
+import "../lib/Logic.js" as Logic
 
 
-Page {
-    id: page
 
-    // The effective value will be restricted by ApplicationWindow.allowedOrientations
-    allowedOrientations: Orientation.All
-
-    SilicaListView {
-        id: listView
-        model: 20
-        anchors.fill: parent
-        header: PageHeader {
-            title: qsTr("New tweet")
-        }
-        delegate: BackgroundItem {
-            id: delegate
-
-            Label {
-                x: Theme.horizontalPageMargin
-                text: qsTr("Item") + " " + index
-                anchors.verticalCenter: parent.verticalCenter
-                color: delegate.highlighted ? Theme.highlightColor : Theme.primaryColor
-            }
-            onClicked: console.log("Clicked " + index)
-        }
-        VerticalScrollDecorator {}
+Item {
+    id: newTweetPanel
+    property string type: "New" //"New","Reply", "RT" or "DM"
+    property string tweetId
+    property string screenName //for "DM"
+    property string placedText: ""
+    property double latitude: 0
+    property double longitude: 0
+    width: parent.width
+    height: newTweet.height + Theme.paddingMedium*2
+    anchors {
+        left: parent.left
+        right: parent.right
     }
+    WorkerScript {
+        id: worker
+        source: "../lib/Worker.js"
+        onMessage: myText.text = messageObject.reply
+    }
+    function tweet(){
+       Logic.postStatus(newTweet.text, tweetId, latitude, longitude, function(e){
+           console.log(JSON.stringify(e))
+       }, function(e){console.log(JSON.stringify(e))})
+    }
+
+
+
+    Label {
+        id: newTweetCounter
+        property string shortenText: newTweet.text.replace(/https?:\/\/\S+/g, __replaceLink)
+        function __replaceLink(w) {
+            if (w.indexOf("https://") === 0)
+                return "https://t.co/xxxxxxxxxx" // Length: 23
+            else return "http://t.co/xxxxxxxxxx" // Length: 22
+        }
+
+
+        text: 140 - shortenText.length
+
+        anchors {
+            right: parent.right
+            rightMargin: Theme.horizontalPageMargin
+            verticalCenter: parent.verticalCenter
+        }
+
+
+    }
+
+    TextField {
+        id: newTweet
+        errorHighlight: newTweetCounter.text < 0 && type != "RT"
+        anchors {
+            left: parent.left
+            rightMargin: Theme.paddingMedium
+            right: newTweetCounter.left
+            verticalCenter: parent.verticalCenter
+        }
+        autoScrollEnabled: true
+        label: "New tweet"
+        placeholderText: "New tweet"
+        text: screenName
+        focus: true
+        height: implicitHeight
+        horizontalAlignment: Text.AlignLeft
+        EnterKey.onClicked: {
+            tweet()
+        }
+        onTextChanged: {
+            newTweetCounter.color = (text.length > 140 ? "red": Theme.primaryColor)
+        }
+    }
+
+
 }

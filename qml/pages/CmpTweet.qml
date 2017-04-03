@@ -119,7 +119,7 @@ BackgroundItem {
 
 
     onClicked: {
-        pageStack.push(Qt.resolvedUrl("SecondPage.qml"), {"model": model})
+        pageStack.push(Qt.resolvedUrl("TweetDetails.qml"), {"tweets": (timeline ? timeline.model : timeline.model ), "selected": index})
         console.log(JSON.stringify(model.highlights))
     }
 }

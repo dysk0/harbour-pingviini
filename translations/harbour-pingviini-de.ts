@@ -73,28 +73,6 @@
     </message>
 </context>
 <context>
-    <name>NewTweet</name>
-    <message>
-        <source>New tweet</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Item</source>
-        <translation type="unfinished">Element</translation>
-    </message>
-</context>
-<context>
-    <name>SecondPage</name>
-    <message>
-        <source>Nested Page</source>
-        <translation>Unterseite</translation>
-    </message>
-    <message>
-        <source>Item</source>
-        <translation>Element</translation>
-    </message>
-</context>
-<context>
     <name>Timeline</name>
     <message>
         <source>Show navigation</source>
@@ -115,6 +93,13 @@
     <message>
         <source>Timeline</source>
         <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TweetDetails</name>
+    <message>
+        <source>Item</source>
+        <translation type="unfinished">Element</translation>
     </message>
 </context>
 <context>

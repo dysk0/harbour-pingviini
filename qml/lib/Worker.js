@@ -134,7 +134,8 @@ function parseISO8601(str) {
 }
 function parseTweet(tweetJson) {
     var tweet = {
-        id: tweetJson.id_str,
+        id: tweetJson.id,
+        id_str: tweetJson.id_str,
         source: tweetJson.source.replace(/<[^>]+>/ig, ""),
         createdAt: parseISO8601(tweetJson.created_at),
         isFavourited: tweetJson.favorited,
@@ -165,7 +166,7 @@ function parseTweet(tweetJson) {
     tweet.mediaUrl = "";
 
     if (tweetJson.entities && tweetJson.entities.media){
-         tweet.mediaUrl = tweetJson.entities.media[0].media_url_https
+        tweet.mediaUrl = tweetJson.entities.media[0].media_url_https
         tweet.plainText = tweet.plainText.replace(tweetJson.entities.media[0].url, "")
     }
 
@@ -339,6 +340,12 @@ WorkerScript.onMessage = function(msg) {
             msg.model.sync();
         }, showError)
     }
+
+    if (msg.action === 'postTweet') {
+        console.log('postTweet '+JSON.stringify(msg))
+
+    }
+
 }
 //WorkerScript.sendMessage({ 'reply': 'Mouse is at ' + message.x + ',' + message.y })
 

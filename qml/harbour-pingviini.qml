@@ -35,6 +35,7 @@ import "pages"
 
 ApplicationWindow
 {
+    id: app
     initialPage: Component { FirstPage { } }
     cover: Qt.resolvedUrl("cover/CoverPage.qml")
     allowedOrientations: defaultAllowedOrientations
@@ -47,6 +48,10 @@ ApplicationWindow
     ListModel {
         id: modelDM
     }
+    function doTest(){
+        console.log("Called easily by el")
+    }
+
     Component.onCompleted: {
         Logic.initialize();
 

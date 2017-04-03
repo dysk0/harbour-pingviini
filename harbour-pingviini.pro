@@ -20,7 +20,6 @@ OTHER_FILES += qml/harbour-pingviini.qml \
     qml/cover/CoverPage.qml \
     qml/pages/FirstPage.qml \
     lib/* \
-    qml/pages/SecondPage.qml \
     qml/pages/CmpTweet.qml \
     qml/pages/JSONListModel.qml \
     qml/pages/TweetToolBar.qml \
@@ -54,5 +53,6 @@ DISTFILES += \
     qml/pages/Navigation.qml \
     qml/pages/CmpDirectMessages.qml \
     qml/pages/jsonpath.js \
-    qml/pages/NewTweet.qml
+    qml/pages/NewTweet.qml \
+    qml/pages/TweetDetails.qml
 

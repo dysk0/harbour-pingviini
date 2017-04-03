@@ -18,6 +18,9 @@
 
 .pragma library
 .import QtQuick.LocalStorage 2.0 as LS
+Qt.include("Twitter.js");
+
+
 
 var OAUTH_CONSUMER_KEY = "BsVdhEDHrLgE8SUfAUEoVdnwD"
 var OAUTH_CONSUMER_SECRET = "UtGso4Buc2bX3FlBmYrwamKIuPRfwBfptO0we935jyRF90RboK"

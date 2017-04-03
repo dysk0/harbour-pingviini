@@ -5,7 +5,7 @@ import "../lib/Logic.js" as Logic
 
 Component {
     SilicaListView {
-        id: timeline2
+        id: timeline
         anchors.fill: parent
 
         Component.onCompleted: {
@@ -50,7 +50,7 @@ Component {
             MenuItem {
                 text: qsTr("Load more")
                 onClicked: {
-                    timeline2.loadData("prepend")
+                    timeline.loadData("prepend")
                 }
             }
         }
@@ -59,7 +59,7 @@ Component {
             MenuItem {
                 text: qsTr("Load more")
                 onClicked: {
-                    timeline2.loadData("append")
+                    timeline.loadData("append")
                 }
             }
         }
@@ -87,7 +87,7 @@ Component {
         }
         onContentYChanged: {
 
-            if(contentY+200 > timeline2.contentHeight-timeline2.height&& !loadStarted){
+            if(contentY+200 > timeline.contentHeight-timeline.height&& !loadStarted){
                 loadStarted = true;
             }
             //console.log((contentY+200) + ' ' + listView.contentHeight)
@@ -95,7 +95,7 @@ Component {
                 infoPanel.open = false
             } else {
                 if (contentY < 100 && !loadStarted){
-                    //timeline2.loadData("prepend")
+                    //timeline.loadData("prepend")
                     //loadStarted = true;
                 }
                 infoPanel.open = true

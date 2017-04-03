@@ -19,6 +19,9 @@ Page {
     property int currentIndexDM: 0
     allowedOrientations: Orientation.All
 
+    signal buttonPressedAtBPage();
+    onButtonPressedAtBPage: console.log("Mouse pressed at B page");
+
     Loader {
         id: componentLoader
         anchors {
