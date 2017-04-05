@@ -1,6 +1,5 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
-import "../lib/Mediator.js" as Mediator
 import "../lib/Logic.js" as Logic
 
 Component {
@@ -28,20 +27,20 @@ Component {
             });
         }
         ViewPlaceholder {
-            enabled: modelTL.count == 0
+            enabled: Logic.modelTL.count === 0
             text: "Loading tweets"
             hintText: "Please wait..."
         }
 
 
         function loadData(placement){
-            var msg = {
+            /*var msg = {
                 'action': 'getHomeTimeline',
                 'model' : modelTL,
                 'mode'  : placement,
                 'conf'  : Logic.getConfTW()
             };
-            worker.sendMessage(msg);
+            worker.sendMessage(msg);*/
         }
 
         header: PageHeader {
@@ -81,7 +80,7 @@ Component {
         clip: isPortrait && (infoPanel.expanded)
 
 
-        model: modelTL
+        model: Logic.modelTL
         delegate: CmpTweet {
 
         }

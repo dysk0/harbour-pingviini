@@ -1,4 +1,9 @@
-Qt.include("Twitter.js")
+Qt.include("codebird.js")
+function getValidDate(twitterDate) {
+    return new Date(twitterDate.replace(/^(\w+) (\w+) (\d+) ([\d:]+) \+0000 (\d+)$/,"$1, $2 $3 $5 $4 GMT"));
+}
+
+
 
 function showError(status, statusText) {
     console.log(status)
@@ -38,7 +43,7 @@ function __toRichText(text, entities) {
     //richText = __linkHashtags(richText, entities.hashtags);
 
     entities.urls.forEach(function(urlObject) {
-        console.log(urlObject.url)
+        //console.log(urlObject.url)
         richText = richText.replace(urlObject.url, linkText(urlObject.display_url, urlObject.expanded_url, true));
     })
 
@@ -137,7 +142,7 @@ function parseTweet(tweetJson) {
         id: tweetJson.id,
         id_str: tweetJson.id_str,
         source: tweetJson.source.replace(/<[^>]+>/ig, ""),
-        createdAt: parseISO8601(tweetJson.created_at),
+        createdAt: getValidDate(tweetJson.created_at),
         isFavourited: tweetJson.favorited,
         favoriteCount: tweetJson.favorite_count,
         isRetweet: tweetJson.retweeted,
@@ -170,7 +175,7 @@ function parseTweet(tweetJson) {
         tweet.plainText = tweet.plainText.replace(tweetJson.entities.media[0].url, "")
     }
 
-    console.log(" ---------------------- "); console.log(JSON.stringify(tweetJson)); console.log(" ---------------------- "); console.log(JSON.stringify(tweet))
+    //console.log(" ---------------------- "); console.log(JSON.stringify(tweetJson)); console.log(" ---------------------- "); console.log(JSON.stringify(tweet))
     return tweet;
 }
 
@@ -215,96 +220,61 @@ function timeDiff(tweetTimeStr) {
 }
 
 WorkerScript.onMessage = function(msg) {
-    if (msg.conf.OAUTH_CONSUMER_KEY)
-        OAUTH_CONSUMER_KEY = msg.conf.OAUTH_CONSUMER_KEY;
+    var cb = new Fcodebird;
+    cb.setUseProxy(false);
+    if (msg.conf.OAUTH_CONSUMER_KEY && msg.conf.OAUTH_CONSUMER_SECRET ){
+        cb.setConsumerKey(msg.conf.OAUTH_CONSUMER_KEY, msg.conf.OAUTH_CONSUMER_SECRET);
+    }
 
-    if (msg.conf.OAUTH_CONSUMER_SECRET)
-        OAUTH_CONSUMER_SECRET = msg.conf.OAUTH_CONSUMER_SECRET;
 
-    if (msg.conf.OAUTH_TOKEN)
-        OAUTH_TOKEN = msg.conf.OAUTH_TOKEN;
-
-    if (msg.conf.OAUTH_TOKEN_SECRET)
-        OAUTH_TOKEN_SECRET = msg.conf.OAUTH_TOKEN_SECRET;
-
-    if (msg.conf.USER_AGENT)
-        USER_AGENT = msg.conf.USER_AGENT;
-
-    if (msg.conf.SCREEN_NAME)
-        SCREEN_NAME = msg.conf.SCREEN_NAME;
+    if (msg.conf.OAUTH_TOKEN && msg.conf.OAUTH_TOKEN_SECRET){
+        cb.setToken(msg.conf.OAUTH_TOKEN, msg.conf.OAUTH_TOKEN_SECRET);
+    }
 
     var sinceId;
     var maxId;
 
-    if (msg.action === 'getHomeTimeline') {
-        console.log('getHomeTimeline '+JSON.stringify(msg))
+
+
+    if (msg.action === 'statuses_homeTimeline' || msg.action === 'statuses_mentionsTimeline') {
+        var params = {"count":200}
         sinceId = false;
         maxId = false;
         if (msg.model.count) {
             if (msg.mode === "append") {
-                maxId = msg.model.get(msg.model.count-1).id
+                params['maxId'] = msg.model.get(msg.model.count-1).id
             }
             if (msg.mode === "prepend") {
-                sinceId = msg.model.get(0).id
+                params['sinceId'] = msg.model.get(0).id
             }
         }
-
-        getHomeTimeline(sinceId, maxId, function(data) {
-            //msg.model.clear();
-            for (var i=0; i < data.length; i++) {
-                var tweet = parseTweet(data[i]); //.created_at = parseISO8601(data[i].created_at) //Date.fromLocaleString(locale, data[i].created_at, "ddd MMM dd HH:mm:ss +0000 yyyy")
-                if (msg.model.count) {
-                    if (msg.mode === "append" && i > 0) {
-                        console.log('append')
-
+        console.log(JSON.stringify(params))
+        cb.__call(
+            msg.action,
+            params,
+            function (reply, rate, err) {
+                //msg.model.clear()
+                for (var i=0; i < reply.length; i++) {
+                    var tweet = parseTweet(reply[i]);
+                    if (msg.model.count) {
+                        if (msg.mode === "append" && i > 0) {
+                            msg.model.append(tweet)
+                        }
+                        if (msg.mode === "prepend") {
+                            msg.model.insert(0, tweet)
+                        }
+                    } else {
                         msg.model.append(tweet)
                     }
-                    if (msg.mode === "prepend") {
-                        console.log('prepend')
-                        msg.model.insert(0, tweet)
-                    }
-                } else {
-                    msg.model.append(tweet)
                 }
+                msg.model.sync();
+                console.log(msg.model.count);
+                console.log(JSON.stringify(err));
             }
-            msg.model.sync();
-        }, showError)
+        );
     }
 
-    if (msg.action === 'getMentionsTimeline') {
-        console.log('getMentionsTimeline '+JSON.stringify(msg))
-        sinceId = false;
-        maxId = false;
-        if (msg.model.count) {
-            if (msg.mode === "append") {
-                maxId = msg.model.get(msg.model.count-1).id
-            }
-            if (msg.mode === "prepend") {
-                sinceId = msg.model.get(0).id
-            }
-        }
 
-        getMentions(sinceId, maxId, function(data) {
-            //msg.model.clear();
-            for (var i=0; i < data.length; i++) {
-                var tweet = parseTweet(data[i]);
-                if (msg.model.count) {
-                    if (msg.mode === "append" && i > 0) {
-                        console.log('append')
-
-                        msg.model.append(tweet)
-                    }
-                    if (msg.mode === "prepend") {
-                        console.log('prepend')
-                        msg.model.insert(0, tweet)
-                    }
-                } else {
-                    msg.model.append(tweet)
-                }
-            }
-            msg.model.sync();
-        }, showError)
-    }
 
     if (msg.action === 'getDirectMsg') {
         console.log('getDirectMsg '+JSON.stringify(msg))

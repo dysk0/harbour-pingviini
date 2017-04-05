@@ -26,6 +26,8 @@ OTHER_FILES += qml/harbour-pingviini.qml \
     qml/pages/Timeline.qml \
     qml/pages/Mentions.qml \
     qml/lib/Worker.js \
+    qml/lib/codebird.js \
+    qml/lib/Logic.js \
     rpm/harbour-pingviini.changes.in \
     rpm/harbour-pingviini.spec \
     rpm/harbour-pingviini.yaml \
@@ -54,5 +56,6 @@ DISTFILES += \
     qml/pages/CmpDirectMessages.qml \
     qml/pages/jsonpath.js \
     qml/pages/NewTweet.qml \
-    qml/pages/TweetDetails.qml
+    qml/pages/TweetDetails.qml \
+    qml/pages/Splash.qml
 

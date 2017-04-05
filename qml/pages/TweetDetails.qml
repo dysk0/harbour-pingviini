@@ -30,6 +30,7 @@
 
 import QtQuick 2.0
 import Sailfish.Silica 1.0
+import "../lib/Logic.js" as Logic
 
 
 Page {
@@ -48,7 +49,7 @@ Page {
         anchors.fill: parent
         footer: NewTweet {
             tweetId: tweets.get(selected).id_str;
-            screenName: '@'+tweets.get(selected).screenName + ' '
+            screenName: '@'+tweets.get(selected).screenName + ' ' + Logic.modelTL.count
         }
         header: Item {
             width: parent.width

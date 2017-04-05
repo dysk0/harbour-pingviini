@@ -1,6 +1,5 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
-import "../lib/Mediator.js" as Mediator
 import "../lib/Logic.js" as Logic
 
 
@@ -64,6 +63,14 @@ Page {
             componentLoader.sourceComponent = timelineViewComponent
             pageStack.pushAttached(Qt.resolvedUrl("SecondPage.qml"), {"model": model})
             console.log(JSON.stringify(arguments));
+
+            var msg = {
+                'action': 'statuses_homeTimeline',
+                'model' : Logic.modelTL,
+                'mode'  : placement,
+                'conf'  : Logic.getConfTW()
+            };
+            worker.sendMessage(msg);
         });
 
 

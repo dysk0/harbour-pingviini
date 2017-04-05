@@ -1,6 +1,5 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
-import "../lib/Mediator.js" as Mediator
 import "../lib/Logic.js" as Logic
 
 Component {
@@ -25,20 +24,20 @@ Component {
             });
         }
         ViewPlaceholder {
-            enabled: modelMN.count == 0
+            enabled: Logic.modelMN.count == 0
             text: "Loading tweets"
             hintText: "Please wait..."
         }
 
 
         function loadData(placement){
-            var msg = {
+            /*var msg = {
                 'action': 'getMentionsTimeline',
                 'model' : modelMN,
                 'mode'  : placement,
                 'conf'  : Logic.getConfTW()
             };
-            worker.sendMessage(msg);
+            worker.sendMessage(msg);*/
         }
 
         header: PageHeader {
@@ -68,7 +67,7 @@ Component {
         clip: isPortrait && (infoPanel.expanded)
 
 
-        model: modelMN
+        model: Logic.modelMN
         delegate: CmpTweet {
 
         }

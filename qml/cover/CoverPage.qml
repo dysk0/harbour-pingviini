@@ -30,12 +30,13 @@
 
 import QtQuick 2.0
 import Sailfish.Silica 1.0
+import "../lib/Logic.js" as Logic
 
 CoverBackground {
     Label {
         id: label
         anchors.centerIn: parent
-        text: qsTr("My Cover")
+        text: "TL "+Logic.modelTL.count
     }
 
     CoverActionList {

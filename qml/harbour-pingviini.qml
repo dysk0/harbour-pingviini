@@ -36,7 +36,7 @@ import "pages"
 ApplicationWindow
 {
     id: app
-    initialPage: Component { FirstPage { } }
+    initialPage: Component { Splash { } }
     cover: Qt.resolvedUrl("cover/CoverPage.qml")
     allowedOrientations: defaultAllowedOrientations
     ListModel {
@@ -48,21 +48,9 @@ ApplicationWindow
     ListModel {
         id: modelDM
     }
-    function doTest(){
-        console.log("Called easily by el")
-    }
 
     Component.onCompleted: {
         Logic.initialize();
-
-        var obj = { name : 'John' };
-        Logic.mediator.installTo(obj);
-
-        obj.subscribe('nameChange', function(arg){
-             console.log(this.name);
-             this.name = arg;
-             console.log(JSON.stringify(arg));
-        });
     }
     Component.onDestruction: {
         Logic.saveData()

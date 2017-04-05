@@ -18,7 +18,7 @@
 
 .pragma library
 .import QtQuick.LocalStorage 2.0 as LS
-Qt.include("Twitter.js");
+
 
 
 
@@ -63,8 +63,9 @@ JSON.flatten = function(data) {
     recurse(data, "");
     return result;
 }
-var modelDM = Qt.createQmlObject('import QtQuick 2.0; ListModel {  ListElement { username: "Apple"; } }', Qt.application, 'InternalQmlObject');
-var modelTL = Qt.createQmlObject('import QtQuick 2.0; ListModel {  ListElement { username: "Apple"; } }', Qt.application, 'InternalQmlObject');
+var modelDM = Qt.createQmlObject('import QtQuick 2.0; ListModel {   }', Qt.application, 'InternalQmlObject');
+var modelTL = Qt.createQmlObject('import QtQuick 2.0; ListModel {   }', Qt.application, 'InternalQmlObject');
+var modelMN = Qt.createQmlObject('import QtQuick 2.0; ListModel {   }', Qt.application, 'InternalQmlObject');
 var mediator = (function(){
      var subscribe = function(channel, fn){
           if(!mediator.channels[channel]) mediator.channels[channel] = [];
