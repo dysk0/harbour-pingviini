@@ -18,7 +18,7 @@
 
 .pragma library
 .import QtQuick.LocalStorage 2.0 as LS
-
+Qt.include("common.js")
 
 
 
@@ -142,70 +142,3 @@ function saveData() {
 }
 
 
-function timeDiff(tweetTimeStr) {
-    var tweetTime = new Date(tweetTimeStr)
-    var diff = new Date().getTime() - tweetTime.getTime() // milliseconds
-
-    if (diff <= 0) return qsTr("Now")
-
-    diff = Math.round(diff / 1000) // seconds
-
-    if (diff < 60) return qsTr("Just now")
-
-    diff = Math.round(diff / 60) // minutes
-
-    if (diff < 60) return qsTr("%n min(s)", "", diff)
-
-    diff = Math.round(diff / 60) // hours
-
-    if (diff < 24) return qsTr("%n hr(s)", "", diff)
-
-    diff = Math.round(diff / 24) // days
-
-    if (diff === 1) return qsTr("Yesterday %1").arg(Qt.formatTime(tweetTime, "h:mm AP").toString())
-    if (diff < 7 ) return Qt.formatDate(tweetTime, "ddd d MMM").toString()
-
-    return Qt.formatDate(tweetTime, Qt.SystemLocaleShortDate).toString()
-}
-
-
-function parseTweet(tweetJson) {
-    var tweet = {
-        id: tweetJson.id_str,
-        source: tweetJson.source.replace(/<[^>]+>/ig, ""),
-        createdAt: new Date(tweetJson.created_at),
-        isFavourited: tweetJson.favorited,
-        isRetweet: false,
-        retweetScreenName: tweetJson.user.screen_name,
-        timeDiff: timeDiff(tweetJson.created_at)
-    }
-
-    var originalTweetJson = {};
-    if (tweetJson.retweeted_status) {
-        originalTweetJson = tweetJson.retweeted_status;
-        tweet.isRetweet = true;
-    }
-    else originalTweetJson = tweetJson;
-
-    tweet.plainText = __unescapeHtml(originalTweetJson.text);
-    tweet.richText = __toRichText(originalTweetJson.text, originalTweetJson.entities);
-    tweet.name = originalTweetJson.user.name;
-    tweet.screenName = originalTweetJson.user.screen_name;
-    tweet.profileImageUrl = originalTweetJson.user.profile_image_url;
-    tweet.inReplyToScreenName = originalTweetJson.in_reply_to_screen_name;
-    tweet.inReplyToStatusId = originalTweetJson.in_reply_to_status_id_str;
-    tweet.latitude = "";
-    tweet.longitude = "";
-    tweet.mediaUrl = "";
-
-    if (originalTweetJson.geo) {
-        tweet.latitude = originalTweetJson.geo.coordinates[0];
-        tweet.longitude = originalTweetJson.geo.coordinates[1];
-    }
-
-    if (Array.isArray(originalTweetJson.entities.media) && originalTweetJson.entities.media.length > 0) {
-        tweet.mediaUrl = originalTweetJson.entities.media[0].media_url;
-    }
-
-    return tweet;
-}

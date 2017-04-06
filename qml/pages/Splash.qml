@@ -13,7 +13,7 @@ Page {
         var msg = {
             'action': 'statuses_homeTimeline',
             'model' : Logic.modelTL,
-            'mode'  : "append",
+            'mode'  : "prepend",
             'conf'  : Logic.getConfTW()
         };
         worker.sendMessage(msg);
@@ -21,22 +21,29 @@ Page {
         var msg2 = {
             'action': 'statuses_mentionsTimeline',
             'model' : Logic.modelMN,
-            'mode'  : "append",
+            'mode'  : "prepend",
             'conf'  : Logic.getConfTW()
         };
         worker.sendMessage(msg2);
     }
     Timer {
-        interval: 5*60*1000; running: true; repeat: true
+        interval: 2*1000; running: true; repeat: true
         onTriggered: {
-            pullData()
+            //pullData()
+
+
+            Logic.modelTL.append(Logic.parseTweet(Logic.tweet1))
+            Logic.modelTL.append(Logic.parseTweet(Logic.tweet2))
         }
     }
 
 
     Button {
         text:"Pull"
-        onClicked: pullData()
+        onClicked: function(){
+            // pullData()
+
+        }
     }
 
     WorkerScript {
@@ -56,7 +63,7 @@ Page {
             //console.log(JSON.stringify(Logic.conf))
             //console.log(JSON.stringify(Logic.getConfTW()))
 
-            pullData()
+            //pullData()
             pageStack.pushAttached(Qt.resolvedUrl("FirstPage.qml"), {})
         });
 

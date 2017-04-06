@@ -25,6 +25,7 @@ OTHER_FILES += qml/harbour-pingviini.qml \
     qml/pages/TweetToolBar.qml \
     qml/pages/Timeline.qml \
     qml/pages/Mentions.qml \
+    qml/lib/common.js \
     qml/lib/Worker.js \
     qml/lib/codebird.js \
     qml/lib/Logic.js \

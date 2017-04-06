@@ -24,7 +24,7 @@ BackgroundItem {
             left: avatar.right
             leftMargin: Theme.paddingMedium
         }
-        text: name
+        text: name + " " + mediaPhotos.count
         font.weight: Font.Bold
         font.pixelSize: Theme.fontSizeSmall
         color: (pressed ? Theme.highlightColor : Theme.primaryColor)
@@ -50,14 +50,14 @@ BackgroundItem {
         }
         id: lblDate
         color: (pressed ? Theme.highlightColor : Theme.primaryColor)
-        text: timestamp()
+        text: Format.formatDate(createdAt, new Date() - createdAt < 60*60 ? Formatter.DurationElapsedShort : Formatter.TimeValueTwentyFourHours)
         font.pixelSize: Theme.fontSizeExtraSmall
         horizontalAlignment: Text.AlignRight
         anchors {
             right: parent.right
             baseline: lblName.baseline
             rightMargin: Theme.paddingLarge
-       }
+        }
     }
 
     Label {
@@ -77,7 +77,37 @@ BackgroundItem {
         color: (pressed ? Theme.highlightColor : Theme.primaryColor)
     }
 
-    Image {
+    SlideshowView {
+        id: mediaImg
+        anchors {
+            left: lblName.left
+            right: parent.right
+            top: lblText.bottom
+            topMargin: Theme.paddingSmall
+            rightMargin: Theme.paddingLarge
+        }
+        opacity: pressed ? 0.6 : 1
+        width: parent.width
+        height: 200
+        direction:
+
+
+        model: 5
+        delegate: Item {
+            Rectangle {
+                color: "#00B000"
+                width: 80
+                height: 80
+                border.width: 1
+
+                Text {
+                    text: mediaPhotos
+                }
+            }
+        }
+    }
+
+    /*Image {
         id: mediaImg
         anchors {
             left: lblName.left
@@ -103,7 +133,7 @@ BackgroundItem {
         }
 
 
-    }
+    }*/
 
     TweetToolBar {
         id: details
