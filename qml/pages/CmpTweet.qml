@@ -24,7 +24,7 @@ BackgroundItem {
             left: avatar.right
             leftMargin: Theme.paddingMedium
         }
-        text: name + " " + mediaPhotos.count
+        text: name
         font.weight: Font.Bold
         font.pixelSize: Theme.fontSizeSmall
         color: (pressed ? Theme.highlightColor : Theme.primaryColor)
@@ -77,7 +77,7 @@ BackgroundItem {
         color: (pressed ? Theme.highlightColor : Theme.primaryColor)
     }
 
-    SlideshowView {
+    MediaBlock {
         id: mediaImg
         anchors {
             left: lblName.left
@@ -86,25 +86,9 @@ BackgroundItem {
             topMargin: Theme.paddingSmall
             rightMargin: Theme.paddingLarge
         }
-        opacity: pressed ? 0.6 : 1
-        width: parent.width
-        height: 200
-        direction:
-
-
-        model: 5
-        delegate: Item {
-            Rectangle {
-                color: "#00B000"
-                width: 80
-                height: 80
-                border.width: 1
-
-                Text {
-                    text: mediaPhotos
-                }
-            }
-        }
+        model: media
+        width: lblDate.x - lblName.x- Theme.paddingLarge
+        height: 100
     }
 
     /*Image {

@@ -188,13 +188,20 @@ function parseTweet(tweetJson) {
     tweet.longitude = "";
     tweet.mediaUrl = "";
 
-    tweet.mediaPhotos = [];
+    tweet.media = [];
 
     if (tweetJson.extended_entities && tweetJson.extended_entities.media){
         tweetJson.extended_entities.media.forEach(function(el) {
             if (el.type === "photo"){
-                console.log(el.media_url_https)
-                tweet.mediaPhotos.push(el.media_url_https)
+                tweet.media.push({ "type" : "photo", "src": el.media_url_https})
+            }
+            if (el.type === "video"){
+                console.log(JSON.stringify(el.video_info))
+                tweet.media.push({
+                                     "duration": el.video_info.duration_millis,
+                                     "type" : "video",
+                                     "src": el.video_info.variants[0].url
+                                 })
             }
 
         });
@@ -203,7 +210,7 @@ function parseTweet(tweetJson) {
         tweet.plainText = tweet.plainText.replace(tweetJson.entities.media[0].url, "")
     }
 
-    tweet.mediaPhotos = tweet.mediaPhotos.join("/#/")
+//    /tweet.mediaPhotos = tweet.mediaPhotos.join("/#/")
 
     //console.log(" ---------------------- "); console.log(JSON.stringify(tweetJson)); console.log(" ---------------------- "); console.log(JSON.stringify(tweet))
     return tweet;
@@ -774,6 +781,775 @@ var tweet2 = {
     "is_quote_status": false,
     "retweet_count": 5,
     "favorite_count": 32,
+    "favorited": false,
+    "retweeted": false,
+    "possibly_sensitive": false,
+    "possibly_sensitive_appealable": false,
+    "lang": "und"
+}
+
+var tweet3 = {
+    "created_at": "Wed Apr 05 07:08:17 +0000 2017",
+    "id": 849519041748361219,
+    "id_str": "849519041748361219",
+    "text": "evo par fotki od juce iz #novisad #protest #srbija ..nastavak danas u 18h na trgu slobode #protest2017 https:\/\/t.co\/c3QMp6OXYe",
+    "truncated": false,
+    "entities": {
+        "hashtags": [{
+            "text": "novisad",
+            "indices": [25, 33]
+        }, {
+            "text": "protest",
+            "indices": [34, 42]
+        }, {
+            "text": "srbija",
+            "indices": [43, 50]
+        }, {
+            "text": "protest2017",
+            "indices": [90, 102]
+        }],
+        "symbols": [],
+        "user_mentions": [],
+        "urls": [],
+        "media": [{
+            "id": 849518908914761729,
+            "id_str": "849518908914761729",
+            "indices": [103, 126],
+            "media_url": "http:\/\/pbs.twimg.com\/media\/C8oY8lvXgAEM5tM.jpg",
+            "media_url_https": "https:\/\/pbs.twimg.com\/media\/C8oY8lvXgAEM5tM.jpg",
+            "url": "https:\/\/t.co\/c3QMp6OXYe",
+            "display_url": "pic.twitter.com\/c3QMp6OXYe",
+            "expanded_url": "https:\/\/twitter.com\/zarkobns\/status\/849519041748361219\/photo\/1",
+            "type": "photo",
+            "sizes": {
+                "small": {
+                    "w": 680,
+                    "h": 454,
+                    "resize": "fit"
+                },
+                "thumb": {
+                    "w": 150,
+                    "h": 150,
+                    "resize": "crop"
+                },
+                "medium": {
+                    "w": 1024,
+                    "h": 683,
+                    "resize": "fit"
+                },
+                "large": {
+                    "w": 1024,
+                    "h": 683,
+                    "resize": "fit"
+                }
+            }
+        }]
+    },
+    "extended_entities": {
+        "media": [{
+            "id": 849518908914761729,
+            "id_str": "849518908914761729",
+            "indices": [103, 126],
+            "media_url": "http:\/\/pbs.twimg.com\/media\/C8oY8lvXgAEM5tM.jpg",
+            "media_url_https": "https:\/\/pbs.twimg.com\/media\/C8oY8lvXgAEM5tM.jpg",
+            "url": "https:\/\/t.co\/c3QMp6OXYe",
+            "display_url": "pic.twitter.com\/c3QMp6OXYe",
+            "expanded_url": "https:\/\/twitter.com\/zarkobns\/status\/849519041748361219\/photo\/1",
+            "type": "photo",
+            "sizes": {
+                "small": {
+                    "w": 680,
+                    "h": 454,
+                    "resize": "fit"
+                },
+                "thumb": {
+                    "w": 150,
+                    "h": 150,
+                    "resize": "crop"
+                },
+                "medium": {
+                    "w": 1024,
+                    "h": 683,
+                    "resize": "fit"
+                },
+                "large": {
+                    "w": 1024,
+                    "h": 683,
+                    "resize": "fit"
+                }
+            }
+        },  {
+            "id": 849518908885413892,
+            "id_str": "849518908885413892",
+            "indices": [103, 126],
+            "media_url": "http:\/\/pbs.twimg.com\/media\/C8oY8loXsAQKhTe.jpg",
+            "media_url_https": "https:\/\/pbs.twimg.com\/media\/C8oY8loXsAQKhTe.jpg",
+            "url": "https:\/\/t.co\/c3QMp6OXYe",
+            "display_url": "pic.twitter.com\/c3QMp6OXYe",
+            "expanded_url": "https:\/\/twitter.com\/zarkobns\/status\/849519041748361219\/photo\/1",
+            "type": "photo",
+            "sizes": {
+                "large": {
+                    "w": 1024,
+                    "h": 683,
+                    "resize": "fit"
+                },
+                "thumb": {
+                    "w": 150,
+                    "h": 150,
+                    "resize": "crop"
+                },
+                "small": {
+                    "w": 680,
+                    "h": 454,
+                    "resize": "fit"
+                },
+                "medium": {
+                    "w": 1024,
+                    "h": 683,
+                    "resize": "fit"
+                }
+            }
+        }, {
+            "id": 849518908889591811,
+            "id_str": "849518908889591811",
+            "indices": [103, 126],
+            "media_url": "http:\/\/pbs.twimg.com\/media\/C8oY8lpXcAMD2o0.jpg",
+            "media_url_https": "https:\/\/pbs.twimg.com\/media\/C8oY8lpXcAMD2o0.jpg",
+            "url": "https:\/\/t.co\/c3QMp6OXYe",
+            "display_url": "pic.twitter.com\/c3QMp6OXYe",
+            "expanded_url": "https:\/\/twitter.com\/zarkobns\/status\/849519041748361219\/photo\/1",
+            "type": "photo",
+            "sizes": {
+                "small": {
+                    "w": 680,
+                    "h": 454,
+                    "resize": "fit"
+                },
+                "thumb": {
+                    "w": 150,
+                    "h": 150,
+                    "resize": "crop"
+                },
+                "large": {
+                    "w": 1024,
+                    "h": 683,
+                    "resize": "fit"
+                },
+                "medium": {
+                    "w": 1024,
+                    "h": 683,
+                    "resize": "fit"
+                }
+            }
+        }]
+    },
+    "source": "\u003ca href=\"https:\/\/about.twitter.com\/products\/tweetdeck\" rel=\"nofollow\"\u003eTweetDeck\u003c\/a\u003e",
+    "in_reply_to_status_id": null,
+    "in_reply_to_status_id_str": null,
+    "in_reply_to_user_id": null,
+    "in_reply_to_user_id_str": null,
+    "in_reply_to_screen_name": null,
+    "user": {
+        "id": 211685069,
+        "id_str": "211685069",
+        "name": "zarko bogosavljevic",
+        "screen_name": "zarkobns",
+        "location": "Serbia, Novi Sad",
+        "description": "Ako budete samo posmatrali, gadovi \u0107e nas jednog po jednog ubijati..novinar\/d\u017eeda\/ka\u017eu i hejter... tvitovi su moji i nisu stav\/misljenje redakcije",
+        "url": null,
+        "entities": {
+            "description": {
+                "urls": []
+            }
+        },
+        "protected": false,
+        "followers_count": 4305,
+        "friends_count": 1822,
+        "listed_count": 92,
+        "created_at": "Wed Nov 03 23:31:18 +0000 2010",
+        "favourites_count": 13251,
+        "utc_offset": 7200,
+        "time_zone": "Belgrade",
+        "geo_enabled": true,
+        "verified": false,
+        "statuses_count": 86330,
+        "lang": "en",
+        "contributors_enabled": false,
+        "is_translator": false,
+        "is_translation_enabled": false,
+        "profile_background_color": "C0DEED",
+        "profile_background_image_url": "http:\/\/pbs.twimg.com\/profile_background_images\/202889556\/lavovizamenik.jpg",
+        "profile_background_image_url_https": "https:\/\/pbs.twimg.com\/profile_background_images\/202889556\/lavovizamenik.jpg",
+        "profile_background_tile": true,
+        "profile_image_url": "http:\/\/pbs.twimg.com\/profile_images\/1159174542\/prvomajska_normal.jpg",
+        "profile_image_url_https": "https:\/\/pbs.twimg.com\/profile_images\/1159174542\/prvomajska_normal.jpg",
+        "profile_banner_url": "https:\/\/pbs.twimg.com\/profile_banners\/211685069\/1398194566",
+        "profile_link_color": "1290BA",
+        "profile_sidebar_border_color": "000000",
+        "profile_sidebar_fill_color": "DDEEF6",
+        "profile_text_color": "F71111",
+        "profile_use_background_image": true,
+        "has_extended_profile": false,
+        "default_profile": false,
+        "default_profile_image": false,
+        "following": false,
+        "follow_request_sent": false,
+        "notifications": false,
+        "translator_type": "none"
+    },
+    "geo": null,
+    "coordinates": null,
+    "place": null,
+    "contributors": null,
+    "is_quote_status": false,
+    "retweet_count": 5,
+    "favorite_count": 32,
+    "favorited": false,
+    "retweeted": false,
+    "possibly_sensitive": false,
+    "possibly_sensitive_appealable": false,
+    "lang": "und"
+}
+
+
+var tweet4 = {
+    "created_at": "Wed Apr 05 07:08:17 +0000 2017",
+    "id": 849519041748361219,
+    "id_str": "849519041748361219",
+    "text": "evo par fotki od juce iz #novisad #protest #srbija ..nastavak danas u 18h na trgu slobode #protest2017 https:\/\/t.co\/c3QMp6OXYe",
+    "truncated": false,
+    "entities": {
+        "hashtags": [{
+            "text": "novisad",
+            "indices": [25, 33]
+        }, {
+            "text": "protest",
+            "indices": [34, 42]
+        }, {
+            "text": "srbija",
+            "indices": [43, 50]
+        }, {
+            "text": "protest2017",
+            "indices": [90, 102]
+        }],
+        "symbols": [],
+        "user_mentions": [],
+        "urls": [],
+        "media": [{
+            "id": 849518908914761729,
+            "id_str": "849518908914761729",
+            "indices": [103, 126],
+            "media_url": "http:\/\/pbs.twimg.com\/media\/C8oY8lvXgAEM5tM.jpg",
+            "media_url_https": "https:\/\/pbs.twimg.com\/media\/C8oY8lvXgAEM5tM.jpg",
+            "url": "https:\/\/t.co\/c3QMp6OXYe",
+            "display_url": "pic.twitter.com\/c3QMp6OXYe",
+            "expanded_url": "https:\/\/twitter.com\/zarkobns\/status\/849519041748361219\/photo\/1",
+            "type": "photo",
+            "sizes": {
+                "small": {
+                    "w": 680,
+                    "h": 454,
+                    "resize": "fit"
+                },
+                "thumb": {
+                    "w": 150,
+                    "h": 150,
+                    "resize": "crop"
+                },
+                "medium": {
+                    "w": 1024,
+                    "h": 683,
+                    "resize": "fit"
+                },
+                "large": {
+                    "w": 1024,
+                    "h": 683,
+                    "resize": "fit"
+                }
+            }
+        }]
+    },
+    "extended_entities": {
+        "media": [{
+            "id": 849518908885413892,
+            "id_str": "849518908885413892",
+            "indices": [103, 126],
+            "media_url": "http:\/\/pbs.twimg.com\/media\/C8oY8loXsAQKhTe.jpg",
+            "media_url_https": "https:\/\/pbs.twimg.com\/media\/C8oY8loXsAQKhTe.jpg",
+            "url": "https:\/\/t.co\/c3QMp6OXYe",
+            "display_url": "pic.twitter.com\/c3QMp6OXYe",
+            "expanded_url": "https:\/\/twitter.com\/zarkobns\/status\/849519041748361219\/photo\/1",
+            "type": "photo",
+            "sizes": {
+                "large": {
+                    "w": 1024,
+                    "h": 683,
+                    "resize": "fit"
+                },
+                "thumb": {
+                    "w": 150,
+                    "h": 150,
+                    "resize": "crop"
+                },
+                "small": {
+                    "w": 680,
+                    "h": 454,
+                    "resize": "fit"
+                },
+                "medium": {
+                    "w": 1024,
+                    "h": 683,
+                    "resize": "fit"
+                }
+            }
+        }, {
+            "id": 849518908889591811,
+            "id_str": "849518908889591811",
+            "indices": [103, 126],
+            "media_url": "http:\/\/pbs.twimg.com\/media\/C8oY8lpXcAMD2o0.jpg",
+            "media_url_https": "https:\/\/pbs.twimg.com\/media\/C8oY8lpXcAMD2o0.jpg",
+            "url": "https:\/\/t.co\/c3QMp6OXYe",
+            "display_url": "pic.twitter.com\/c3QMp6OXYe",
+            "expanded_url": "https:\/\/twitter.com\/zarkobns\/status\/849519041748361219\/photo\/1",
+            "type": "photo",
+            "sizes": {
+                "small": {
+                    "w": 680,
+                    "h": 454,
+                    "resize": "fit"
+                },
+                "thumb": {
+                    "w": 150,
+                    "h": 150,
+                    "resize": "crop"
+                },
+                "large": {
+                    "w": 1024,
+                    "h": 683,
+                    "resize": "fit"
+                },
+                "medium": {
+                    "w": 1024,
+                    "h": 683,
+                    "resize": "fit"
+                }
+            }
+        }]
+    },
+    "source": "\u003ca href=\"https:\/\/about.twitter.com\/products\/tweetdeck\" rel=\"nofollow\"\u003eTweetDeck\u003c\/a\u003e",
+    "in_reply_to_status_id": null,
+    "in_reply_to_status_id_str": null,
+    "in_reply_to_user_id": null,
+    "in_reply_to_user_id_str": null,
+    "in_reply_to_screen_name": null,
+    "user": {
+        "id": 211685069,
+        "id_str": "211685069",
+        "name": "zarko bogosavljevic",
+        "screen_name": "zarkobns",
+        "location": "Serbia, Novi Sad",
+        "description": "Ako budete samo posmatrali, gadovi \u0107e nas jednog po jednog ubijati..novinar\/d\u017eeda\/ka\u017eu i hejter... tvitovi su moji i nisu stav\/misljenje redakcije",
+        "url": null,
+        "entities": {
+            "description": {
+                "urls": []
+            }
+        },
+        "protected": false,
+        "followers_count": 4305,
+        "friends_count": 1822,
+        "listed_count": 92,
+        "created_at": "Wed Nov 03 23:31:18 +0000 2010",
+        "favourites_count": 13251,
+        "utc_offset": 7200,
+        "time_zone": "Belgrade",
+        "geo_enabled": true,
+        "verified": false,
+        "statuses_count": 86330,
+        "lang": "en",
+        "contributors_enabled": false,
+        "is_translator": false,
+        "is_translation_enabled": false,
+        "profile_background_color": "C0DEED",
+        "profile_background_image_url": "http:\/\/pbs.twimg.com\/profile_background_images\/202889556\/lavovizamenik.jpg",
+        "profile_background_image_url_https": "https:\/\/pbs.twimg.com\/profile_background_images\/202889556\/lavovizamenik.jpg",
+        "profile_background_tile": true,
+        "profile_image_url": "http:\/\/pbs.twimg.com\/profile_images\/1159174542\/prvomajska_normal.jpg",
+        "profile_image_url_https": "https:\/\/pbs.twimg.com\/profile_images\/1159174542\/prvomajska_normal.jpg",
+        "profile_banner_url": "https:\/\/pbs.twimg.com\/profile_banners\/211685069\/1398194566",
+        "profile_link_color": "1290BA",
+        "profile_sidebar_border_color": "000000",
+        "profile_sidebar_fill_color": "DDEEF6",
+        "profile_text_color": "F71111",
+        "profile_use_background_image": true,
+        "has_extended_profile": false,
+        "default_profile": false,
+        "default_profile_image": false,
+        "following": false,
+        "follow_request_sent": false,
+        "notifications": false,
+        "translator_type": "none"
+    },
+    "geo": null,
+    "coordinates": null,
+    "place": null,
+    "contributors": null,
+    "is_quote_status": false,
+    "retweet_count": 5,
+    "favorite_count": 32,
+    "favorited": false,
+    "retweeted": false,
+    "possibly_sensitive": false,
+    "possibly_sensitive_appealable": false,
+    "lang": "und"
+}
+var tweet5 = {
+    "created_at": "Fri Apr 07 10:15:40 +0000 2017",
+    "id": 850290973452193792,
+    "id_str": "850290973452193792",
+    "text": "Vidi\u0107 se vra\u0107a na teren, da li \u0107e ga videti i publika u Srbiji?\n https:\/\/t.co\/mg97LG1Su8\n\nLjudi pro\u010ditajte vest, trebala bi mi mala pomo\u0107\ud83d\udcaa\u26bd",
+    "truncated": false,
+    "entities": {
+        "hashtags": [],
+        "symbols": [],
+        "user_mentions": [],
+        "urls": [{
+            "url": "https:\/\/t.co\/mg97LG1Su8",
+            "expanded_url": "http:\/\/sport.blic.rs\/fudbal\/evropski-fudbal\/povratak-vidic-se-vraca-na-teren-da-li-ce-ga-videti-i-publika-u-srbiji\/sport.blic.rs\/fudbal\/evropski-fudbal\/povratak-vidic-se-vraca-na-teren-da-li-ce-ga-videti-i-publika-u-srbiji\/3ls7gbw#.WOdmlKPP92A.twitter",
+            "display_url": "sport.blic.rs\/fudbal\/evropsk\u2026",
+            "indices": [65, 88]
+        }]
+    },
+    "source": "\u003ca href=\"http:\/\/twitter.com\/download\/android\" rel=\"nofollow\"\u003eTwitter for Android\u003c\/a\u003e",
+    "in_reply_to_status_id": null,
+    "in_reply_to_status_id_str": null,
+    "in_reply_to_user_id": null,
+    "in_reply_to_user_id_str": null,
+    "in_reply_to_screen_name": null,
+    "user": {
+        "id": 253805164,
+        "id_str": "253805164",
+        "name": "Jovan Simi\u0107",
+        "screen_name": "Simke331",
+        "location": "Belgrade, Republic of Serbia",
+        "description": "\u26bd\u26bd\u26bd",
+        "url": null,
+        "entities": {
+            "description": {
+                "urls": []
+            }
+        },
+        "protected": false,
+        "followers_count": 2833,
+        "friends_count": 2415,
+        "listed_count": 11,
+        "created_at": "Fri Feb 18 00:37:05 +0000 2011",
+        "favourites_count": 15340,
+        "utc_offset": 10800,
+        "time_zone": "Athens",
+        "geo_enabled": false,
+        "verified": false,
+        "statuses_count": 6521,
+        "lang": "en",
+        "contributors_enabled": false,
+        "is_translator": false,
+        "is_translation_enabled": false,
+        "profile_background_color": "C0DEED",
+        "profile_background_image_url": "http:\/\/pbs.twimg.com\/profile_background_images\/872933226\/a547367d6db89c4ec3799417076689a7.jpeg",
+        "profile_background_image_url_https": "https:\/\/pbs.twimg.com\/profile_background_images\/872933226\/a547367d6db89c4ec3799417076689a7.jpeg",
+        "profile_background_tile": false,
+        "profile_image_url": "http:\/\/pbs.twimg.com\/profile_images\/735428830752583680\/jSHlL7eN_normal.jpg",
+        "profile_image_url_https": "https:\/\/pbs.twimg.com\/profile_images\/735428830752583680\/jSHlL7eN_normal.jpg",
+        "profile_banner_url": "https:\/\/pbs.twimg.com\/profile_banners\/253805164\/1473403958",
+        "profile_link_color": "3B94D9",
+        "profile_sidebar_border_color": "FFFFFF",
+        "profile_sidebar_fill_color": "DDEEF6",
+        "profile_text_color": "333333",
+        "profile_use_background_image": true,
+        "has_extended_profile": false,
+        "default_profile": false,
+        "default_profile_image": false,
+        "following": false,
+        "follow_request_sent": false,
+        "notifications": false,
+        "translator_type": "none"
+    },
+    "geo": null,
+    "coordinates": null,
+    "place": null,
+    "contributors": null,
+    "is_quote_status": false,
+    "retweet_count": 1,
+    "favorite_count": 4,
+    "favorited": false,
+    "retweeted": false,
+    "possibly_sensitive": false,
+    "possibly_sensitive_appealable": false,
+    "lang": "und"
+}
+var tweet6 = {
+    "created_at": "Thu Apr 06 17:51:40 +0000 2017",
+    "id": 850043341064609792,
+    "id_str": "850043341064609792",
+    "text": "ove pesme pune 20 godina feeling old yet? https:\/\/t.co\/ABFjGomMcT",
+    "truncated": false,
+    "entities": {
+        "hashtags": [],
+        "symbols": [],
+        "user_mentions": [],
+        "urls": [],
+        "media": [{
+            "id": 850040892761231360,
+            "id_str": "850040892761231360",
+            "indices": [42, 65],
+            "media_url": "http:\/\/pbs.twimg.com\/ext_tw_video_thumb\/850040892761231360\/pu\/img\/5vD6M_ZoNNFmU4vq.jpg",
+            "media_url_https": "https:\/\/pbs.twimg.com\/ext_tw_video_thumb\/850040892761231360\/pu\/img\/5vD6M_ZoNNFmU4vq.jpg",
+            "url": "https:\/\/t.co\/ABFjGomMcT",
+            "display_url": "pic.twitter.com\/ABFjGomMcT",
+            "expanded_url": "https:\/\/twitter.com\/Mutav_plovak\/status\/850043341064609792\/video\/1",
+            "type": "photo",
+            "sizes": {
+                "small": {
+                    "w": 340,
+                    "h": 255,
+                    "resize": "fit"
+                },
+                "medium": {
+                    "w": 600,
+                    "h": 450,
+                    "resize": "fit"
+                },
+                "thumb": {
+                    "w": 150,
+                    "h": 150,
+                    "resize": "crop"
+                },
+                "large": {
+                    "w": 768,
+                    "h": 576,
+                    "resize": "fit"
+                }
+            }
+        }]
+    },
+    "extended_entities": {
+        "media": [{
+            "id": 850040892761231360,
+            "id_str": "850040892761231360",
+            "indices": [42, 65],
+            "media_url": "http:\/\/pbs.twimg.com\/ext_tw_video_thumb\/850040892761231360\/pu\/img\/5vD6M_ZoNNFmU4vq.jpg",
+            "media_url_https": "https:\/\/pbs.twimg.com\/ext_tw_video_thumb\/850040892761231360\/pu\/img\/5vD6M_ZoNNFmU4vq.jpg",
+            "url": "https:\/\/t.co\/ABFjGomMcT",
+            "display_url": "pic.twitter.com\/ABFjGomMcT",
+            "expanded_url": "https:\/\/twitter.com\/Mutav_plovak\/status\/850043341064609792\/video\/1",
+            "type": "video",
+            "sizes": {
+                "small": {
+                    "w": 340,
+                    "h": 255,
+                    "resize": "fit"
+                },
+                "medium": {
+                    "w": 600,
+                    "h": 450,
+                    "resize": "fit"
+                },
+                "thumb": {
+                    "w": 150,
+                    "h": 150,
+                    "resize": "crop"
+                },
+                "large": {
+                    "w": 768,
+                    "h": 576,
+                    "resize": "fit"
+                }
+            },
+            "video_info": {
+                "aspect_ratio": [4, 3],
+                "duration_millis": 139440,
+                "variants": [{
+                    "bitrate": 320000,
+                    "content_type": "video\/mp4",
+                    "url": "https:\/\/video.twimg.com\/ext_tw_video\/850040892761231360\/pu\/vid\/240x180\/Ko-A0UVEpvpg9lj1.mp4"
+                }, {
+                    "bitrate": 832000,
+                    "content_type": "video\/mp4",
+                    "url": "https:\/\/video.twimg.com\/ext_tw_video\/850040892761231360\/pu\/vid\/480x360\/6zLzc0ajjEvK5b8r.mp4"
+                }, {
+                    "content_type": "application\/x-mpegURL",
+                    "url": "https:\/\/video.twimg.com\/ext_tw_video\/850040892761231360\/pu\/pl\/-CHA3Nq5TfjnRvem.m3u8"
+                }]
+            },
+            "additional_media_info": {
+                "monetizable": false
+            }
+        }]
+    },
+    "source": "\u003ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003eTwitter Web Client\u003c\/a\u003e",
+    "in_reply_to_status_id": null,
+    "in_reply_to_status_id_str": null,
+    "in_reply_to_user_id": null,
+    "in_reply_to_user_id_str": null,
+    "in_reply_to_screen_name": null,
+    "user": {
+        "id": 499141084,
+        "id_str": "499141084",
+        "name": "Mira Adanja Plovak",
+        "screen_name": "Mutav_plovak",
+        "location": "Lisi\u010diji potok",
+        "description": "i oteo si mi mikrofon bedo ljudskog roda al' jedes kiflice moje https:\/\/t.co\/otQIiS2Ydn",
+        "url": "https:\/\/t.co\/liKsBouv4r",
+        "entities": {
+            "url": {
+                "urls": [{
+                    "url": "https:\/\/t.co\/liKsBouv4r",
+                    "expanded_url": "https:\/\/www.instagram.com\/mutav_plovak\/",
+                    "display_url": "instagram.com\/mutav_plovak\/",
+                    "indices": [0, 23]
+                }]
+            },
+            "description": {
+                "urls": [{
+                    "url": "https:\/\/t.co\/otQIiS2Ydn",
+                    "expanded_url": "http:\/\/turbofolkgif.tumblr.com",
+                    "display_url": "turbofolkgif.tumblr.com",
+                    "indices": [64, 87]
+                }]
+            }
+        },
+        "protected": false,
+        "followers_count": 9126,
+        "friends_count": 253,
+        "listed_count": 37,
+        "created_at": "Tue Feb 21 20:27:17 +0000 2012",
+        "favourites_count": 76670,
+        "utc_offset": 7200,
+        "time_zone": "Amsterdam",
+        "geo_enabled": false,
+        "verified": false,
+        "statuses_count": 44943,
+        "lang": "en",
+        "contributors_enabled": false,
+        "is_translator": false,
+        "is_translation_enabled": true,
+        "profile_background_color": "1A1B1F",
+        "profile_background_image_url": "http:\/\/pbs.twimg.com\/profile_background_images\/649232256301666305\/zK2FKXEx.jpg",
+        "profile_background_image_url_https": "https:\/\/pbs.twimg.com\/profile_background_images\/649232256301666305\/zK2FKXEx.jpg",
+        "profile_background_tile": true,
+        "profile_image_url": "http:\/\/pbs.twimg.com\/profile_images\/848246137597382656\/MH1hGwe3_normal.jpg",
+        "profile_image_url_https": "https:\/\/pbs.twimg.com\/profile_images\/848246137597382656\/MH1hGwe3_normal.jpg",
+        "profile_banner_url": "https:\/\/pbs.twimg.com\/profile_banners\/499141084\/1487933168",
+        "profile_link_color": "000000",
+        "profile_sidebar_border_color": "FFFFFF",
+        "profile_sidebar_fill_color": "DDEEF6",
+        "profile_text_color": "333333",
+        "profile_use_background_image": true,
+        "has_extended_profile": true,
+        "default_profile": false,
+        "default_profile_image": false,
+        "following": false,
+        "follow_request_sent": false,
+        "notifications": false,
+        "translator_type": "regular"
+    },
+    "geo": null,
+    "coordinates": null,
+    "place": null,
+    "contributors": null,
+    "is_quote_status": false,
+    "retweet_count": 25,
+    "favorite_count": 102,
+    "favorited": false,
+    "retweeted": false,
+    "possibly_sensitive": false,
+    "possibly_sensitive_appealable": false,
+    "lang": "en"
+}
+var tweet7 = {
+    "created_at": "Thu Apr 06 22:44:42 +0000 2017",
+    "id": 850117085791485960,
+    "id_str": "850117085791485960",
+    "text": "PROTEST U BORU - DAN 3. (6.4.2017): https:\/\/t.co\/Jv9BrCbrgL via @YouTube",
+    "truncated": false,
+    "entities": {
+        "hashtags": [],
+        "symbols": [],
+        "user_mentions": [{
+            "screen_name": "YouTube",
+            "name": "YouTube",
+            "id": 10228272,
+            "id_str": "10228272",
+            "indices": [64, 72]
+        }],
+        "urls": [{
+            "url": "https:\/\/t.co\/Jv9BrCbrgL",
+            "expanded_url": "http:\/\/youtu.be\/RnRkgpYcf48?a",
+            "display_url": "youtu.be\/RnRkgpYcf48?a",
+            "indices": [36, 59]
+        }]
+    },
+    "source": "\u003ca href=\"http:\/\/www.google.com\/\" rel=\"nofollow\"\u003eGoogle\u003c\/a\u003e",
+    "in_reply_to_status_id": null,
+    "in_reply_to_status_id_str": null,
+    "in_reply_to_user_id": null,
+    "in_reply_to_user_id_str": null,
+    "in_reply_to_screen_name": null,
+    "user": {
+        "id": 45677301,
+        "id_str": "45677301",
+        "name": "Aca Kulic",
+        "screen_name": "aca_kulic",
+        "location": "",
+        "description": "",
+        "url": null,
+        "entities": {
+            "description": {
+                "urls": []
+            }
+        },
+        "protected": false,
+        "followers_count": 212,
+        "friends_count": 143,
+        "listed_count": 10,
+        "created_at": "Mon Jun 08 21:33:35 +0000 2009",
+        "favourites_count": 8,
+        "utc_offset": null,
+        "time_zone": null,
+        "geo_enabled": false,
+        "verified": false,
+        "statuses_count": 722,
+        "lang": "en",
+        "contributors_enabled": false,
+        "is_translator": false,
+        "is_translation_enabled": false,
+        "profile_background_color": "9AE4E8",
+        "profile_background_image_url": "http:\/\/pbs.twimg.com\/profile_background_images\/17224174\/IMAG0100.JPG",
+        "profile_background_image_url_https": "https:\/\/pbs.twimg.com\/profile_background_images\/17224174\/IMAG0100.JPG",
+        "profile_background_tile": true,
+        "profile_image_url": "http:\/\/pbs.twimg.com\/profile_images\/1914156729\/kula_normal.jpg",
+        "profile_image_url_https": "https:\/\/pbs.twimg.com\/profile_images\/1914156729\/kula_normal.jpg",
+        "profile_link_color": "0084B4",
+        "profile_sidebar_border_color": "BDDCAD",
+        "profile_sidebar_fill_color": "DDFFCC",
+        "profile_text_color": "333333",
+        "profile_use_background_image": true,
+        "has_extended_profile": false,
+        "default_profile": false,
+        "default_profile_image": false,
+        "following": false,
+        "follow_request_sent": false,
+        "notifications": false,
+        "translator_type": "none"
+    },
+    "geo": null,
+    "coordinates": null,
+    "place": null,
+    "contributors": null,
+    "is_quote_status": false,
+    "retweet_count": 9,
+    "favorite_count": 20,
     "favorited": false,
     "retweeted": false,
     "possibly_sensitive": false,

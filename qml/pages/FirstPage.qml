@@ -30,6 +30,7 @@ Page {
             rightMargin: page.isPortrait ? 0 : infoPanel.visibleSize
             bottomMargin: page.isPortrait ? infoPanel.visibleSize : 0
         }
+        sourceComponent: timelineViewComponent
     }
     WorkerScript {
         id: worker
@@ -51,7 +52,7 @@ Page {
         }
 
     }
-    Component.onCompleted: {
+   /* Component.onCompleted: {
         console.log("-------------getConf")
         console.log(JSON.stringify(Logic.conf))
 
@@ -60,7 +61,7 @@ Page {
         obj.subscribe('confLoaded', function(){
             console.log(typeof arguments)
             console.log('confLoaded');
-            componentLoader.sourceComponent = timelineViewComponent
+
             pageStack.pushAttached(Qt.resolvedUrl("SecondPage.qml"), {"model": model})
             console.log(JSON.stringify(arguments));
 
@@ -74,7 +75,7 @@ Page {
         });
 
 
-    }
+    }*/
     onStatusChanged: {
         if (status === PageStatus.Active) {
 

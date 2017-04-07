@@ -43,7 +43,7 @@ WorkerScript.onMessage = function(msg) {
 
 
     if (msg.action === 'statuses_homeTimeline' || msg.action === 'statuses_mentionsTimeline') {
-        var params = {"count":5}
+        var params = {"count":200}
         sinceId = false;
         maxId = false;
         if (msg.model.count) {

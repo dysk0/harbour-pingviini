@@ -27,13 +27,14 @@ Page {
         worker.sendMessage(msg2);
     }
     Timer {
-        interval: 2*1000; running: true; repeat: true
+        interval: 5*1000; running: true; repeat: true
         onTriggered: {
             //pullData()
 
 
-            Logic.modelTL.append(Logic.parseTweet(Logic.tweet1))
-            Logic.modelTL.append(Logic.parseTweet(Logic.tweet2))
+            /*Logic.modelTL.append(Logic.parseTweet(Logic.tweet1))
+            Logic.modelTL.append(Logic.parseTweet(Logic.tweet3))
+            Logic.modelTL.append(Logic.parseTweet(Logic.tweet2))*/
         }
     }
 
@@ -64,7 +65,16 @@ Page {
             //console.log(JSON.stringify(Logic.getConfTW()))
 
             //pullData()
-            pageStack.pushAttached(Qt.resolvedUrl("FirstPage.qml"), {})
+            //pageStack.pushAttached(Qt.resolvedUrl("FirstPage.qml"), {})
+            Logic.modelTL.append(Logic.parseTweet(Logic.tweet1))
+            Logic.modelTL.append(Logic.parseTweet(Logic.tweet2))
+            Logic.modelTL.append(Logic.parseTweet(Logic.tweet3))
+            Logic.modelTL.append(Logic.parseTweet(Logic.tweet4))
+            Logic.modelTL.append(Logic.parseTweet(Logic.tweet5))
+            Logic.modelTL.append(Logic.parseTweet(Logic.tweet6))
+            Logic.modelTL.append(Logic.parseTweet(Logic.tweet7))
+
+            pageStack.push(Qt.resolvedUrl("FirstPage.qml"), {})
         });
 
 
