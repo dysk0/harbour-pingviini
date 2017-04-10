@@ -9,43 +9,31 @@ Row {
     spacing: Theme.paddingLarge+Theme.paddingSmall
 
 
-    IconButton {
-        anchors {
-            top: delegate.top
-        }
-        id: iconReply
-        width: Theme.iconSizeSmall
-        height: width
-        icon.source: "image://theme/icon-s-edit?" + (pressed ? Theme.highlightColor: Theme.secondaryHighlightColor)
-        onClicked: {
-            console.log(JSON.stringify(model.id))
-        }
-    }
-    /*Row {
+    Row {
         IconButton {
             id: iconRT
-            width: iconReply.width
+            width: Theme.iconSizeSmall
             height: width
-            icon.source: (retweeted ?
+            icon.source: (isRetweet ?
                               "image://theme/icon-s-retweet?" + (pressed ? Theme.primaryColor : Theme.secondaryColor)
                             :
                               "image://theme/icon-s-retweet?" + (pressed ? Theme.highlightColor: Theme.secondaryHighlightColor)
                           )
         }
         Label {
-            visible: retweet_count
+            visible: retweetCount
             anchors.verticalCenter: parent.verticalCenter
             height: paintedHeight
-            text: retweet_count
+            text: retweetCount
             font.pixelSize: Theme.fontSizeExtraSmall
             color: Theme.highlightColor
         }
-    }*/
+    }
 
     Row {
         IconButton {
             id: iconFav
-            width: iconReply.width
+            width: iconRT.width
             height: width
             icon.source: (isFavourited ?
                               "image://theme/icon-s-favorite?" + (pressed ? Theme.primaryColor : Theme.secondaryColor)

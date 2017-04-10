@@ -169,6 +169,7 @@ function parseTweet(tweetJson) {
         highlights: "",
         retweetScreenName: tweetJson.user.screen_name
     }
+    tweet.section = tweet.createdAt.toLocaleDateString();
     var originalTweetJson = {};
     if (tweetJson.retweeted_status) {
         originalTweetJson = tweetJson.retweeted_status;

@@ -6,7 +6,7 @@ BackgroundItem {
     id: delegate
     //property string text: "0"
     width: parent.width
-    height: lblText.paintedHeight + lblName.paintedHeight + lblScreenName.paintedHeight + Theme.paddingLarge*2 + details.height*2 + mediaImg.height
+    height: lblText.paintedHeight + lblName.paintedHeight + lblScreenName.paintedHeight + Theme.paddingLarge + mediaImg.height
     Image {
         id: avatar
         x: Theme.horizontalPageMargin
@@ -50,7 +50,7 @@ BackgroundItem {
         }
         id: lblDate
         color: (pressed ? Theme.highlightColor : Theme.primaryColor)
-        text: Format.formatDate(createdAt, new Date() - createdAt < 60*60 ? Formatter.DurationElapsedShort : Formatter.TimeValueTwentyFourHours)
+        text: Format.formatDate(createdAt, new Date() - createdAt < 60*60*1000 ? Formatter.DurationElapsedShort : Formatter.TimeValueTwentyFourHours)
         font.pixelSize: Theme.fontSizeExtraSmall
         horizontalAlignment: Text.AlignRight
         anchors {
@@ -119,7 +119,7 @@ BackgroundItem {
 
     }*/
 
-    TweetToolBar {
+    /*TweetToolBar {
         id: details
         anchors {
             left: lblName.left
@@ -129,7 +129,7 @@ BackgroundItem {
             rightMargin: Theme.paddingLarge
         }
         //width:
-    }
+    }*/
 
 
     onClicked: {

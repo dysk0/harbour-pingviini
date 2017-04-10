@@ -12,7 +12,6 @@ Item {
     width: width
     height: height
     Component.onCompleted: {
-        console.log("The next color will be: " + count);
         switch(count){
         case 1:
             placeholder1.width = holder.width
@@ -60,7 +59,7 @@ Item {
         id: placeholder1
         width: 2
         height: 1
-        Video {
+        /*Video {
                id: tweetVideo
                visible: true
                width: parent.width
@@ -69,7 +68,7 @@ Item {
                    if (model.count > 0 && model.get(0).type === "video"){
                        return model.get(0).src
                    } else {
-                       return false
+                       return ""
                    }
                }
                MouseArea {
@@ -81,7 +80,7 @@ Item {
                    placeholderImage.visible = true
                    playButton.visible = true
                }
-           }
+           }*/
 
         Image {
             id: mediaImg
@@ -116,7 +115,7 @@ Item {
             fillMode: Image.PreserveAspectCrop
             asynchronous: true
             visible: {
-                if (model.count >= 1){
+                if (model.count >= 1 && model.get(1) && model.get(1).type === "photo"){
                     source = model.get(1).src
                     height = 200
                     return true

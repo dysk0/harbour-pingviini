@@ -10,21 +10,14 @@ Component {
 
         Component.onCompleted: {
             if (modelTL.count === 0){
-                loadData("append")
+                //loadData("append")
             } else {
 
                 console.log("positioning")
                 timeline.contentY = scrollOffsetTL
 
             }
-            var obj = {};
-            Logic.mediator.installTo(obj);
-            obj.subscribe('confLoaded', function(){
-                console.log(typeof arguments)
-                console.log('confLoaded');
-                //timeline.loadData("append")
-                console.log(JSON.stringify(arguments));
-            });
+
         }
         ViewPlaceholder {
             enabled: Logic.modelTL.count === 0
@@ -34,13 +27,17 @@ Component {
 
 
         function loadData(placement){
-            /*var msg = {
-                'action': 'getHomeTimeline',
-                'model' : modelTL,
+            var msg = {
+                'action': 'statuses_homeTimeline',
+                'model' : Logic.modelTL,
                 'mode'  : placement,
                 'conf'  : Logic.getConfTW()
             };
-            worker.sendMessage(msg);*/
+            worker.sendMessage(msg);
+        }
+        section {
+            property: 'createdAt'
+            criteria: ViewSection.FullString
         }
 
         header: PageHeader {
