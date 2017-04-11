@@ -55,32 +55,11 @@ Item {
         }
     }
 
-    Rectangle {
+    Item {
         id: placeholder1
         width: 2
         height: 1
-        /*Video {
-               id: tweetVideo
-               visible: true
-               width: parent.width
-               height: parent.height
-               source: {
-                   if (model.count > 0 && model.get(0).type === "video"){
-                       return model.get(0).src
-                   } else {
-                       return ""
-                   }
-               }
-               MouseArea {
-                   anchors.fill: parent
-                   onClicked: tweetVideo.playbackState === MediaPlayer.PlayingState ? tweetVideo.pause() : tweetVideo.play()
-               }
-               onStopped: {
-                   tweetVideo.visible = false
-                   placeholderImage.visible = true
-                   playButton.visible = true
-               }
-           }*/
+
 
         Image {
             id: mediaImg
@@ -105,7 +84,7 @@ Item {
 
     }
 
-    Rectangle {
+    Item {
         id: placeholder2
         Image {
             anchors {
@@ -127,7 +106,7 @@ Item {
         }
         visible: false
     }
-    Rectangle {
+    Item {
         id: placeholder3
         Image {
             anchors {

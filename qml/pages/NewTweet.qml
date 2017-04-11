@@ -24,9 +24,16 @@ Item {
         onMessage: myText.text = messageObject.reply
     }
     function tweet(){
-       Logic.postStatus(newTweet.text, tweetId, latitude, longitude, function(e){
+        /*Logic.postStatus(newTweet.text, tweetId, latitude, longitude, function(e){
            console.log(JSON.stringify(e))
-       }, function(e){console.log(JSON.stringify(e))})
+       }, function(e){console.log(JSON.stringify(e))})*/
+        var msg = {
+            'action': 'statuses_update',
+            'model' : Logic.modelTL,
+            'params'  : {'status': newTweet.text, 'in_reply_to_status_id':tweetId},
+            'conf'  : Logic.getConfTW()
+        };
+        worker.sendMessage(msg);
     }
 
 

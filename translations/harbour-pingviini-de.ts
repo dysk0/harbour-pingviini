@@ -62,13 +62,6 @@
     </message>
 </context>
 <context>
-    <name>TweetDetails</name>
-    <message>
-        <source>Item</source>
-        <translation type="unfinished">Element</translation>
-    </message>
-</context>
-<context>
     <name>common</name>
     <message>
         <source>Now</source>

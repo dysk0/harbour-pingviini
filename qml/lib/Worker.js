@@ -94,6 +94,18 @@ WorkerScript.onMessage = function(msg) {
                     );
     }
 
+    if (msg.action === 'statuses_update') {
+        cb.__call(
+                    msg.action,
+                    msg.params,
+                    function (reply, rate, err) {
+                        console.log(JSON.stringify(reply));
+                        console.log(JSON.stringify(err));
+                    }
+                    );
+    }
+
+
 
 
     if (msg.action === 'getDirectMsg') {
