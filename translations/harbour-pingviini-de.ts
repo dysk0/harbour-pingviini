@@ -39,6 +39,21 @@
     </message>
 </context>
 <context>
+    <name>SearchView</name>
+    <message>
+        <source>Search</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pingviini</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Load more</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Timeline</name>
     <message>
         <source>Show navigation</source>
@@ -58,6 +73,13 @@
     </message>
     <message>
         <source>Timeline</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TweetDetails</name>
+    <message>
+        <source>Item</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

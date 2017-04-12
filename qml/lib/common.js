@@ -32,7 +32,7 @@ function __toRichText(text, entities) {
     if (!entities) return;
 
     var richText = text;
-    //richText = __linkHashtags(richText, entities.hashtags);
+    richText = __linkHashtags(richText, entities.hashtags);
 
     entities.urls.forEach(function(urlObject) {
         //console.log(urlObject.url)
@@ -91,7 +91,7 @@ function __linkHashtags(text, hashtagsEntities) {
 var CASHTAG_REGEXP = /(?:^|\s)(\$[a-z]{1,6}(?:[._][a-z]{1,2})?)(?=$|[\s\!'#%&"\(\)*\+,\\\-\.\/:;<=>\?@\[\]\^_{|}~\$])/gi;
 function linkText(text, href, italic) {
     var html = "";
-    if (italic) html = "<i><a style=\"color: LightSeaGreen; text-decoration: none\" href=\"%1\">%2</a></i>";
+    if (italic) html = "<a style=\"color: LightSeaGreen; text-decoration: none\" href=\"%1\">%2</a>";
     else html = "<a style=\"color: LightSeaGreen; text-decoration: none\" href=\"%1\">%2</a>";
 
     return html.arg(href).arg(text);
@@ -209,6 +209,7 @@ function parseTweet(tweetJson) {
 
         tweet.mediaUrl = tweetJson.entities.media[0].media_url_https
         tweet.plainText = tweet.plainText.replace(tweetJson.entities.media[0].url, "")
+        tweet.plainText = tweet.plainText + '<a href="blablabla">test M</a>'
     }
 
 //    /tweet.mediaPhotos = tweet.mediaPhotos.join("/#/")

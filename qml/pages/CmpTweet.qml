@@ -70,8 +70,12 @@ BackgroundItem {
             rightMargin: Theme.paddingLarge
         }
         height: paintedHeight
-        text: (highlights.length > 0 ? Theme.highlightText(plainText, new RegExp(highlights, "igm"), Theme.highlightColor) : plainText)
+        //text: (highlights.length > 0 ? Theme.highlightText(plainText, new RegExp(highlights, "igm"), Theme.highlightColor) : plainText)
+        //textFormat:Text.RichText
+        onLinkActivated: console.log(link + " link activated")
+        text: richText
         textFormat:Text.RichText
+        linkColor : Theme.highlightColor
         wrapMode: Text.Wrap
         font.pixelSize: Theme.fontSizeSmall
         color: (pressed ? Theme.highlightColor : Theme.primaryColor)

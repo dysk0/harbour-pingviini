@@ -29,12 +29,12 @@ SilicaGridView {
             name: "Messagess"
             active: false
         }
-        /*ListElement {
+        ListElement {
             icon: "image://theme/icon-m-search?"
             slug: "search"
             name: "Search"
             active: false
-        }*/
+        }
     }
     model: listModel
     anchors.fill: parent
@@ -112,6 +112,9 @@ SilicaGridView {
             }
             if (model.slug === "mentions"){
                 componentLoader.sourceComponent = mentionsViewComponent
+            }
+            if (model.slug === "search"){
+                componentLoader.sourceComponent = searchViewComponent
             }
 
 

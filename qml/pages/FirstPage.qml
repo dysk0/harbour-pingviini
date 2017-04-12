@@ -108,6 +108,9 @@ Page {
     CmpDirectMessages {
         id: dmsgViewComponent
     }
+    SearchView {
+        id: searchViewComponent
+    }
 
 
 }

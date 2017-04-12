@@ -55,6 +55,7 @@ DISTFILES += \
     qml/component/Tweet.qml \
     qml/pages/Navigation.qml \
     qml/pages/CmpDirectMessages.qml \
+    qml/pages/SearchView.qml \
     qml/pages/jsonpath.js \
     qml/pages/NewTweet.qml \
     qml/pages/TweetDetails.qml \

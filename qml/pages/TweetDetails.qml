@@ -67,7 +67,7 @@ Page {
                 height: width
                 source: tweets.get(selected).profileImageUrl
             }
-            Label {
+            Text {
                 id: lblText
                 anchors {
                     left: parent.left
@@ -78,8 +78,10 @@ Page {
                     leftMargin: Theme.paddingLarge
                 }
                 height: paintedHeight
-                text: (tweets.get(selected).highlights.length > 0 ? Theme.highlightText(tweets.get(selected).plainText, new RegExp(tweets.get(selected).highlights, "igm"), Theme.highlightColor) : tweets.get(selected).plainText)
+                text: tweets.get(selected).richText
                 textFormat:Text.RichText
+                onLinkActivated: console.log(link + " link activated")
+                linkColor : Theme.highlightColor
                 wrapMode: Text.Wrap
                 font.pixelSize: Theme.fontSizeMedium
                 color: (pressed ? Theme.highlightColor : Theme.primaryColor)
