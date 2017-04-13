@@ -1,6 +1,6 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
-
+import QtGraphicalEffects 1.0
 
 BackgroundItem {
     id: delegate
@@ -14,7 +14,37 @@ BackgroundItem {
         asynchronous: true
         width: Theme.iconSizeMedium
         height: width
+        smooth: true
         source: profileImageUrl
+        visible: false
+    }
+    Rectangle {
+        id: avatarMask
+        x: Theme.horizontalPageMargin
+        y: Theme.paddingLarge
+        width: Theme.iconSizeMedium
+        height: width
+        smooth: true
+        color: Theme.primaryColor
+        radius: Theme.iconSizeMedium*0.05
+        anchors.centerIn: avatar
+        visible: true
+    }
+
+    OpacityMask {
+        id: maskedProfilePicture
+        source: avatar
+        maskSource: avatarMask
+        anchors.fill: avatar
+        visible: avatar.status === Image.Ready ? true : false
+        opacity: avatar.status === Image.Ready ? 1 : 0
+        Behavior on opacity { NumberAnimation {} }
+        MouseArea {
+            anchors.fill: parent
+            onClicked: {
+                // pageStack.push( avatar );
+            }
+        }
     }
 
     Label {
@@ -72,7 +102,7 @@ BackgroundItem {
         height: paintedHeight
         //text: (highlights.length > 0 ? Theme.highlightText(plainText, new RegExp(highlights, "igm"), Theme.highlightColor) : plainText)
         //textFormat:Text.RichText
-        onLinkActivated: console.log(link + " link activated")
+        onLinkActivated: page.onLinkActivated(link)
         text: richText
         textFormat:Text.RichText
         linkColor : Theme.highlightColor
@@ -137,7 +167,11 @@ BackgroundItem {
 
 
     onClicked: {
-        pageStack.push(Qt.resolvedUrl("TweetDetails.qml"), {"tweets": (timeline ? timeline.model : timeline.model ), "selected": index})
+        pageStack.push(Qt.resolvedUrl("TweetDetails.qml"), {
+                           "tweets": (timeline ? timeline.model : timeline.model ),
+                           "screenName": timeline.model.get(index).screenName,
+                           "selected": index
+                       })
         console.log(JSON.stringify(model.highlights))
     }
 }

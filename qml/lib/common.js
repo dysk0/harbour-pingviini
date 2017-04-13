@@ -1,3 +1,4 @@
+
 var __HTML_ENTITIES = {
     "&amp;": "&",
     "&lt;": "<",
@@ -35,17 +36,16 @@ function __toRichText(text, entities) {
     richText = __linkHashtags(richText, entities.hashtags);
 
     entities.urls.forEach(function(urlObject) {
-        //console.log(urlObject.url)
+
         richText = richText.replace(urlObject.url, linkText(urlObject.display_url, urlObject.expanded_url, true));
     })
 
-    /*if (entities.hasOwnProperty("media")) {
+    if (entities.hasOwnProperty("media")) {
         entities.media.forEach(function(mediaObject) {
-            richText = richText.replace(mediaObject.url,
-                                        linkText(mediaObject.display_url, mediaObject.expanded_url, true));
+            richText = richText.replace(mediaObject.url,"");
         })
     }
-    */
+
     richText = __linkUserMentions(richText, entities.user_mentions);
     //richText = __linkCashtag(richText);
     return richText;
@@ -91,10 +91,11 @@ function __linkHashtags(text, hashtagsEntities) {
 var CASHTAG_REGEXP = /(?:^|\s)(\$[a-z]{1,6}(?:[._][a-z]{1,2})?)(?=$|[\s\!'#%&"\(\)*\+,\\\-\.\/:;<=>\?@\[\]\^_{|}~\$])/gi;
 function linkText(text, href, italic) {
     var html = "";
-    if (italic) html = "<a style=\"color: LightSeaGreen; text-decoration: none\" href=\"%1\">%2</a>";
-    else html = "<a style=\"color: LightSeaGreen; text-decoration: none\" href=\"%1\">%2</a>";
-
-    return html.arg(href).arg(text);
+    if (italic) html = "<a style=\"color: "+highlightColor+"; text-decoration: none\" href=\"%1\">%2</a>";
+    else html = "<a style=\"color: "+highlightColor+"; text-decoration: none\" href=\"%1\">%2</a>";
+    html = html.arg(href).arg(text)
+    console.log(html )
+    return html ;
 }
 function __linkCashtag(text) {
     return text.replace(CASHTAG_REGEXP, function(matched) {
@@ -102,7 +103,7 @@ function __linkCashtag(text) {
         var firstChar = text.charAt(0);
         if (/\s/.test(firstChar)) {
             text = text.substring(1);
-            return firstChar + linkText(text, text, false);
+            return firstChar + linkText(text, text, true);
         }
         return linkText(text, text, false);
     })

@@ -60,5 +60,6 @@ DISTFILES += \
     qml/pages/NewTweet.qml \
     qml/pages/TweetDetails.qml \
     qml/pages/Splash.qml \
-    qml/pages/MediaBlock.qml
+    qml/pages/MediaBlock.qml \
+    qml/pages/Browser.qml
 

@@ -55,6 +55,7 @@ Page {
 
     Component.onCompleted: {
         console.log("Splash Conf!")
+        Logic.setThemeLinkColor(Theme.highlightColor+"");
 
         var obj = {};
         Logic.mediator.installTo(obj);

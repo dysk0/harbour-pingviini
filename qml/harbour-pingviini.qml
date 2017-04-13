@@ -50,6 +50,7 @@ ApplicationWindow
     }
 
     Component.onCompleted: {
+        Logic.setThemeLinkColor(Theme.highlightColor+"");
         Logic.initialize();
     }
     Component.onDestruction: {

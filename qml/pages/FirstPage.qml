@@ -40,6 +40,25 @@ Page {
 
 
 
+    IconButton {
+        anchors {
+            right: (page.isPortrait ? parent.right : infoPanel.left)
+            bottom: (page.isPortrait ? infoPanel.top : parent.bottom)
+            margins: {
+                left: Theme.paddingLarge
+                bottom: Theme.paddingLarge
+            }
+        }
+
+        id: newTweet
+        width: Theme.iconSizeLarge
+        height: width
+        visible: !infoPanel.open
+        icon.source: "image://theme/icon-l-add"
+        onClicked: {
+            pageStack.push(Qt.resolvedUrl("TweetDetails.qml"), {})
+        }
+    }
 
     DockedPanel {
         id: infoPanel
@@ -52,7 +71,7 @@ Page {
         }
 
     }
-   /* Component.onCompleted: {
+    /* Component.onCompleted: {
         console.log("-------------getConf")
         console.log(JSON.stringify(Logic.conf))
 
@@ -78,6 +97,7 @@ Page {
     }*/
     onStatusChanged: {
         if (status === PageStatus.Active) {
+
 
 
             //pageStack.pushAttached(Qt.resolvedUrl("Navigation.qml"), {"settings": {}})
@@ -112,6 +132,9 @@ Page {
         id: searchViewComponent
     }
 
+    function onLinkActivated(href){
+          pageStack.push(Qt.resolvedUrl("Browser.qml"), {"href" : href})
+    }
 
 }
 

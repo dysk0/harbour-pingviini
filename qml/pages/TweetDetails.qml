@@ -36,27 +36,27 @@ import "../lib/Logic.js" as Logic
 Page {
     property ListModel tweets;
     property string selected;
+    property string screenName;
+    property string tweetType: "New";
+
 
     // The effective value will be restricted by ApplicationWindow.allowedOrientations
     allowedOrientations: Orientation.All
     Component.onCompleted: {
-        console.log(JSON.stringify(tweets.get(selected)))
+
     }
 
     SilicaListView {
         id: listView
         model: 1
         anchors.fill: parent
-        footer: NewTweet {
-            tweetId: tweets.get(selected).id_str;
-            screenName: '@'+tweets.get(selected).screenName + ' ' + Logic.modelTL.count
-        }
+
         header: Item {
             width: parent.width
             height: avatar.height + Theme.paddingLarge*3 + lblText.paintedHeight + mediaImg.height + ( mediaImg.height > 0 ? Theme.paddingLarge : 0)
             PageHeader {
                 title: tweets.get(selected).name
-                description: '@'+tweets.get(selected).screenName
+                description: '@'+screenName
             }
             Image {
                 id: avatar
@@ -133,6 +133,12 @@ Page {
             onClicked: function(){
                 console.log("Clicked " + index)
             }
+        }
+
+        footer: NewTweet {
+            type: tweetType
+            tweetId: tweets.get(selected).id_str;
+            placedText: screenName ? '@'+screenName : ""
         }
         VerticalScrollDecorator {}
     }

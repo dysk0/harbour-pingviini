@@ -19,8 +19,13 @@
 .pragma library
 .import QtQuick.LocalStorage 2.0 as LS
 Qt.include("common.js")
+var THEME_LINK_COLOR;
 
 
+function setThemeLinkColor(color){
+    THEME_LINK_COLOR = color
+    console.log(THEME_LINK_COLOR)
+}
 
 var OAUTH_CONSUMER_KEY = "BsVdhEDHrLgE8SUfAUEoVdnwD"
 var OAUTH_CONSUMER_SECRET = "UtGso4Buc2bX3FlBmYrwamKIuPRfwBfptO0we935jyRF90RboK"
@@ -36,7 +41,8 @@ function getConfTW(){
         OAUTH_TOKEN: OAUTH_TOKEN,
         OAUTH_TOKEN_SECRET: OAUTH_TOKEN_SECRET,
         USER_AGENT: USER_AGENT,
-        SCREEN_NAME: SCREEN_NAME
+        SCREEN_NAME: SCREEN_NAME,
+        THEME_LINK_COLOR: THEME_LINK_COLOR
     }
 }
 

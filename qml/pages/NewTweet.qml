@@ -38,8 +38,33 @@ Item {
 
 
 
-    Label {
-        id: newTweetCounter
+    IconButton {
+        id: attachBtn
+        width: Theme.iconSizeSmall
+        height: width
+        icon.source: "image://theme/icon-s-attach"
+        anchors {
+            left: parent.left
+            leftMargin: Theme.paddingLarge
+            bottom: newTweet.bottom
+        }
+
+
+    }
+    IconButton {
+        id: sendBtn
+        width: Theme.iconSizeMedium
+        height: width
+        icon.source: "image://theme/icon-m-enter-next"
+        anchors {
+            right: parent.right
+            bottom: attachBtn.bottom
+        }
+        onClicked: tweet()
+    }
+
+    TextArea {
+        id: newTweet
         property string shortenText: newTweet.text.replace(/https?:\/\/\S+/g, __replaceLink)
         function __replaceLink(w) {
             if (w.indexOf("https://") === 0)
@@ -47,40 +72,27 @@ Item {
             else return "http://t.co/xxxxxxxxxx" // Length: 22
         }
 
-
-        text: 140 - shortenText.length
-
+        errorHighlight: newTweet.text < 0 && type != "RT"
         anchors {
-            right: parent.right
-            rightMargin: Theme.horizontalPageMargin
-            verticalCenter: parent.verticalCenter
-        }
-
-
-    }
-
-    TextField {
-        id: newTweet
-        errorHighlight: newTweetCounter.text < 0 && type != "RT"
-        anchors {
-            left: parent.left
-            rightMargin: Theme.paddingMedium
-            right: newTweetCounter.left
+            left: attachBtn.right
+            rightMargin: Theme.paddingSmall
+            right: sendBtn.left
             verticalCenter: parent.verticalCenter
         }
         autoScrollEnabled: true
-        label: "New tweet"
-        placeholderText: "New tweet"
-        text: screenName
+        label: (140 - shortenText.length) + ' chars left for your ' + (type == "New" ? "tweet" : "reply")
+        placeholderText: "Enter your tweet"
+        text: placedText
         focus: true
         height: implicitHeight
         horizontalAlignment: Text.AlignLeft
         EnterKey.onClicked: {
-            tweet()
+            //tweet()
         }
         onTextChanged: {
-            newTweetCounter.color = (text.length > 140 ? "red": Theme.primaryColor)
+            newTweet.color = (text.length > 140 ? "red": Theme.primaryColor)
         }
+
     }
 
 

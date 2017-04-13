@@ -1,6 +1,6 @@
 Qt.include("codebird.js")
 Qt.include("common.js")
-
+var highlightColor = "#f00";
 
 function showError(status, statusText) {
     console.log(status)
@@ -28,6 +28,12 @@ function parseDM(dmJson, isReceiveDM) {
 WorkerScript.onMessage = function(msg) {
     var cb = new Fcodebird;
     cb.setUseProxy(false);
+    if (msg.conf.THEME_LINK_COLOR){
+        highlightColor = msg.conf.THEME_LINK_COLOR;
+        console.log(JSON.stringify(msg.conf.THEME_LINK_COLOR))
+        console.log(highlightColor)
+    }
+
     if (msg.conf.OAUTH_CONSUMER_KEY && msg.conf.OAUTH_CONSUMER_SECRET ){
         cb.setConsumerKey(msg.conf.OAUTH_CONSUMER_KEY, msg.conf.OAUTH_CONSUMER_SECRET);
     }
