@@ -21,7 +21,7 @@ Page {
     signal buttonPressedAtBPage();
     onButtonPressedAtBPage: console.log("Mouse pressed at B page");
 
-    Loader {
+    /*Loader {
         id: componentLoader
         anchors {
             fill: parent
@@ -31,7 +31,7 @@ Page {
             bottomMargin: page.isPortrait ? infoPanel.visibleSize : 0
         }
         sourceComponent: timelineViewComponent
-    }
+    }*/
     WorkerScript {
         id: worker
         source: "../lib/Worker.js"
@@ -40,25 +40,7 @@ Page {
 
 
 
-    IconButton {
-        anchors {
-            right: (page.isPortrait ? parent.right : infoPanel.left)
-            bottom: (page.isPortrait ? infoPanel.top : parent.bottom)
-            margins: {
-                left: Theme.paddingLarge
-                bottom: Theme.paddingLarge
-            }
-        }
 
-        id: newTweet
-        width: Theme.iconSizeLarge
-        height: width
-        visible: !infoPanel.open
-        icon.source: "image://theme/icon-l-add"
-        onClicked: {
-            pageStack.push(Qt.resolvedUrl("TweetDetails.qml"), {})
-        }
-    }
 
     DockedPanel {
         id: infoPanel
@@ -67,6 +49,7 @@ Page {
         height: page.isPortrait ? Theme.itemSizeLarge : parent.height
         dock: page.isPortrait ? Dock.Bottom : Dock.Right
         Navigation {
+            id: navigation
             isPortrait: !page.isPortrait
         }
 
@@ -120,20 +103,49 @@ Page {
 
     Timeline {
         id: timelineViewComponent
+
     }
     Mentions {
         id: mentionsViewComponent
+        visible: false;
     }
+
 
     CmpDirectMessages {
         id: dmsgViewComponent
+        visible: false;
     }
     SearchView {
         id: searchViewComponent
+        visible: false;
     }
+    IconButton {
+        anchors {
+            right: (page.isPortrait ? parent.right : infoPanel.left)
+            bottom: (page.isPortrait ? infoPanel.top : parent.bottom)
+            margins: {
+                left: Theme.paddingLarge
+                bottom: Theme.paddingLarge
+            }
+        }
 
+        id: newTweet
+        width: Theme.iconSizeLarge
+        height: width
+        visible: !infoPanel.open
+        icon.source: "image://theme/icon-l-add"
+        onClicked: {
+            pageStack.push(Qt.resolvedUrl("TweetDetails.qml"), {})
+        }
+    }
     function onLinkActivated(href){
-          pageStack.push(Qt.resolvedUrl("Browser.qml"), {"href" : href})
+        if (href[0] == '#' || href[0] == '@' ) {
+            searchViewComponent.searchTerm = href
+            navigation.navigateTo('search')
+
+        } else {
+            pageStack.push(Qt.resolvedUrl("Browser.qml"), {"href" : href})
+        }
     }
 
 }

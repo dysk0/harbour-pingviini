@@ -94,7 +94,7 @@ function linkText(text, href, italic) {
     if (italic) html = "<a style=\"color: "+highlightColor+"; text-decoration: none\" href=\"%1\">%2</a>";
     else html = "<a style=\"color: "+highlightColor+"; text-decoration: none\" href=\"%1\">%2</a>";
     html = html.arg(href).arg(text)
-    console.log(html )
+    //console.log(html )
     return html ;
 }
 function __linkCashtag(text) {
@@ -156,6 +156,19 @@ function timeDiff(tweetTimeStr) {
     return Qt.formatDate(tweetTime, Qt.SystemLocaleShortDate).toString()
 }
 
+function parseDM(dmJson, isReceiveDM) {
+    var dm = {
+        id: dmJson.id,
+        richText: dmJson.text,
+        name: dmJson.sender.name,
+        screenName: (isReceiveDM ? dmJson.sender_screen_name : dmJson.recipient_screen_name),
+        profileImageUrl: (isReceiveDM ? dmJson.sender.profile_image_url_https : dmJson.sender.profile_image_url_https),
+        createdAt: getValidDate(dmJson.created_at),
+        isVerified: false,
+        isReceiveDM: isReceiveDM
+    }
+    return dm;
+}
 
 function parseTweet(tweetJson) {
     var tweet = {
@@ -163,6 +176,7 @@ function parseTweet(tweetJson) {
         id_str: tweetJson.id_str,
         source: tweetJson.source.replace(/<[^>]+>/ig, ""),
         createdAt: getValidDate(tweetJson.created_at),
+        isVerified: false,
         isFavourited: tweetJson.favorited,
         favoriteCount: tweetJson.favorite_count,
         isRetweet: tweetJson.retweeted,
@@ -181,6 +195,7 @@ function parseTweet(tweetJson) {
     tweet.richText = __toRichText(originalTweetJson.text, originalTweetJson.entities);
     tweet.highlights = __toHighlights(originalTweetJson.text, originalTweetJson.entities);
 
+    tweet.isVerified = originalTweetJson.user.verified;
     tweet.name = originalTweetJson.user.name;
     tweet.screenName = originalTweetJson.user.screen_name;
     tweet.profileImageUrl = originalTweetJson.user.profile_image_url;

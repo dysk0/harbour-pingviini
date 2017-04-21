@@ -41,14 +41,6 @@
 <context>
     <name>SearchView</name>
     <message>
-        <source>Search</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Pingviini</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Load more</source>
         <translation type="unfinished"></translation>
     </message>

@@ -9,19 +9,7 @@ function showError(status, statusText) {
 
 
 
-function parseDM(dmJson, isReceiveDM) {
-    var dm = {
-        id: dmJson.id_str,
-        richText: __toRichText(dmJson.text, dmJson.entities),
-        name: (isReceiveDM ? dmJson.sender.name : dmJson.recipient.name),
-        highlights: __toHighlights(dmJson.text, dmJson.entities),
-        screenName: (isReceiveDM ? dmJson.sender_screen_name : dmJson.recipient_screen_name),
-        profileImageUrl: (isReceiveDM ? dmJson.sender.profile_image_url : dmJson.recipient.profile_image_url),
-        createdAt: dmJson.created_at,
-        isReceiveDM: isReceiveDM
-    }
-    return dm;
-}
+
 
 
 
@@ -45,11 +33,12 @@ WorkerScript.onMessage = function(msg) {
 
     var sinceId;
     var maxId;
+    var params;
 
 
 
     if (msg.action === 'statuses_homeTimeline' || msg.action === 'statuses_mentionsTimeline') {
-        var params = {"count":200}
+        params = {"count":200}
         if (msg.model.count) {
             if (msg.mode === "append") {
                 params['max_id'] = msg.model.get(msg.model.count-1).id
@@ -114,39 +103,99 @@ WorkerScript.onMessage = function(msg) {
 
 
 
-    if (msg.action === 'getDirectMsg') {
-        console.log('getDirectMsg '+JSON.stringify(msg))
+    if (msg.action === 'search_tweets') {
+        console.log('search_tweets '+JSON.stringify(msg))
         sinceId = false;
         maxId = false;
-        if (msg.model.count) {
-            if (msg.mode === "append") {
-                maxId = msg.model.get(msg.model.count-1).id
-            }
-            if (msg.mode === "prepend") {
-                sinceId = msg.model.get(0).id
-            }
+        params = {"count":200}
+        if (msg.params.q) {
+            params['q'] = msg.params.q
         }
 
-        getDirectMsg(sinceId, maxId, function(data) {
-            //msg.model.clear();
-            for (var i=0; i < data.length; i++) {
-                console.log(JSON.stringify(data[i]))
-                var tweet = parseDM(data[i], true);
-                if (msg.model.count) {
-                    if (msg.mode === "append" && i > 0) {
-                        console.log('append')
-                        msg.model.append(tweet)
-                    }
-                    if (msg.mode === "prepend") {
-                        console.log('prepend')
-                        msg.model.insert(0, tweet)
-                    }
-                } else {
-                    msg.model.append(tweet)
-                }
+        if (msg.model.count) {
+            if (msg.mode === "append") {
+                params['max_id'] = msg.model.get(msg.model.count-1).id
             }
-            msg.model.sync();
-        }, showError)
+            if (msg.mode === "prepend") {
+                params['since_id'] = msg.model.get(0).id
+            }
+        } else {
+            msg.mode = "append";
+        }
+
+
+        cb.__call(
+                    msg.action,
+                    msg.params,
+                    function (reply, rate, err) {
+                        var length = reply.length
+                        console.log(length)
+                        var i = 0;
+                        if (msg.mode === "prepend") {
+                            length--;
+                        } else if (msg.mode === "append"){
+                            i = 1;
+                        }
+
+                        /*for (i; i < length; i++) {
+                            var tweet;
+
+                            if (msg.mode === "append") {
+                                tweet = parseTweet(reply[i])
+                                msg.model.append(tweet)
+                            }
+                            if (msg.mode === "prepend") {
+                                tweet = parseTweet(reply[length-i-1])
+                                msg.model.insert(0, tweet)
+                            }
+
+                        }*/
+                        msg.model.sync();
+                        console.log(msg.model.count);
+                    }
+                    );
+
+
+    }
+
+    if (msg.action === 'directMessages' || msg.action === 'directMessages_sent') {
+        console.log('directMessages '+JSON.stringify(msg))
+        sinceId = false;
+        maxId = false;
+        params = {"include_entities":false, skip_status: true}
+        if (msg.model.count) {
+            params['max_id'] = msg.model.get(msg.model.count-1).id
+        }
+        var shownDMs = []
+        console.log('directMessages '+JSON.stringify(params))
+        cb.__call(
+                    msg.action,
+                    params,
+                    function (reply, rate, err) {
+                        var length = reply.length
+                        console.log(length)
+                        var i = 0;
+
+                        for (i; i < length; i++) {
+                            var tweet = {};
+                            //console.log(JSON.stringify(reply[i]))
+                            tweet = parseDM(reply[i], msg.action === 'directMessages_sent' ? false : true)
+                            msg.model.append(tweet)
+                            if (!shownDMs[tweet.screenName]) {
+                                shownDMs[tweet.screenName] = true;
+                                if (msg.viewModel)
+                                    msg.viewModel.append(tweet)
+                            }
+
+                        }
+                        msg.model.sync();
+                        if(msg.viewModel)
+                            msg.viewModel.sync();
+                        console.log(msg.model.count);
+                    }
+                    );
+
+
     }
 
     if (msg.action === 'postTweet') {

@@ -6,11 +6,34 @@ BackgroundItem {
     id: delegate
     //property string text: "0"
     width: parent.width
-    height: lblText.paintedHeight + lblName.paintedHeight + lblScreenName.paintedHeight + Theme.paddingLarge + mediaImg.height
+    height: lblText.paintedHeight + lblName.paintedHeight + lblScreenName.paintedHeight + Theme.paddingLarge + mediaImg.height + (isRetweet ? Theme.paddingLarge + iconRT.height : 0)
+    Image {
+        id: iconRT
+        y: Theme.paddingLarge
+        anchors {
+            right: avatar.right
+        }
+        visible: isRetweet
+        width: Theme.iconSizeExtraSmall
+        height: width
+        source: "image://theme/icon-s-retweet?" + (pressed ? Theme.primaryColor : Theme.secondaryColor)
+    }
+    Label {
+        id: lblRtByName
+        visible: isRetweet
+        anchors {
+            left: lblName.left
+            bottom: iconRT.bottom
+        }
+        text: 'retweeted by @' + retweetScreenName
+        font.pixelSize: Theme.fontSizeExtraSmall
+        color: Theme.secondaryColor
+    }
+
     Image {
         id: avatar
         x: Theme.horizontalPageMargin
-        y: Theme.paddingLarge
+        y: Theme.paddingLarge + (isRetweet ? iconRT.height+Theme.paddingMedium : 0)
         asynchronous: true
         width: Theme.iconSizeMedium
         height: width
@@ -26,7 +49,7 @@ BackgroundItem {
         height: width
         smooth: true
         color: Theme.primaryColor
-        radius: Theme.iconSizeMedium*0.05
+        radius: Theme.iconSizeMedium*0.08
         anchors.centerIn: avatar
         visible: true
     }
@@ -59,10 +82,25 @@ BackgroundItem {
         font.pixelSize: Theme.fontSizeSmall
         color: (pressed ? Theme.highlightColor : Theme.primaryColor)
     }
+
+    Image {
+        id: iconVerified
+        y: Theme.paddingLarge
+        anchors {
+            left: lblName.right
+            leftMargin: Theme.paddingSmall
+            verticalCenter: lblName.verticalCenter
+        }
+        visible: isVerified
+        width: isVerified ? Theme.iconSizeExtraSmall : 0
+        height: width
+        source: "image://theme/icon-s-installed?" + (pressed ? Theme.primaryColor : Theme.secondaryColor)
+    }
+
     Label {
         id: lblScreenName
         anchors {
-            left: lblName.right
+            left: iconVerified.right
             right: lblDate.left
             leftMargin: Theme.paddingMedium
             baseline: lblName.baseline
@@ -120,7 +158,7 @@ BackgroundItem {
             topMargin: Theme.paddingSmall
             rightMargin: Theme.paddingLarge
         }
-        model: media
+        model: (media ? media : '')
         width: lblDate.x - lblName.x- Theme.paddingLarge
         height: 100
     }

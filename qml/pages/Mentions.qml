@@ -2,10 +2,16 @@ import QtQuick 2.0
 import Sailfish.Silica 1.0
 import "../lib/Logic.js" as Logic
 
-Component {
+
     SilicaListView {
         id: timeline
-        anchors.fill: parent
+        anchors {
+            fill: parent
+            leftMargin: 0
+            topMargin: 0
+            rightMargin: page.isPortrait ? 0 : infoPanel.visibleSize
+            bottomMargin: page.isPortrait ? infoPanel.visibleSize : 0
+        }
 
         Component.onCompleted: {
             if (modelMN.count === 0){
@@ -103,4 +109,4 @@ Component {
             currentIndexMN = currentIndex
         }
     }
-}
+

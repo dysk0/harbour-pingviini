@@ -99,28 +99,39 @@ SilicaGridView {
                 family: Theme.fontFamilyHeading
             }
         }
-        onClicked: {
-            for(var i = 0; i < listModel.count; i++){
-                listModel.setProperty(i, 'active', false);
-            }
-            listModel.setProperty(index, 'active', true);
-            if (model.slug === "msgs"){
-                componentLoader.sourceComponent = dmsgViewComponent
-            }
-            if (model.slug === "timeline"){
-                componentLoader.sourceComponent = timelineViewComponent
-            }
-            if (model.slug === "mentions"){
-                componentLoader.sourceComponent = mentionsViewComponent
-            }
-            if (model.slug === "search"){
-                componentLoader.sourceComponent = searchViewComponent
-            }
+        onClicked: navigateTo(model.slug)
 
-
-            console.log(model.slug)
-
-        }
     }
+    function navigateTo(slug){
+        for(var i = 0; i < listModel.count; i++){
+            if (listModel.get(i).slug === slug)
+                listModel.setProperty(i, 'active', true);
+            else
+                listModel.setProperty(i, 'active', false);
+        }
+        dmsgViewComponent.visible = false
+        timelineViewComponent.visible = false
+        mentionsViewComponent.visible = false
+        searchViewComponent.visible = false
+        if (slug === "msgs"){
+            dmsgViewComponent.visible = true
+        }
+        if (slug === "timeline"){
+            timelineViewComponent.visible = true
+        }
+        if (slug === "mentions"){
+            mentionsViewComponent.visible = true
+        }
+        if (slug === "search"){
+            searchViewComponent.visible = true
+        }
+
+
+        console.log(slug)
+
+    }
+
+
+
     VerticalScrollDecorator {}
 }
