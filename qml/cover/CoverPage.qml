@@ -36,7 +36,7 @@ CoverBackground {
     Label {
         id: label
         anchors.centerIn: parent
-        text: "TL "+Logic.modelTL.count
+        text: Logic.OAUTH_TOKEN+"\n"+Logic.OAUTH_TOKEN_SECRET
     }
 
     CoverActionList {

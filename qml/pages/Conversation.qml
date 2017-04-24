@@ -52,7 +52,7 @@ Page {
                 textFormat:Text.RichText
                 linkColor : Theme.highlightColor
                 wrapMode: Text.Wrap
-                font.pixelSize: Theme.fontSizeMedium
+                font.pixelSize: Theme.fontSizeSmall
                 horizontalAlignment: isReceiveDM ? Text.AlignLeft :Text.AlignRight
                 color: (pressed ? Theme.highlightColor : (isReceiveDM ? Theme.highlightColor : Theme.primaryColor))
             }

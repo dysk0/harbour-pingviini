@@ -9,6 +9,29 @@ Page {
     // The effective value will be restricted by ApplicationWindow.allowedOrientations
     allowedOrientations: Orientation.All
 
+    WorkerScript {
+        id: worker
+        source: "../lib/Worker.js"
+        onMessage: {
+            console.log(JSON.stringify(messageObject))
+            if (messageObject.token) {
+                Logic.OAUTH_TOKEN = messageObject.token
+                Logic.OAUTH_TOKEN_SECRET = messageObject.token_secret
+                Logic.conf = Logic.getConfTW()
+                console.log(JSON.stringify(Logic.conf))
+                console.log("User added")
+                console.log(JSON.stringify(Logic.getConfTW()))
+                Logic.saveData();
+                //Logic.initialize()
+            }
+
+            if (messageObject.url) {
+                console.log(messageObject.url)
+                Qt.openUrlExternally(messageObject.url);
+            }
+        }
+    }
+
     // To enable PullDownMenu, place our content in a SilicaFlickable
     SilicaFlickable {
         anchors.fill: parent
@@ -44,21 +67,15 @@ Page {
                                 enabled = !enabled
                                 step1.expanded = false
                                 step2.expanded = true
-                                Logic.postRequestToken(function(token, tokenSecret) {
-                                    tokenTempo = token;
-                                    tokenSecretTempo = tokenSecret;
-                                    var signInUrl = "https://api.twitter.com/oauth/authorize?oauth_token=" + tokenTempo;
-                                    console.log("Launching web browser with url:", signInUrl);
-                                    Qt.openUrlExternally(signInUrl);
-                                    console.log({tokenTempo: tokenTempo, tokenSecretTempo: tokenSecretTempo})
-                                },
-                                function(status, statusText) {
-                                    if (status === 401){
-                                        console.log("Error: Unable to authorize with Twitter. Make sure the time/date of your phone is set correctly.")
-                                    } else {
-                                        showHttpError(status, statusText)
-                                    }
-                                });
+                                var msg = {
+                                    'action': 'oauth_requestToken',
+                                    'conf'  : Logic.getConfTW()
+                                };
+                                worker.sendMessage(msg);
+
+                                // console.log("Launching web browser with url:", signInUrl);
+
+                                //console.log({tokenTempo: tokenTempo, tokenSecretTempo: tokenSecretTempo})
                             }
                         }
                     }
@@ -86,21 +103,12 @@ Page {
                                 enabled = !enabled
                                 step1.expanded = false
                                 step2.expanded = true
-                                Logic.postAccessToken(
-                                tokenTempo, tokenSecretTempo, oauthVerifier.text,
-                                function(token, tokenSecret, screenName) {
-                                    Logic.conf.OAUTH_TOKEN = Logic.OAUTH_TOKEN = token;
-                                    Logic.conf.OAUTH_TOKEN_SECRET = Logic.OAUTH_TOKEN_SECRET = tokenSecret;
-                                    Logic.conf.SCREEN_NAME = Logic.SCREEN_NAME = screenName;
-                                    console.log(JSON.stringify([token, tokenSecret, screenName]))
-                                },
-                                function(status, statusText) {
-                                    if (status === 401){
-                                        console.log("Error: Unable to authorize with Twitter. Make sure the time/date of your phone is set correctly.")
-                                    } else {
-                                        showHttpError(status, statusText)
-                                    }
-                                });
+                                var msg = {
+                                    'action': 'oauth_accessToken',
+                                    'oauth_verifier': oauthVerifier.text,
+                                    'conf'  : Logic.getConfTW()
+                                };
+                                worker.sendMessage(msg);
                             }
                         }
                     }

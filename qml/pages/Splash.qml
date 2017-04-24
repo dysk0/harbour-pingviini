@@ -65,7 +65,7 @@ Page {
             //console.log(JSON.stringify(Logic.conf))
             //console.log(JSON.stringify(Logic.getConfTW()))
 
-            pullData()
+            //pullData()
             //pageStack.pushAttached(Qt.resolvedUrl("FirstPage.qml"), {})
             /*Logic.modelTL.append(Logic.parseTweet(Logic.tweet1))
             Logic.modelTL.append(Logic.parseTweet(Logic.tweet2))
@@ -75,7 +75,10 @@ Page {
             Logic.modelTL.append(Logic.parseTweet(Logic.tweet6))
             Logic.modelTL.append(Logic.parseTweet(Logic.tweet7))*/
 
-            pageStack.push(Qt.resolvedUrl("FirstPage.qml"), {})
+            if(Logic.getConfTW().OAUTH_TOKEN)
+                pageStack.push(Qt.resolvedUrl("FirstPage.qml"), {})
+            else
+                pageStack.push(Qt.resolvedUrl("AccountAdd.qml"), {})
         });
 
 

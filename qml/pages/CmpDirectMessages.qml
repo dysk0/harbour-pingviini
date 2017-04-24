@@ -184,7 +184,7 @@ SilicaListView {
 
         Label {
             id: lblText
-            width: parent.width - avatar.width
+            width: parent.width
             anchors {
                 left: lblName.left
                 right: parent.right
@@ -192,11 +192,7 @@ SilicaListView {
                 topMargin: Theme.paddingSmall
                 rightMargin: Theme.paddingLarge
             }
-            height: paintedHeight
-            onLinkActivated: page.onLinkActivated(link)
             text: richText
-            textFormat:Text.RichText
-            linkColor : Theme.highlightColor
             elide: Text.ElideRight
             font.pixelSize: Theme.fontSizeSmall
             color: (pressed ? Theme.highlightColor : Theme.primaryColor)

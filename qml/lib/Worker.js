@@ -200,9 +200,46 @@ WorkerScript.onMessage = function(msg) {
 
     if (msg.action === 'postTweet') {
         console.log('postTweet '+JSON.stringify(msg))
+    }
 
+    if (msg.action === 'oauth_requestToken') {
+        cb.__call(
+            "oauth_requestToken",
+            {oauth_callback: "oob"},
+            function (reply,rate,err) {
+                if (err) {
+                    WorkerScript.sendMessage({ 'success': false,  "msg": "error response or timeout exceeded" + err.error})
+                }
+                if (reply) {
+                    // stores it
+                    //WorkerScript.sendMessage({ 'success': true,  "token": reply.oauth_token, "token_secret":reply.oauth_token_secret})
+                    cb.setToken(reply.oauth_token, reply.oauth_token_secret);
+                    WorkerScript.sendMessage({ 'success': true,  "token": reply.oauth_token, "token_secret":reply.oauth_token_secret})
+
+                    // gets the authorize screen URL
+                    cb.__call(
+                        "oauth_authorize",
+                        {},
+                        function (auth_url) {
+                            WorkerScript.sendMessage({ 'success': true,  "url":auth_url})
+                            //window.codebird_auth = window.open(auth_url);
+                        }
+                    );
+                }
+            }
+        );
+    }
+    if (msg.action === 'oauth_accessToken') {
+        cb.__call(
+            "oauth_accessToken",
+            {oauth_verifier: msg.oauth_verifier},
+            function (reply) {
+                cb.setToken(reply.oauth_token, reply.oauth_token_secret);
+                WorkerScript.sendMessage({ 'success': true,  "oauth_accessToken": true, "token": reply.oauth_token, "token_secret":reply.oauth_token_secret})
+            }
+        );
     }
 
 }
-//WorkerScript.sendMessage({ 'reply': 'Mouse is at ' + message.x + ',' + message.y })
+
 

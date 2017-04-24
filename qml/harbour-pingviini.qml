@@ -55,7 +55,6 @@ ApplicationWindow
     }
     Component.onDestruction: {
         Logic.saveData()
-        Logic.mediator.publish('nameChange', 'Sam');
     }
     function showHttpError(status, statusText){
         console.log(JSON.stringify([status, statusText]))

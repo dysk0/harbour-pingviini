@@ -24,7 +24,6 @@ var THEME_LINK_COLOR;
 
 function setThemeLinkColor(color){
     THEME_LINK_COLOR = color
-    console.log(THEME_LINK_COLOR)
 }
 
 var OAUTH_CONSUMER_KEY = "BsVdhEDHrLgE8SUfAUEoVdnwD"
@@ -99,7 +98,7 @@ var mediator = (function(){
      };
 }());
 
-var db = LS.LocalStorage.openDatabaseSync("pingviini", "", "pingviini", 100000);
+var db = LS.LocalStorage.openDatabaseSync("pingviini-db", "", "pingviini", 100000);
 var conf = {}
 
 
@@ -143,8 +142,10 @@ function initialize() {
 
 function saveData() {
     db.transaction(function(tx) {
+        if (conf.OAUTH_TOKEN){
         var rs2 = tx.executeSql('UPDATE settings SET value = ? WHERE key = ?', [JSON.stringify(conf), "conf"]);
         console.log("Saving... "+JSON.stringify(conf)+"\n"+JSON.stringify(rs2))
+        }
     });
 }
 
