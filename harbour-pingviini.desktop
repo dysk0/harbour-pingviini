@@ -3,10 +3,10 @@ Type=Application
 X-Nemo-Application-Type=silica-qt5
 Icon=harbour-pingviini
 Exec=harbour-pingviini
-Name=harbour-pingviini
+Name=Pingviini
 # translation example:
 # your app name in German locale (de)
 #
 # Remember to comment out the following line, if you do not want to use
 # a different app name in German locale (de).
-Name[de]=harbour-pingviini
+Name[ba]=Pingvinče

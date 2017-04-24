@@ -6,6 +6,7 @@ import QtGraphicalEffects 1.0
 
 SilicaListView {
     id: timelineDM
+
     property int loadPage: 0
     anchors {
         fill: parent
@@ -201,23 +202,44 @@ SilicaListView {
             color: (pressed ? Theme.highlightColor : Theme.primaryColor)
         }
         onClicked: {
+            var name, username, profileImage;
             /*sent.concat(rec).forEach(function(el){
                 if (el.sender_screen_name == "BerislavB" || el.recipient_screen_name == "BerislavB" )
                 console.log(el)
             });*/
-
+            var tweets = [];
             for (var i = 0; i < Logic.modelDMrecived.count; i++){
                 var item = Logic.modelDMrecived.get(i)
                 if (item.screenName === screenName) {
-                    console.log(JSON.stringify(item))
+                    username = item.screenName;
+                    name = item.name;
+                    profileImage = item.profileImageUrl;
+                    tweets.push(item)
                 }
             }
+
             for (i = 0; i < Logic.modelDMsent.count; i++){
                 item = Logic.modelDMsent.get(i)
                 if (item.screenName === screenName) {
-                    console.log(JSON.stringify(item))
+                    tweets.push(item)
                 }
             }
+
+            console.log(JSON.stringify(tweets))
+            tweets.sort(function(a, b){return a.id-b.id});
+            console.log(JSON.stringify(tweets))
+
+            var _tweets = Qt.createQmlObject('import QtQuick 2.0; ListModel {   }', Qt.application, 'InternalQmlObject');
+            tweets.forEach(function(el){
+                _tweets.append(el)
+            });
+
+            pageStack.push(Qt.resolvedUrl("Conversation.qml"), {
+                               "tweets": _tweets,
+                               "name": name,
+                               "username" : username,
+                               "profileImage": profileImage
+                           })
 
 
         }
