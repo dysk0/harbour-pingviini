@@ -11,14 +11,11 @@ SilicaListView {
         id: searchModel
     }
 
-
-
-
     header: SearchField {
         width: parent.width
         placeholderText: "Search"
         onTextChanged: {
-            loadData("append")
+            //loadData("append")
         }
     }
 
@@ -39,11 +36,7 @@ SilicaListView {
 
 
     model: searchModel
-    delegate: BackgroundItem {
-        Label {
-            text: index
-        }
-    }
+    delegate: CmpTweet {}
 
 
     anchors {
@@ -56,7 +49,7 @@ SilicaListView {
 
 
     ViewPlaceholder {
-        enabled: modelDM.count == 0
+        enabled: searchModel.count == 0
         text: "Searching"
         hintText: "Please wait..."
     }
@@ -70,7 +63,7 @@ SilicaListView {
         MenuItem {
             text: qsTr("Load more")
             onClicked: {
-                timelineDM.loadData("prepend")
+                loadData("prepend")
             }
         }
     }

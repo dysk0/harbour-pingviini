@@ -104,10 +104,10 @@ WorkerScript.onMessage = function(msg) {
 
 
     if (msg.action === 'search_tweets') {
-        console.log('search_tweets '+JSON.stringify(msg))
+
         sinceId = false;
         maxId = false;
-        params = {"count":200}
+        params = {}
         if (msg.params.q) {
             params['q'] = msg.params.q
         }
@@ -123,13 +123,18 @@ WorkerScript.onMessage = function(msg) {
             msg.mode = "append";
         }
 
+        console.log('search_tweets '+JSON.stringify(params))
 
         cb.__call(
-                    msg.action,
+                    'search_tweets',
                     msg.params,
-                    function (reply, rate, err) {
-                        var length = reply.length
-                        console.log(length)
+                    function (reply) {
+
+                        if (!reply || !reply.statuses || !reply.statuses.length) {
+                            return;
+                        }
+
+                        console.log(JSON.stringify(reply.statuses))
                         var i = 0;
                         if (msg.mode === "prepend") {
                             length--;
@@ -137,23 +142,23 @@ WorkerScript.onMessage = function(msg) {
                             i = 1;
                         }
 
-                        /*for (i; i < length; i++) {
+                        for (i; i < reply.statuses.length; i++) {
                             var tweet;
 
                             if (msg.mode === "append") {
-                                tweet = parseTweet(reply[i])
+                                tweet = parseTweet(reply.statuses[i])
                                 msg.model.append(tweet)
                             }
                             if (msg.mode === "prepend") {
-                                tweet = parseTweet(reply[length-i-1])
+                                tweet = parseTweet(reply.statuses[length-i-1])
                                 msg.model.insert(0, tweet)
                             }
 
-                        }*/
+                        }
                         msg.model.sync();
                         console.log(msg.model.count);
-                    }
-                    );
+
+                    });
 
 
     }
@@ -204,40 +209,40 @@ WorkerScript.onMessage = function(msg) {
 
     if (msg.action === 'oauth_requestToken') {
         cb.__call(
-            "oauth_requestToken",
-            {oauth_callback: "oob"},
-            function (reply,rate,err) {
-                if (err) {
-                    WorkerScript.sendMessage({ 'success': false,  "msg": "error response or timeout exceeded" + err.error})
-                }
-                if (reply) {
-                    // stores it
-                    //WorkerScript.sendMessage({ 'success': true,  "token": reply.oauth_token, "token_secret":reply.oauth_token_secret})
-                    cb.setToken(reply.oauth_token, reply.oauth_token_secret);
-                    WorkerScript.sendMessage({ 'success': true,  "token": reply.oauth_token, "token_secret":reply.oauth_token_secret})
-
-                    // gets the authorize screen URL
-                    cb.__call(
-                        "oauth_authorize",
-                        {},
-                        function (auth_url) {
-                            WorkerScript.sendMessage({ 'success': true,  "url":auth_url})
-                            //window.codebird_auth = window.open(auth_url);
+                    "oauth_requestToken",
+                    {oauth_callback: "oob"},
+                    function (reply,rate,err) {
+                        if (err) {
+                            WorkerScript.sendMessage({ 'success': false,  "msg": "error response or timeout exceeded" + err.error})
                         }
+                        if (reply) {
+                            // stores it
+                            //WorkerScript.sendMessage({ 'success': true,  "token": reply.oauth_token, "token_secret":reply.oauth_token_secret})
+                            cb.setToken(reply.oauth_token, reply.oauth_token_secret);
+                            WorkerScript.sendMessage({ 'success': true,  "token": reply.oauth_token, "token_secret":reply.oauth_token_secret})
+
+                            // gets the authorize screen URL
+                            cb.__call(
+                                        "oauth_authorize",
+                                        {},
+                                        function (auth_url) {
+                                            WorkerScript.sendMessage({ 'success': true,  "url":auth_url})
+                                            //window.codebird_auth = window.open(auth_url);
+                                        }
+                                        );
+                        }
+                    }
                     );
-                }
-            }
-        );
     }
     if (msg.action === 'oauth_accessToken') {
         cb.__call(
-            "oauth_accessToken",
-            {oauth_verifier: msg.oauth_verifier},
-            function (reply) {
-                cb.setToken(reply.oauth_token, reply.oauth_token_secret);
-                WorkerScript.sendMessage({ 'success': true,  "oauth_accessToken": true, "token": reply.oauth_token, "token_secret":reply.oauth_token_secret})
-            }
-        );
+                    "oauth_accessToken",
+                    {oauth_verifier: msg.oauth_verifier},
+                    function (reply) {
+                        cb.setToken(reply.oauth_token, reply.oauth_token_secret);
+                        WorkerScript.sendMessage({ 'success': true,  "oauth_accessToken": true, "token": reply.oauth_token, "token_secret":reply.oauth_token_secret})
+                    }
+                    );
     }
 
 }

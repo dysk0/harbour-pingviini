@@ -62,5 +62,6 @@ DISTFILES += \
     qml/pages/Splash.qml \
     qml/pages/MediaBlock.qml \
     qml/pages/Browser.qml \
-    qml/pages/Conversation.qml
+    qml/pages/Conversation.qml \
+    qml/logo.svg
 

@@ -27,9 +27,9 @@ Page {
         worker.sendMessage(msg2);
     }
     Timer {
-        interval: 5*1000; running: true; repeat: true
+        interval: 5*60*1000; running: true; repeat: true
         onTriggered: {
-            //pullData()
+            pullData()
 
 
             /*Logic.modelTL.append(Logic.parseTweet(Logic.tweet1))
@@ -38,14 +38,6 @@ Page {
         }
     }
 
-
-    Button {
-        text:"Pull"
-        onClicked: function(){
-            // pullData()
-
-        }
-    }
 
     WorkerScript {
         id: worker
@@ -75,15 +67,24 @@ Page {
             Logic.modelTL.append(Logic.parseTweet(Logic.tweet6))
             Logic.modelTL.append(Logic.parseTweet(Logic.tweet7))*/
 
+            /*
             if(Logic.getConfTW().OAUTH_TOKEN)
-                pageStack.push(Qt.resolvedUrl("FirstPage.qml"), {})
+                pageStack.replace(Qt.resolvedUrl("FirstPage.qml"), {})
             else
-                pageStack.push(Qt.resolvedUrl("AccountAdd.qml"), {})
+                pageStack.replace(Qt.resolvedUrl("AccountAdd.qml"), {})
+                */
         });
 
 
     }
 
+    Image {
+        width: parent.width
+        height: parent.height
+        source: "../../logo.svg"
+        sourceSize.width: 100
+        sourceSize.height: 100
+    }
 
 }
 

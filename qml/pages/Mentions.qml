@@ -16,18 +16,7 @@ import "../lib/Logic.js" as Logic
         Component.onCompleted: {
             if (modelMN.count === 0){
                 loadData("append")
-            } else {
-                if (scrollOffsetMN)
-                    contentY = scrollOffsetMN
             }
-            var obj = {};
-            Logic.mediator.installTo(obj);
-            obj.subscribe('confLoaded', function(){
-                console.log(typeof arguments)
-                console.log('confLoaded');
-                //timeline.loadData("append")
-                console.log(JSON.stringify(arguments));
-            });
         }
         ViewPlaceholder {
             enabled: Logic.modelMN.count == 0
@@ -37,13 +26,13 @@ import "../lib/Logic.js" as Logic
 
 
         function loadData(placement){
-            /*var msg = {
+            var msg = {
                 'action': 'getMentionsTimeline',
                 'model' : modelMN,
                 'mode'  : placement,
                 'conf'  : Logic.getConfTW()
             };
-            worker.sendMessage(msg);*/
+            worker.sendMessage(msg);
         }
 
         header: PageHeader {
@@ -55,7 +44,7 @@ import "../lib/Logic.js" as Logic
             MenuItem {
                 text: qsTr("Load more")
                 onClicked: {
-                    timeline.loadData("prepend")
+                    loadData("prepend")
                 }
             }
         }
@@ -64,7 +53,7 @@ import "../lib/Logic.js" as Logic
             MenuItem {
                 text: qsTr("Load more")
                 onClicked: {
-                    timeline.loadData("append")
+                    loadData("append")
                 }
             }
         }

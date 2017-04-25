@@ -8,34 +8,49 @@ Page {
     property string name : "";
     property string username : "";
     property string profileImage: "";
+    PageHeader {
+        id: header
+        title: '@'+username
+        description: name
+        Image {
+            id: avatar
+            x: Theme.horizontalPageMargin
+            y: Theme.paddingLarge
+            asynchronous: true
+            width: Theme.iconSizeLarge
+            height: width
+            source: profileImage
+        }
+    }
+
 
 
     // The effective value will be restricted by ApplicationWindow.allowedOrientations
     allowedOrientations: Orientation.All
-    Component.onCompleted: {
 
+    NewTweet {
+        type: "DM"
+        screenName: username
+        id: tweetPanel
+        anchors {
+            bottom: parent.bottom
+            left: parent.left
+            right: parent.right
+        }
     }
 
     SilicaListView {
-        header: Item {
-            width: parent.width
-            height: avatar.height + Theme.paddingLarge*2
-            PageHeader {
-                title: name
-                description: '@'+username
-            }
-            Image {
-                id: avatar
-                x: Theme.horizontalPageMargin
-                y: Theme.paddingLarge
-                asynchronous: true
-                width: Theme.iconSizeLarge
-                height: width
-                source: profileImage
-            }
-        }
+        Component.onCompleted: { positionViewAtIndex(count - 1, ListView.End)}
         model: tweets
-        anchors.fill: parent
+        anchors {
+            top: header.bottom
+            topMargin: Theme.paddingMedium
+            bottom: tweetPanel.top
+            left: parent.left
+            right: parent.right
+        }
+        clip: true
+
         delegate: BackgroundItem {
             height: lblText.paintedHeight + lblDate.paintedHeight + Theme.paddingSmall
             Label {

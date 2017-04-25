@@ -3,9 +3,11 @@ import Sailfish.Silica 1.0
 import "../lib/Logic.js" as Logic
 
 
-    SilicaListView {
+    ListView {
         //property type name: value
         id: timeline
+
+
         anchors {
             fill: parent
             leftMargin: 0
@@ -16,12 +18,7 @@ import "../lib/Logic.js" as Logic
 
         Component.onCompleted: {
             if (modelTL.count === 0){
-                //loadData("append")
-            } else {
-
-                console.log("positioning")
-                timeline.contentY = scrollOffsetTL
-
+                loadData("append")
             }
 
         }
