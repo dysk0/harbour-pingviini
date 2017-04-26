@@ -14,7 +14,7 @@ import "../lib/Logic.js" as Logic
         }
 
         Component.onCompleted: {
-            if (modelMN.count === 0){
+            if (Logic.modelMN.count === 0){
                 loadData("append")
             }
         }
@@ -28,7 +28,7 @@ import "../lib/Logic.js" as Logic
         function loadData(placement){
             var msg = {
                 'action': 'getMentionsTimeline',
-                'model' : modelMN,
+                'model' : Logic.modelMN,
                 'mode'  : placement,
                 'conf'  : Logic.getConfTW()
             };

@@ -1,6 +1,7 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 import "../lib/Logic.js" as Logic
+import "./cmp/"
 import QtGraphicalEffects 1.0
 
 Page {
@@ -8,19 +9,11 @@ Page {
     property string name : "";
     property string username : "";
     property string profileImage: "";
-    PageHeader {
+    ProfileHeader {
         id: header
-        title: '@'+username
-        description: name
-        Image {
-            id: avatar
-            x: Theme.horizontalPageMargin
-            y: Theme.paddingLarge
-            asynchronous: true
-            width: Theme.iconSizeLarge
-            height: width
-            source: profileImage
-        }
+        title: name
+        description: '@'+username
+        image: profileImage
     }
 
 
@@ -44,7 +37,6 @@ Page {
         model: tweets
         anchors {
             top: header.bottom
-            topMargin: Theme.paddingMedium
             bottom: tweetPanel.top
             left: parent.left
             right: parent.right

@@ -245,6 +245,26 @@ WorkerScript.onMessage = function(msg) {
                     );
     }
 
+    if (msg.action === 'users_show') {
+        cb.__call(
+                    "users_show",
+                    {screen_name: msg.screen_name},
+                    function (reply) {
+                        WorkerScript.sendMessage({ 'success': true,  "reply": reply, "action": msg.action})
+                    }
+                    );
+    }
+
+    if (msg.action === "friendships_destroy" || msg.action ===  "friendships_create") {
+        cb.__call(
+                    msg.action,
+                    {screen_name: msg.screen_name},
+                    function (reply) {
+                        WorkerScript.sendMessage({ 'success': true,  "reply": reply})
+                    }
+                    );
+    }
+
 }
 
 

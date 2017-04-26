@@ -31,7 +31,7 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 import "../lib/Logic.js" as Logic
-
+import "./cmp/"
 
 Page {
     property ListModel tweets;
@@ -46,33 +46,47 @@ Page {
 
     }
 
+    ProfileHeader {
+        id: header
+        title: tweets.get(selected).name
+        description: '@'+screenName
+        image: tweets.get(selected).profileImageUrl
+    }
+
+    NewTweet {
+        id: tweetPanel
+        anchors {
+            bottom: parent.bottom
+            left: parent.left
+            right: parent.right
+        }
+        type: tweetType
+        tweetId: tweets.get(selected).id_str;
+        placedText: screenName ? '@'+screenName : ""
+    }
+
     SilicaListView {
         id: listView
         model: 1
-        anchors.fill: parent
+        anchors {
+            top: header.bottom
+            bottom: tweetPanel.top
+            left: parent.left
+            right: parent.right
+        }
+        clip: true
 
         header: Item {
             width: parent.width
-            height: avatar.height + Theme.paddingLarge*3 + lblText.paintedHeight + mediaImg.height + ( mediaImg.height > 0 ? Theme.paddingLarge : 0)
-            PageHeader {
-                title: tweets.get(selected).name
-                description: '@'+screenName
-            }
-            Image {
-                id: avatar
-                x: Theme.horizontalPageMargin
-                y: Theme.paddingLarge
-                asynchronous: true
-                width: Theme.iconSizeLarge
-                height: width
-                source: tweets.get(selected).profileImageUrl
-            }
+            height:  Theme.paddingLarge*2+ lblText.paintedHeight + mediaImg.height + ( mediaImg.height > 0 ? Theme.paddingLarge : 0)
+
+
             Text {
                 id: lblText
                 anchors {
                     left: parent.left
                     right: parent.right
-                    top: avatar.bottom
+                    top: parent.top
                     topMargin: Theme.paddingLarge
                     rightMargin: Theme.paddingLarge
                     leftMargin: Theme.paddingLarge
@@ -133,12 +147,6 @@ Page {
             onClicked: function(){
                 console.log("Clicked " + index)
             }
-        }
-
-        footer: NewTweet {
-            type: tweetType
-            tweetId: tweets.get(selected).id_str;
-            placedText: screenName ? '@'+screenName : ""
         }
         VerticalScrollDecorator {}
     }

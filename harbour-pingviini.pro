@@ -21,6 +21,7 @@ OTHER_FILES += qml/harbour-pingviini.qml \
     qml/pages/FirstPage.qml \
     lib/* \
     qml/pages/CmpTweet.qml \
+    qml/pages/cmp/Stats.qml \
     qml/pages/JSONListModel.qml \
     qml/pages/TweetToolBar.qml \
     qml/pages/Timeline.qml \
@@ -63,5 +64,7 @@ DISTFILES += \
     qml/pages/MediaBlock.qml \
     qml/pages/Browser.qml \
     qml/pages/Conversation.qml \
-    qml/logo.svg
+    qml/logo.svg \
+    qml/pages/Profile.qml \
+    qml/pages/cmp/ProfileHeader.qml
 

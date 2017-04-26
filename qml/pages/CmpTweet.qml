@@ -40,6 +40,7 @@ BackgroundItem {
         smooth: true
         source: profileImageUrl
         visible: false
+
     }
     Rectangle {
         id: avatarMask
@@ -52,6 +53,7 @@ BackgroundItem {
         radius: Theme.iconSizeMedium*0.08
         anchors.centerIn: avatar
         visible: true
+
     }
 
     OpacityMask {
@@ -65,8 +67,13 @@ BackgroundItem {
         MouseArea {
             anchors.fill: parent
             onClicked: {
-                // pageStack.push( avatar );
+                pageStack.push(Qt.resolvedUrl("Profile.qml"), {
+                                   "name": name,
+                                   "username": screenName,
+                                   "profileImage": profileImageUrl
+                               })
             }
+
         }
     }
 

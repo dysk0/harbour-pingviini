@@ -42,53 +42,63 @@ Page {
     onStatusChanged: {
 
     }
+    SilicaFlickable {
+        anchors.fill: parent
+        BusyIndicator {
+                size: BusyIndicatorSize.Large
+                anchors.centerIn: parent
+                running: webView.loading
+            }
 
-    SilicaWebView {
-        id: webView
-        url: href
-        anchors {
-            top: parent.top
-            left: parent.left
-            right: parent.right
-            bottom: parent.bottom
-        }
 
-        opacity: 0
-        onLoadingChanged: {
-            switch (loadRequest.status)
-            {
-            case WebView.LoadSucceededStatus:
-                opacity = 1
-                break
-            case WebView.LoadFailedStatus:
-                opacity = 0
-                viewPlaceHolder.errorString = loadRequest.errorString
-                break
-            default:
-                opacity = 0
-                break
+        SilicaWebView {
+            id: webView
+            url: href
+            anchors {
+                top: parent.top
+                left: parent.left
+                right: parent.right
+                bottom: parent.bottom
+            }
+
+
+
+            opacity: 0
+            onLoadingChanged: {
+                switch (loadRequest.status)
+                {
+                case WebView.LoadSucceededStatus:
+                    opacity = 1
+                    break
+                case WebView.LoadFailedStatus:
+                    opacity = 0
+                    viewPlaceHolder.errorString = loadRequest.errorString
+                    break
+                default:
+                    opacity = 0
+                    break
+                }
+            }
+
+            FadeAnimation on opacity {}
+            PullDownMenu {
+                MenuItem {
+                    text: "Reload"
+                    onClicked: webView.reload()
+                }
             }
         }
 
-        FadeAnimation on opacity {}
-        PullDownMenu {
-            MenuItem {
-                text: "Reload"
-                onClicked: webView.reload()
-            }
+        ViewPlaceholder {
+            id: viewPlaceHolder
+            property string errorString
+
+            enabled: webView.opacity === 0 && !webView.loading
+            text: errorString
+            hintText: "Check network connectivity and pull down to reload"
         }
+
+
+
     }
-
-    ViewPlaceholder {
-        id: viewPlaceHolder
-        property string errorString
-
-        enabled: webView.opacity === 0 && !webView.loading
-        text: "Web content load error: " + errorString
-        hintText: "Check network connectivity and pull down to reload"
-    }
-
-
-
-
 }

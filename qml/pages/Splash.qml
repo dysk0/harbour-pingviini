@@ -67,12 +67,12 @@ Page {
             Logic.modelTL.append(Logic.parseTweet(Logic.tweet6))
             Logic.modelTL.append(Logic.parseTweet(Logic.tweet7))*/
 
-            /*
+
             if(Logic.getConfTW().OAUTH_TOKEN)
                 pageStack.replace(Qt.resolvedUrl("FirstPage.qml"), {})
             else
                 pageStack.replace(Qt.resolvedUrl("AccountAdd.qml"), {})
-                */
+
         });
 
 
