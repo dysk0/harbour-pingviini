@@ -3,7 +3,7 @@ import Sailfish.Silica 1.0
 import "../lib/Logic.js" as Logic
 
 
-    ListView {
+    SilicaListView {
         //property type name: value
         id: timeline
 

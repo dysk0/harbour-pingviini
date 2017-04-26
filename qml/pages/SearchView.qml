@@ -14,8 +14,11 @@ SilicaListView {
     header: SearchField {
         width: parent.width
         placeholderText: "Search"
-        onTextChanged: {
-            //loadData("append")
+        labelVisible: false
+        EnterKey.iconSource: "image://theme/icon-m-enter-close"
+        EnterKey.onClicked: {
+            loadData("append")
+            focus = false
         }
     }
 

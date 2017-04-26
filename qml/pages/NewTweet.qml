@@ -40,7 +40,8 @@ Item {
 
     IconButton {
         id: attachBtn
-        width: Theme.iconSizeSmall
+        visible: false
+        width: visible ? Theme.iconSizeSmall : 0
         height: width
         icon.source: "image://theme/icon-s-attach"
         anchors {
@@ -80,9 +81,10 @@ Item {
             verticalCenter: parent.verticalCenter
         }
         autoScrollEnabled: true
-        label: (140 - shortenText.length) + ' chars left for your ' + (type == "New" ? "tweet" : "reply")
+        //label: (140 - shortenText.length) + ' chars left for your ' + (type == "New" ? "tweet" : "reply")
         placeholderText: "Enter your tweet"
         text: placedText
+        labelVisible: false
         focus: true
         height: implicitHeight
         horizontalAlignment: Text.AlignLeft

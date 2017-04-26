@@ -45,12 +45,14 @@ Page {
             }
             ExpandingSectionGroup {
                 currentIndex: 0
+                width: parent.width
                 ExpandingSection {
                     id: step1
                     title: "Step 1"
                     content.sourceComponent: Column {
-                        width: step1.width
-                        spacing: Theme.paddingLarge
+                        width: parent.width
+                        spacing: Theme.paddingMedium
+                        anchors.bottomMargin: Theme.paddingLarge
                         Label {
                             anchors {
                                 margins:  Theme.paddingLarge
@@ -78,6 +80,9 @@ Page {
                                 //console.log({tokenTempo: tokenTempo, tokenSecretTempo: tokenSecretTempo})
                             }
                         }
+                        Label {
+                            text: " "
+                        }
                     }
 
                 }
@@ -90,6 +95,7 @@ Page {
                             id: oauthVerifier
                             width: parent.width
                             label: "Authorization Code"
+                            inputMethodHints: Qt.ImhDialableCharactersOnly
                             placeholderText: "Retype authorization code here"
                             focus: true
                             EnterKey.onClicked: {
