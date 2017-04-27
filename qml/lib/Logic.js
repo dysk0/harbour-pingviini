@@ -72,6 +72,7 @@ var modelDMsent = Qt.createQmlObject('import QtQuick 2.0; ListModel {   }', Qt.a
 var modelDMrecived = Qt.createQmlObject('import QtQuick 2.0; ListModel {   }', Qt.application, 'InternalQmlObject');
 var modelTL = Qt.createQmlObject('import QtQuick 2.0; ListModel {   }', Qt.application, 'InternalQmlObject');
 var modelMN = Qt.createQmlObject('import QtQuick 2.0; ListModel {   }', Qt.application, 'InternalQmlObject');
+var modelSE = Qt.createQmlObject('import QtQuick 2.0; ListModel {   }', Qt.application, 'InternalQmlObject');
 var mediator = (function(){
      var subscribe = function(channel, fn){
           if(!mediator.channels[channel]) mediator.channels[channel] = [];
@@ -98,7 +99,7 @@ var mediator = (function(){
      };
 }());
 
-var db = LS.LocalStorage.openDatabaseSync("pingviini-db", "", "pingviini", 100000);
+var db = LS.LocalStorage.openDatabaseSync("pingviinia", "", "pingviini", 100000);
 var conf = {}
 
 

@@ -1,5 +1,6 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
+import "./cmp/"
 import "../lib/Logic.js" as Logic
 
 
@@ -11,6 +12,7 @@ import "../lib/Logic.js" as Logic
         anchors {
             fill: parent
             leftMargin: 0
+            top: parent.top
             topMargin: 0
             rightMargin: page.isPortrait ? 0 : infoPanel.visibleSize
             bottomMargin: page.isPortrait ? infoPanel.visibleSize : 0
@@ -38,9 +40,25 @@ import "../lib/Logic.js" as Logic
             };
             worker.sendMessage(msg);
         }
+        property var locale: Qt.locale()
         section {
-            property: 'createdAt'
+            property: 'section'
             criteria: ViewSection.FullString
+            delegate: SectionHeader  {
+                text: {
+                    var dat = Date.fromLocaleDateString(locale, section);
+                    dat = Format.formatDate(dat, Formatter.TimepointRelativeCurrentDay)
+                    if (dat === "00:00:00" || dat === "00:00") {
+                        visible = false;
+                        height = 0;
+                        return  " ";
+                    }else {
+                        return dat;
+                    }
+
+                }
+
+            }
         }
 
         header: PageHeader {

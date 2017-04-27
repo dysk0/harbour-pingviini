@@ -1,5 +1,6 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
+import "./cmp/"
 import "../lib/Logic.js" as Logic
 
 
@@ -29,12 +30,23 @@ Page {
     Timer {
         interval: 5*60*1000; running: true; repeat: true
         onTriggered: {
-            pullData()
+           // pullData()
 
 
             /*Logic.modelTL.append(Logic.parseTweet(Logic.tweet1))
             Logic.modelTL.append(Logic.parseTweet(Logic.tweet3))
             Logic.modelTL.append(Logic.parseTweet(Logic.tweet2))*/
+        }
+    }
+    Timer {
+        id: splashTimer
+        interval: 2500; running: false; repeat: false
+        onTriggered: {
+            if(Logic.getConfTW().OAUTH_TOKEN)
+                pageStack.replace(Qt.resolvedUrl("FirstPage.qml"), {})
+            else
+                pageStack.replace(Qt.resolvedUrl("AccountAdd.qml"), {})
+
         }
     }
 
@@ -68,10 +80,7 @@ Page {
             Logic.modelTL.append(Logic.parseTweet(Logic.tweet7))*/
 
 
-            if(Logic.getConfTW().OAUTH_TOKEN)
-                pageStack.replace(Qt.resolvedUrl("FirstPage.qml"), {})
-            else
-                pageStack.replace(Qt.resolvedUrl("AccountAdd.qml"), {})
+            splashTimer.running = true
 
         });
 
@@ -79,11 +88,15 @@ Page {
     }
 
     Image {
-        width: parent.width
-        height: parent.height
-        source: "../../logo.svg"
-        sourceSize.width: 100
-        sourceSize.height: 100
+        width: Theme.itemSizeHuge
+        height: width
+        fillMode: Image.PreserveAspectFit
+        //source: "../logo.svg"
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.verticalCenter: parent.verticalCenter
+        PingviiniiLogo {
+            anchors.fill: parent
+        }
     }
 
 }

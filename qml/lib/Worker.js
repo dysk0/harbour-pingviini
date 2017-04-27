@@ -66,7 +66,7 @@ WorkerScript.onMessage = function(msg) {
                         if (msg.mode === "prepend") {
                             length--;
                         } else if (msg.mode === "append"){
-                            i = 1;
+                            i = msg.model.count === 0 ? 0 : 1 ;
                         }
 
                         for (i; i < length; i++) {
@@ -112,17 +112,6 @@ WorkerScript.onMessage = function(msg) {
             params['q'] = msg.params.q
         }
 
-        if (msg.model.count) {
-            if (msg.mode === "append") {
-                params['max_id'] = msg.model.get(msg.model.count-1).id
-            }
-            if (msg.mode === "prepend") {
-                params['since_id'] = msg.model.get(0).id
-            }
-        } else {
-            msg.mode = "append";
-        }
-
         console.log('search_tweets '+JSON.stringify(params))
 
         cb.__call(
@@ -134,7 +123,7 @@ WorkerScript.onMessage = function(msg) {
                             return;
                         }
 
-                        console.log(JSON.stringify(reply.statuses))
+
                         var i = 0;
                         if (msg.mode === "prepend") {
                             length--;
@@ -156,7 +145,7 @@ WorkerScript.onMessage = function(msg) {
 
                         }
                         msg.model.sync();
-                        console.log(msg.model.count);
+                        console.log(msg.model.count)
 
                     });
 

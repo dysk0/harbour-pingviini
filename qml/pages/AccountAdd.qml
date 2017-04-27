@@ -22,6 +22,8 @@ Page {
                 console.log("User added")
                 console.log(JSON.stringify(Logic.getConfTW()))
                 Logic.saveData();
+                if (messageObject.oauth_accessToken)
+                    pageStack.replace(Qt.resolvedUrl("FirstPage.qml"), {})
                 //Logic.initialize()
             }
 
@@ -55,7 +57,12 @@ Page {
                         anchors.bottomMargin: Theme.paddingLarge
                         Label {
                             anchors {
-                                margins:  Theme.paddingLarge
+                                left: parent.left
+                                right: parent.right
+                                margins: {
+                                    left: Theme.paddingLarge
+                                    rigth: Theme.paddingLarge
+                                }
                             }
                             width: parent.width
                             wrapMode: Text.Wrap
@@ -63,7 +70,7 @@ Page {
                         }
 
                         Button {
-                            text: 'Authorize app'
+                            text: 'Open browser'
                             anchors { horizontalCenter: parent.horizontalCenter;}
                             onClicked: {
                                 enabled = !enabled
@@ -91,6 +98,21 @@ Page {
                     title: "Step 2"
                     content.sourceComponent: Column {
                         width: step2.width
+                        Label {
+                            anchors {
+                                left: parent.left
+                                right: parent.right
+                                margins: {
+                                    left: Theme.paddingLarge
+                                    rigth: Theme.paddingLarge
+                                    bottom: Theme.paddingLarge
+                                }
+                            }
+                            width: parent.width
+                            wrapMode: Text.Wrap
+                            text: "Authorize Pingviini to use your account by entering PIN to complete the authorization process:"
+                        }
+
                         TextField {
                             id: oauthVerifier
                             width: parent.width
@@ -100,22 +122,31 @@ Page {
                             focus: true
                             EnterKey.onClicked: {
                                 parent.focus = true;
+                                auth()
                             }
                         }
 
                         Button {
-                            text: 'Go!'
+                            text: 'Authorize'
+                            anchors { horizontalCenter: parent.horizontalCenter;}
                             onClicked: {
-                                enabled = !enabled
-                                step1.expanded = false
-                                step2.expanded = true
-                                var msg = {
-                                    'action': 'oauth_accessToken',
-                                    'oauth_verifier': oauthVerifier.text,
-                                    'conf'  : Logic.getConfTW()
-                                };
-                                worker.sendMessage(msg);
+                                auth()
                             }
+
+                        }
+                        function auth(){
+                            enabled = !enabled
+                            step1.expanded = false
+                            step2.expanded = true
+                            var msg = {
+                                'action': 'oauth_accessToken',
+                                'oauth_verifier': oauthVerifier.text,
+                                'conf'  : Logic.getConfTW()
+                            };
+                            worker.sendMessage(msg);
+                        }
+                        Label {
+                            text: " "
                         }
                     }
 

@@ -75,6 +75,26 @@ SilicaListView {
         }
     }
 
+    property var locale: Qt.locale()
+    section {
+        property: 'section'
+        criteria: ViewSection.FullString
+        delegate: SectionHeader  {
+            text: {
+                var dat = Date.fromLocaleDateString(locale, section);
+                dat = Format.formatDate(dat, Formatter.TimepointRelativeCurrentDay)
+                if (dat === "00:00:00" || dat === "00:00") {
+                    visible = false;
+                    height = 0;
+                    return  " ";
+                }else {
+                    return dat;
+                }
+
+            }
+
+        }
+    }
 
     clip: isPortrait && (infoPanel.expanded)
 

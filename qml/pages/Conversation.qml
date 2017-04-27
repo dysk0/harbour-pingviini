@@ -33,6 +33,7 @@ Page {
     }
 
     SilicaListView {
+
         Component.onCompleted: { positionViewAtIndex(count - 1, ListView.End)}
         model: tweets
         anchors {
@@ -42,6 +43,26 @@ Page {
             right: parent.right
         }
         clip: true
+        property var locale: Qt.locale()
+        section {
+            property: 'section'
+            criteria: ViewSection.FullString
+            delegate: SectionHeader  {
+                text: {
+                    var dat = Date.fromLocaleDateString(locale, section);
+                    dat = Format.formatDate(dat, Formatter.TimepointRelativeCurrentDay)
+                    if (dat === "00:00:00" || dat === "00:00") {
+                        visible = false;
+                        height = 0;
+                        return  " ";
+                    }else {
+                        return dat;
+                    }
+
+                }
+
+            }
+        }
 
         delegate: BackgroundItem {
             height: lblText.paintedHeight + lblDate.paintedHeight + Theme.paddingSmall

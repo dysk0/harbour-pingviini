@@ -66,5 +66,6 @@ DISTFILES += \
     qml/pages/Conversation.qml \
     qml/logo.svg \
     qml/pages/Profile.qml \
-    qml/pages/cmp/ProfileHeader.qml
+    qml/pages/cmp/ProfileHeader.qml \
+    qml/pages/cmp/PingviiniiLogo.qml
 

@@ -135,12 +135,12 @@ Page {
         visible: !infoPanel.open
         icon.source: "image://theme/icon-l-add"
         onClicked: {
-            pageStack.push(Qt.resolvedUrl("TweetDetails.qml"), {})
+            pageStack.push(Qt.resolvedUrl("TweetDetails.qml"), {title: "New Tweet", tweetType: "New"})
         }
     }
     function onLinkActivated(href){
-        if (href[0] == '#' || href[0] == '@' ) {
-            searchViewComponent.searchTerm = href
+        if (href[0] === '#' || href[0] === '@' ) {
+            searchViewComponent.search(href)
             navigation.navigateTo('search')
 
         } else {

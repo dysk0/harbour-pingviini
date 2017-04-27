@@ -6,9 +6,21 @@ import "../lib/Logic.js" as Logic
 
 SilicaListView {
 
-    property string searchTerm: "valuea"
+    property string searchTerm: headerItem.text
+    property bool loadStarted : false;
+    property var locale: Qt.locale()
+    property int scrollOffset;
+
+    signal search(string term);
     ListModel {
-        id: searchModel
+        id: modelSE
+    }
+
+    onSearch: {
+
+        searchTerm = term;
+        headerItem.text = term
+        loadData("append")
     }
 
     header: SearchField {
@@ -17,6 +29,8 @@ SilicaListView {
         labelVisible: false
         EnterKey.iconSource: "image://theme/icon-m-enter-close"
         EnterKey.onClicked: {
+
+            searchTerm = text
             loadData("append")
             focus = false
         }
@@ -26,19 +40,21 @@ SilicaListView {
     function loadData(placement){
         var msg = {
             'action': 'search_tweets',
-            'model' : searchModel,
-            'mode'  : placement,
-            'params'  : {'q' : headerItem.text},
+            'model' : modelSE,
+            'mode'  : "append",
+            'params'  : {'q' : searchTerm},
             'conf'  : Logic.getConfTW()
         };
-        worker.sendMessage(msg);
+        modelSE.clear()
+        if (searchTerm)
+            worker.sendMessage(msg);
     }
-    Component.onCompleted: loadData("append")
 
 
 
 
-    model: searchModel
+
+    model: modelSE
     delegate: CmpTweet {}
 
 
@@ -52,31 +68,63 @@ SilicaListView {
 
 
     ViewPlaceholder {
-        enabled: searchModel.count == 0
+        enabled: modelSE.count === 0 && headerItem.text !== ""
         text: "Searching"
         hintText: "Please wait..."
     }
 
 
 
+    section {
+        property: 'section'
+        criteria: ViewSection.FullString
+        delegate: SectionHeader  {
+            text: {
+                var dat = Date.fromLocaleDateString(locale, section);
+                dat = Format.formatDate(dat, Formatter.TimepointRelativeCurrentDay)
+                if (dat === "00:00:00" || dat === "00:00") {
+                    visible = false;
+                    height = 0;
+                    return  " ";
+                }else {
+                    return dat;
+                }
+
+            }
+
+        }
+    }
 
 
-    PullDownMenu {
+    PushUpMenu {
         spacing: Theme.paddingLarge
-        MenuItem {
+        /*MenuItem {
             text: qsTr("Load more")
             onClicked: {
                 loadData("prepend")
             }
-        }
-    }
-    PushUpMenu {
-        spacing: Theme.paddingLarge
-
+        }*/
     }
 
 
     clip: isPortrait && (infoPanel.expanded)
+
+    onCountChanged: {
+        contentY = scrollOffset
+    }
+    onContentYChanged: {
+
+        if (contentY > scrollOffset) {
+            infoPanel.open = false
+        } else {
+            if (contentY < 100 && !loadStarted){
+                //timeline.loadData("prepend")
+                //loadStarted = true;
+            }
+            infoPanel.open = true
+        }
+        scrollOffset = contentY
+    }
 
 
 

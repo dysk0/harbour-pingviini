@@ -36,21 +36,26 @@ import "./cmp/"
 Page {
     property ListModel tweets;
     property string selected;
-    property string screenName;
-    property string tweetType: "New";
+    property alias title: header.title;
+    property alias screenName: tweetPanel.screenName;
+    property string tweetType: "Reply";
 
 
     // The effective value will be restricted by ApplicationWindow.allowedOrientations
     allowedOrientations: Orientation.All
     Component.onCompleted: {
-
+        if (selected){
+            title =  tweets.get(selected).name
+            header.image = tweets.get(selected).profileImageUrl
+            tweetPanel.tweetId = tweets.get(selected).id_str;
+        }
     }
 
     ProfileHeader {
         id: header
-        title: tweets.get(selected).name
-        description: '@'+screenName
-        image: tweets.get(selected).profileImageUrl
+        title: ""
+        description: screenName ? '@'+screenName : ""
+
     }
 
     NewTweet {
@@ -61,8 +66,7 @@ Page {
             right: parent.right
         }
         type: tweetType
-        tweetId: tweets.get(selected).id_str;
-        placedText: screenName ? '@'+screenName : ""
+        screenName: screenName ? screenName : ""
     }
 
     SilicaListView {
@@ -91,8 +95,8 @@ Page {
                     rightMargin: Theme.paddingLarge
                     leftMargin: Theme.paddingLarge
                 }
+                text: selected ? tweets.get(selected).richText : ""
                 height: paintedHeight
-                text: tweets.get(selected).richText
                 textFormat:Text.RichText
                 onLinkActivated: console.log(link + " link activated")
                 linkColor : Theme.highlightColor
@@ -116,7 +120,7 @@ Page {
                 width: 200
                 height: 0
                 visible: {
-                    if (tweets.get(selected).mediaUrl){
+                    if (selected){
                         source = tweets.get(selected).mediaUrl
                         height = 200
                         return true

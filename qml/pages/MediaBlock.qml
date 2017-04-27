@@ -70,7 +70,7 @@ Item {
             fillMode: Image.PreserveAspectCrop
             asynchronous: true
             visible: {
-                if (model.count > 0 && model.get(0).type === "photo"){
+                if (count > 0 && model.get(0).type === "photo"){
                     source = model.get(0).src
                     height = 200
                     return true
@@ -94,7 +94,7 @@ Item {
             fillMode: Image.PreserveAspectCrop
             asynchronous: true
             visible: {
-                if (model.count >= 1 && model.get(1) && model.get(1).type === "photo"){
+                if (count >= 1 && model.get(1) && model.get(1).type === "photo"){
                     source = model.get(1).src
                     height = 200
                     return true
@@ -116,7 +116,7 @@ Item {
             fillMode: Image.PreserveAspectCrop
             asynchronous: true
             visible: {
-                if (model.count >= 2){
+                if (count >= 2){
                     source = model.get(2).src
                     height = 200
                     return true
@@ -138,7 +138,7 @@ Item {
             fillMode: Image.PreserveAspectCrop
             asynchronous: true
             visible: {
-                if (model.count >= 3){
+                if (count >= 3){
                     source = model.get(3).src
                     height = 200
                     return true

@@ -167,6 +167,7 @@ function parseDM(dmJson, isReceiveDM) {
         isVerified: false,
         isReceiveDM: isReceiveDM
     }
+    dm.section = dm.createdAt.toLocaleDateString()
     return dm;
 }
 
@@ -184,7 +185,7 @@ function parseTweet(tweetJson) {
         highlights: "",
         retweetScreenName: tweetJson.user.screen_name
     }
-    tweet.section = tweet.createdAt.toLocaleDateString();
+    tweet.section = tweet.createdAt.toLocaleDateString()
     var originalTweetJson = {};
     if (tweetJson.retweeted_status) {
         originalTweetJson = tweetJson.retweeted_status;

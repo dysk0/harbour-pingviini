@@ -24,15 +24,24 @@ Item {
         onMessage: myText.text = messageObject.reply
     }
     function tweet(){
-        /*Logic.postStatus(newTweet.text, tweetId, latitude, longitude, function(e){
-           console.log(JSON.stringify(e))
-       }, function(e){console.log(JSON.stringify(e))})*/
+
         var msg = {
             'action': 'statuses_update',
             'model' : Logic.modelTL,
-            'params'  : {'status': newTweet.text, 'in_reply_to_status_id':tweetId},
+            'params'  : {'status': newTweet.text},
             'conf'  : Logic.getConfTW()
         };
+        if (type === "DM") {
+            msg.params.status = "D @" + screenName + " " + newTweet.text
+        }
+        if (type === "Reply") {
+            msg.params['in_reply_to_status_id'] = tweetId
+            if (msg.params['status'].toLowerCase().indexOf(screenName.toLowerCase()) < 0){
+                msg.params['status'] = "@" + screenName + " " + newTweet.text
+            }
+        }
+
+        console.log(screenName + " " + msg.params['status'].indexOf(screenName) + ' ' + type + " " + JSON.stringify(msg.params))
         worker.sendMessage(msg);
     }
 
@@ -40,13 +49,12 @@ Item {
 
     IconButton {
         id: attachBtn
-        visible: false
-        width: visible ? Theme.iconSizeSmall : 0
+        visible: newTweet.text.length == 0 ? true : false
+        width: visible ? Theme.iconSizeMedium : 0
         height: width
         icon.source: "image://theme/icon-s-attach"
         anchors {
-            left: parent.left
-            leftMargin: Theme.paddingLarge
+            right: parent.right
             bottom: newTweet.bottom
         }
 
@@ -54,12 +62,13 @@ Item {
     }
     IconButton {
         id: sendBtn
+        visible: newTweet.text.length != 0 ? true : false
         width: Theme.iconSizeMedium
         height: width
         icon.source: "image://theme/icon-m-enter-next"
         anchors {
             right: parent.right
-            bottom: attachBtn.bottom
+            bottom: newTweet.bottom
         }
         onClicked: tweet()
     }
@@ -75,7 +84,7 @@ Item {
 
         errorHighlight: newTweet.text < 0 && type != "RT"
         anchors {
-            left: attachBtn.right
+            left: parent.left
             rightMargin: Theme.paddingSmall
             right: sendBtn.left
             verticalCenter: parent.verticalCenter

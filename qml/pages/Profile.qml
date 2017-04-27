@@ -136,7 +136,7 @@ Page {
                     }
 
                 }
-                ExpandingSection {
+                /*ExpandingSection {
                     title: "Tweets"
                     content.sourceComponent: Column {
                         width: parent.width
@@ -149,7 +149,7 @@ Page {
                             }
                         }
                     }
-                }
+                }*/
             }
         }
 
