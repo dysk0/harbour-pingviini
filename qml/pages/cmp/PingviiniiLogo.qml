@@ -1,5 +1,7 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
+import QtGraphicalEffects 1.0
+
 
 Item {
     width: Theme.itemSizeMedium
@@ -7,6 +9,7 @@ Item {
     property int w: width
     property double opac: 1.0
     property int line: w*0.13
+    property int eyeW:   w*0.45
     Rectangle {
         id: circle
         anchors.fill: parent
@@ -47,6 +50,18 @@ Item {
         opacity: opac
     }
     Rectangle {
+        id: bga
+        width: eyeW
+        height: w/2
+        anchors {
+            right: parent.right
+            rightMargin: line
+            bottom: parent.bottom
+        }
+
+        color: "#d1d1d1"
+    }
+    Rectangle {
         id: circleSmaller
         anchors {
             fill: parent
@@ -61,30 +76,70 @@ Item {
     }
     Rectangle {
         id: eye
-        width: w*0.48
+        width: eyeW
         height: width
         anchors {
             right: parent.right
             rightMargin: line
             bottom: parent.bottom
-            bottomMargin: line*1.35
+            bottomMargin: line*2
         }
         radius: width;
         color: "#FFF"
-        opacity: opac
+        Rectangle {
+            id: eyeBall
+            width: w*0.13
+            height: width
+            anchors {
+                right: parent.right
+                rightMargin: parent.width*0.15
+                bottom: parent.bottom
+                bottomMargin: parent.width*0.25
+            }
+            radius: width;
+            color: "#000"
+        }
+        Timer{
+            interval: 2; running: true; repeat: true
+            onTriggered: {
+                parent.rotation = parent.rotation+1
+            }
+        }
     }
-    Rectangle {
-        id: eyeBall
-        width: w*0.13
+    /*Rectangle {
+        id: kljun
+        width: eyeW*1.3
         height: width
         anchors {
             right: parent.right
-            rightMargin: line*2.1
             bottom: parent.bottom
-            bottomMargin: line*2.3
+            rightMargin: -width/2
+            bottomMargin: -width/2
         }
         radius: width;
-        color: "#000"
-        opacity: opac
+        opacity: 0.8
+        color: "#B84902"
+    }*/
+    Rectangle {
+        id: kljunMaska
+        width: eyeW*1.3/3
+        height: width
+        anchors {
+            right: parent.right
+            bottom: parent.bottom
+        }
+        color: "#B84902"
     }
+
+    /*OpacityMask {
+        id: maskedProfilePicture
+        source: kljun
+        maskSource: kljunMaska
+        anchors.fill: kljun
+
+        Behavior on opacity { NumberAnimation {} }
+    }*/
+
+
 }
+

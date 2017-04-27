@@ -13,7 +13,7 @@ Item {
     property double latitude: 0
     property double longitude: 0
     width: parent.width
-    height: newTweet.height + Theme.paddingMedium*2
+    height: newTweet.height + Theme.paddingMedium*3 + (tweetExtra.open ? tweetExtra.height + Theme.paddingLarge*2 : 0)
     anchors {
         left: parent.left
         right: parent.right
@@ -21,7 +21,7 @@ Item {
     WorkerScript {
         id: worker
         source: "../lib/Worker.js"
-        onMessage: myText.text = messageObject.reply
+        onMessage: console.log(JSON.stringify(messageObject))
     }
     function tweet(){
 
@@ -57,6 +57,9 @@ Item {
             right: parent.right
             bottom: newTweet.bottom
         }
+        onClicked: {
+            tweetExtra.open = !tweetExtra.open
+        }
 
 
     }
@@ -73,8 +76,33 @@ Item {
         onClicked: tweet()
     }
 
+    Rectangle {
+        width: parent.width
+        height: progressBar.height
+        color: Theme.highlightBackgroundColor
+        opacity: 0.2
+        anchors {
+            left: parent.left
+            right: parent.right
+            bottom: newTweet.top
+        }
+    }
+    Rectangle {
+        id: progressBar
+        width: newTweet.text.length ? newTweetPanel.width*(newTweet.text.length/140) : 0;
+
+        height: Theme.itemSizeSmall * 0.05
+        color: Theme.highlightBackgroundColor
+        opacity: 0.3
+        anchors {
+            left: parent.left
+            bottom: newTweet.top
+        }
+    }
+
     TextArea {
         id: newTweet
+
         property string shortenText: newTweet.text.replace(/https?:\/\/\S+/g, __replaceLink)
         function __replaceLink(w) {
             if (w.indexOf("https://") === 0)
@@ -84,10 +112,12 @@ Item {
 
         errorHighlight: newTweet.text < 0 && type != "RT"
         anchors {
+            top: parent.top
+            topMargin: Theme.paddingSmall
             left: parent.left
             rightMargin: Theme.paddingSmall
             right: sendBtn.left
-            verticalCenter: parent.verticalCenter
+
         }
         autoScrollEnabled: true
         //label: (140 - shortenText.length) + ' chars left for your ' + (type == "New" ? "tweet" : "reply")
@@ -101,10 +131,33 @@ Item {
             //tweet()
         }
         onTextChanged: {
+            sendBtn.enabled = text.length > 140 ? false : true
             newTweet.color = (text.length > 140 ? "red": Theme.primaryColor)
         }
 
     }
 
+    DockedPanel {
+        id: tweetExtra
+
+        width: parent.width
+        height: Theme.itemSizeExtraLarge
+
+        dock: Dock.Bottom
+
+        Flow {
+            anchors.centerIn: parent
+
+            Switch {
+                icon.source: "image://theme/icon-m-shuffle"
+            }
+            Switch {
+                icon.source: "image://theme/icon-m-repeat"
+            }
+            Switch {
+                icon.source: "image://theme/icon-m-share"
+            }
+        }
+    }
 
 }

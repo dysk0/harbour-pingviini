@@ -40,7 +40,7 @@ Page {
     }
     Timer {
         id: splashTimer
-        interval: 2500; running: false; repeat: false
+        interval: 1500; running: false; repeat: false
         onTriggered: {
             if(Logic.getConfTW().OAUTH_TOKEN)
                 pageStack.replace(Qt.resolvedUrl("FirstPage.qml"), {})
