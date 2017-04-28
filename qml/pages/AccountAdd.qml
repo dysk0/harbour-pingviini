@@ -124,10 +124,16 @@ Page {
                                 parent.focus = true;
                                 auth()
                             }
+                            onTextChanged: {
+                                if (text.length == 7)
+                                    btnAuth.enabled = true;
+                            }
                         }
 
                         Button {
+                            id: btnAuth
                             text: 'Authorize'
+                            enabled: false
                             anchors { horizontalCenter: parent.horizontalCenter;}
                             onClicked: {
                                 auth()

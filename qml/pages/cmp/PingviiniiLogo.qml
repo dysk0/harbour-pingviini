@@ -1,7 +1,5 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
-import QtGraphicalEffects 1.0
-
 
 Item {
     width: Theme.itemSizeMedium
@@ -106,39 +104,49 @@ Item {
             }
         }
     }
-    /*Rectangle {
-        id: kljun
-        width: eyeW*1.3
-        height: width
-        anchors {
-            right: parent.right
-            bottom: parent.bottom
-            rightMargin: -width/2
-            bottomMargin: -width/2
-        }
-        radius: width;
-        opacity: 0.8
-        color: "#B84902"
-    }*/
-    Rectangle {
+
+    Item {
         id: kljunMaska
-        width: eyeW*1.3/3
+        width: eyeW*0.6
         height: width
         anchors {
             right: parent.right
             bottom: parent.bottom
         }
-        color: "#B84902"
+
+        Canvas {
+            width: eyeW
+            height: width
+            anchors {
+                fill:parent
+            }
+            onPaint: {
+                var ctx = getContext("2d");
+                ctx.reset();
+
+                var centreX = width;
+                var centreY = height;
+
+                ctx.beginPath();
+                ctx.fillStyle = "#b84902";
+                ctx.moveTo(centreX, centreY);
+                ctx.arc(centreX, centreY, width, Math.PI * 1, Math.PI * 1.5, false);
+                ctx.lineTo(centreX, centreY);
+                ctx.fill();
+
+
+                ctx.beginPath();
+                ctx.fillStyle = "#fd6702";
+                ctx.moveTo(centreX, centreY);
+                ctx.arc(centreX, centreY, width, Math.PI * 1, Math.PI * 1.25, false);
+                ctx.lineTo(centreX, centreY);
+                ctx.fill();
+
+
+
+            }
+        }
     }
-
-    /*OpacityMask {
-        id: maskedProfilePicture
-        source: kljun
-        maskSource: kljunMaska
-        anchors.fill: kljun
-
-        Behavior on opacity { NumberAnimation {} }
-    }*/
 
 
 }

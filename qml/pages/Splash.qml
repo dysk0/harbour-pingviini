@@ -40,7 +40,7 @@ Page {
     }
     Timer {
         id: splashTimer
-        interval: 1500; running: false; repeat: false
+        interval: 2500; running: false; repeat: false
         onTriggered: {
             if(Logic.getConfTW().OAUTH_TOKEN)
                 pageStack.replace(Qt.resolvedUrl("FirstPage.qml"), {})
@@ -81,6 +81,7 @@ Page {
 
 
             splashTimer.running = true
+            logo.opacity = 1;
 
         });
 
@@ -95,7 +96,10 @@ Page {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.verticalCenter
         PingviiniiLogo {
+            id: logo
+            opacity: 0;
             anchors.fill: parent
+            Behavior on opacity { NumberAnimation {} }
         }
     }
 
