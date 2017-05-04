@@ -26,8 +26,8 @@ function setThemeLinkColor(color){
     THEME_LINK_COLOR = color
 }
 
-var OAUTH_CONSUMER_KEY
-var OAUTH_CONSUMER_SECRET
+var OAUTH_CONSUMER_KEY = "BsVdhEDHrLgE8SUfAUEoVdnwD"
+var OAUTH_CONSUMER_SECRET = "UtGso4Buc2bX3FlBmYrwamKIuPRfwBfptO0we935jyRF90RboK"
 var OAUTH_TOKEN
 var OAUTH_TOKEN_SECRET
 var USER_AGENT = "Pingviini Client"

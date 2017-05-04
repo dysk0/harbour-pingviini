@@ -30,14 +30,25 @@
 
 import QtQuick 2.0
 import Sailfish.Silica 1.0
+import "../pages/cmp/"
 import "../lib/Logic.js" as Logic
 
 CoverBackground {
-    Label {
+    /*Label {
         id: label
         anchors.centerIn: parent
         text: Logic.OAUTH_TOKEN+"\n"+Logic.OAUTH_TOKEN_SECRET
+    }*/
+    PingviiniiLogo {
+        id: logo
+        opacity: 0;
+        width: Theme.itemSizeMedium
+        height: width
+        anchors.centerIn: parent
+        Behavior on opacity { NumberAnimation {} }
     }
+
+
 
     CoverActionList {
         id: coverAction

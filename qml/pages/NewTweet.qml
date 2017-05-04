@@ -1,5 +1,7 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
+import QtPositioning 5.2
+import harbour.pingviini.Uploader 1.0
 import "../lib/Logic.js" as Logic
 
 
@@ -13,7 +15,7 @@ Item {
     property double latitude: 0
     property double longitude: 0
     width: parent.width
-    height: newTweet.height + Theme.paddingMedium*3 + (tweetExtra.open ? tweetExtra.height + Theme.paddingLarge*2 : 0)
+    height: newTweet.height + (tweetExtra.open ? tweetExtra.height : 0)
     anchors {
         left: parent.left
         right: parent.right
@@ -38,6 +40,11 @@ Item {
             'params'  : {'status': newTweet.text},
             'conf'  : Logic.getConfTW()
         };
+        if (switchGPS.checked && positionSource.valid) {
+            msg.params['lat'] = latitude
+            msg.params['long'] = longitude
+        }
+
         if (type === "DM") {
             msg.params.status = "D @" + screenName + " " + newTweet.text
         }
@@ -152,21 +159,85 @@ Item {
         id: tweetExtra
 
         width: parent.width
-        height: Theme.itemSizeExtraLarge
+        height: Theme.itemSizeExtraLarge+Theme.paddingLarge
 
         dock: Dock.Bottom
-
+        PositionSource {
+            id: positionSource
+            active: false
+            //updateInterval: 120000 // 2 mins
+            property variant fromCoordinate: QtPositioning.coordinate(latitude, longitude)
+            onPositionChanged:  {
+                //var currentPosition = positionSource.position.coordinate
+                latitude = positionSource.position.coordinate.latitude
+                longitude = positionSource.position.coordinate.longitude
+                console.log(latitude + " " +longitude)
+            }
+        }
         Flow {
             anchors.centerIn: parent
 
             Switch {
-                icon.source: "image://theme/icon-m-shuffle"
+                id: switchGPS
+                icon.source: "image://theme/icon-m-gps"
+                onClicked: {
+                    positionSource.active = checked
+                }
+
             }
-            Switch {
-                icon.source: "image://theme/icon-m-repeat"
+            Image {
+                id: test
+                onStatusChanged: {
+                    if (status == Image.Ready) {
+                        console.log('Loaded')
+                        console.log(JSON.stringify(test.data))
+                    }
+                }
             }
+
             Switch {
-                icon.source: "image://theme/icon-m-share"
+                icon.source: "image://theme/icon-m-image"
+                onClicked: {
+                    if (checked){
+                        var dialog = pageStack.push(Qt.resolvedUrl("ImageChooser.qml"),
+                                                    {"name": header.title})
+                        dialog.accepted.connect(function() {
+                            console.log(JSON.stringify(dialog.img))
+                            header.title = "My name: " + dialog.img
+
+                            test.source = dialog.img
+
+
+
+
+                            var xhr = new XMLHttpRequest();
+
+
+
+                            xhr.onprogress = function(evt) {
+                            if (evt.lengthComputable) {
+                                evt.target.curLoad = evt.loaded;
+                                evt.target.log.parentNode.parentNode.previousSibling.textContent =
+                                    Number(evt.loaded/k).toFixed() + "/"+ Number(evt.total/k).toFixed() + "kB";
+                            }
+                            if (evt.lengthComputable) {
+                                var loaded = (evt.loaded / evt.total);
+                                if (loaded < 1) {
+                                    var newW = loaded * width;
+                                    if (newW < 10) newW = 10;
+                                        evt.target.log.style.width = newW + "px";
+                                    }
+                                }
+                            };
+
+                            xhr.open("POST", "https://upload.twitter.com/1.1/media/upload.json");
+                            xhr.overrideMimeType('text/plain; charset=x-user-defined-binary');
+                            xhr.sendAsBinary(file.getAsBinary());
+
+
+                        })
+                    }
+                }
             }
         }
     }

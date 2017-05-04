@@ -6,7 +6,7 @@ BackgroundItem {
     id: delegate
     //property string text: "0"
     width: parent.width
-    height: lblText.paintedHeight + lblName.paintedHeight + lblScreenName.paintedHeight + Theme.paddingLarge + mediaImg.height + (isRetweet ? Theme.paddingLarge + iconRT.height : 0)
+    height: lblText.paintedHeight + (lblText.text.length > 0 ? Theme.paddingLarge : 0 )+ lblName.paintedHeight + lblScreenName.paintedHeight +  mediaImg.height + (isRetweet ? Theme.paddingLarge + iconRT.height : 0)
     Image {
         id: iconRT
         y: Theme.paddingLarge
@@ -144,7 +144,7 @@ BackgroundItem {
             topMargin: Theme.paddingSmall
             rightMargin: Theme.paddingLarge
         }
-        height: paintedHeight
+        height: richText.length ? paintedHeight : 0
         //text: (highlights.length > 0 ? Theme.highlightText(plainText, new RegExp(highlights, "igm"), Theme.highlightColor) : plainText)
         //textFormat:Text.RichText
         onLinkActivated: page.onLinkActivated(link)

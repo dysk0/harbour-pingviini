@@ -33,6 +33,9 @@
 #endif
 
 #include <sailfishapp.h>
+#include "selector/imageuploader.h"
+#include "selector/thumbnailprovider.h"
+#include "selector/filesmodel.h"
 
 
 int main(int argc, char *argv[])
@@ -45,6 +48,30 @@ int main(int argc, char *argv[])
     //   - SailfishApp::pathTo(QString) to get a QUrl to a resource file
     //
     // To display the view, call "show()" (will show fullscreen on device).
+    QScopedPointer<QGuiApplication> application(SailfishApp::application(argc, argv));
+    QStringList args = application->arguments();
+        bool daemonized = args.contains("-daemon");
 
-    return SailfishApp::main(argc, argv);
+        if(daemonized )
+            return 0;
+
+    FilesModel::registerMetaTypes();
+    qmlRegisterType<FilesModel>("harbour.pingviini.FilesModel", 1, 0, "FilesModel");
+    qmlRegisterType<ImageUploader>("harbour.pingviini.Uploader", 1, 0, "ImageUploader");
+
+    QScopedPointer<QQuickView> view(SailfishApp::createView());
+    QQmlEngine* engine = view->engine();
+    QObject::connect(engine, SIGNAL(quit()), application.data(), SLOT(quit()));
+    engine->addImageProvider(QStringLiteral("thumbnail"), new ThumbnailProvider);
+
+    view->setSource(SailfishApp::pathTo("qml/harbour-pingviini.qml"));
+
+    if(daemonized)
+        application->setQuitOnLastWindowClosed(false);
+    else
+        view->show();
+
+    return application->exec();
+
+    //return SailfishApp::main(argc, argv);
 }

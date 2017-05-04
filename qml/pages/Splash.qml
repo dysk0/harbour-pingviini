@@ -42,10 +42,18 @@ Page {
         id: splashTimer
         interval: 2500; running: false; repeat: false
         onTriggered: {
-            if(Logic.getConfTW().OAUTH_TOKEN)
+            //pageStack.replace(Qt.resolvedUrl("Conversation.qml"), {})
+
+
+
+
+            if(Logic.getConfTW().OAUTH_TOKEN){
                 pageStack.replace(Qt.resolvedUrl("FirstPage.qml"), {})
-            else
+            } else {
                 pageStack.replace(Qt.resolvedUrl("AccountAdd.qml"), {})
+            }
+
+
 
         }
     }
