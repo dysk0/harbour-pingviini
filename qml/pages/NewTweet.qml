@@ -21,7 +21,14 @@ Item {
     WorkerScript {
         id: worker
         source: "../lib/Worker.js"
-        onMessage: console.log(JSON.stringify(messageObject))
+        onMessage: {
+            if (messageObject.success) {
+                console.log(JSON.stringify(messageObject))
+                newTweet.text = "";
+            }
+            newTweet.enabled = true;
+            sendBtn.enabled = true;
+        }
     }
     function tweet(){
 
@@ -73,7 +80,11 @@ Item {
             right: parent.right
             bottom: newTweet.bottom
         }
-        onClicked: tweet()
+        onClicked: {
+            tweet()
+            newTweet.enabled = false;
+            sendBtn.enabled = false;
+        }
     }
 
     Rectangle {

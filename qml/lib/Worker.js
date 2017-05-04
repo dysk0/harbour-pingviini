@@ -94,7 +94,12 @@ WorkerScript.onMessage = function(msg) {
                     msg.action,
                     msg.params,
                     function (reply, rate, err) {
-                        console.log(JSON.stringify(reply));
+                        if (reply){
+                            //tweet = parseTweet(reply)
+                            WorkerScript.sendMessage({ 'success': true,  "tweet": reply})
+                        }
+
+                        //console.log(JSON.stringify(reply));
                         console.log(JSON.stringify(err));
                     }
                     );
