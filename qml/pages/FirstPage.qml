@@ -1,6 +1,7 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 import "../lib/Logic.js" as Logic
+import "./cmp/"
 
 
 
@@ -17,6 +18,10 @@ Page {
     property double scrollOffsetDM: 0
     property int currentIndexDM: 0
     allowedOrientations: Orientation.All
+    signal openDrawer (bool open)
+    onOpenDrawer: {
+        infoPanel.open = open
+    }
 
     signal buttonPressedAtBPage();
     onButtonPressedAtBPage: console.log("Mouse pressed at B page");
@@ -35,7 +40,13 @@ Page {
     WorkerScript {
         id: worker
         source: "../lib/Worker.js"
-        onMessage: myText.text = messageObject.reply
+        onMessage: {
+            if(messageObject.action === "search"){
+                searchViewComponent.next_results = messageObject.next_results
+                searchViewComponent.refresh_url = messageObject.refresh_url
+            }
+            console.log(JSON.stringify(messageObject))
+        }
     }
 
 

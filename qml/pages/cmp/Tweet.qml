@@ -170,46 +170,4 @@ BackgroundItem {
         height: 100
     }
 
-    /*Image {
-        id: mediaImg
-        anchors {
-            left: lblName.left
-            right: parent.right
-            top: lblText.bottom
-            topMargin: Theme.paddingSmall
-            rightMargin: Theme.paddingLarge
-        }
-        opacity: pressed ? 0.6 : 1
-        fillMode: Image.PreserveAspectCrop
-        asynchronous: true
-        width: 200
-        height: 0
-        visible: {
-            if (mediaUrl){
-                source = mediaUrl
-                height = 200
-                return true
-            } else {
-                height = 0
-                return false
-            }
-        }
-
-
-    }*/
-
-    /*TweetToolBar {
-        id: details
-        anchors {
-            left: lblName.left
-            right: parent.right
-            top: mediaImg.bottom
-            topMargin: Theme.paddingSmall
-            rightMargin: Theme.paddingLarge
-        }
-        //width:
-    }*/
-
-
-
 }

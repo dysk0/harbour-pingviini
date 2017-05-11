@@ -7,8 +7,6 @@ import "../lib/Logic.js" as Logic
     SilicaListView {
         //property type name: value
         id: timeline
-
-
         anchors {
             fill: parent
             leftMargin: 0
@@ -100,7 +98,13 @@ import "../lib/Logic.js" as Logic
 
         model: Logic.modelTL
         delegate: CmpTweet {
-
+            onClicked: {
+                pageStack.push(Qt.resolvedUrl("TweetDetails.qml"), {
+                                   "tweets": Logic.modelTL,
+                                   "screenName": Logic.modelTL.get(index).screenName,
+                                   "selected": index
+                               })
+            }
         }
 
         VerticalScrollDecorator {}
@@ -112,17 +116,16 @@ import "../lib/Logic.js" as Logic
         onContentYChanged: {
 
             if(contentY+200 > timeline.contentHeight-timeline.height&& !loadStarted){
-                loadStarted = true;
+                openDrawer(true)
             }
-            //console.log((contentY+200) + ' ' + listView.contentHeight)
             if (contentY > scrollOffsetTL) {
-                infoPanel.open = false
+                openDrawer(false)
             } else {
                 if (contentY < 100 && !loadStarted){
                     //timeline.loadData("prepend")
                     //loadStarted = true;
                 }
-                infoPanel.open = true
+                openDrawer(true)
             }
             scrollOffsetTL = contentY
             currentIndexTL = currentIndex

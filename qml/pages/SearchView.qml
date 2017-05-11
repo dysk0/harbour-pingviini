@@ -1,26 +1,27 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
+import "./cmp/"
 import "../lib/Logic.js" as Logic
 
 
 
 SilicaListView {
-
+    id: searchPage
     property string searchTerm: headerItem.text
     property bool loadStarted : false;
     property var locale: Qt.locale()
+    property string refresh_url: ""
+    property string next_results: ""
     property int scrollOffset;
 
     signal search(string term);
-    ListModel {
-        id: modelSE
-    }
+
 
     onSearch: {
-
+        Logic.modelSE.clear()
         searchTerm = term;
         headerItem.text = term
-        loadData("append")
+        loadData("resetSearch")
     }
 
     header: SearchField {
@@ -29,23 +30,22 @@ SilicaListView {
         labelVisible: false
         EnterKey.iconSource: "image://theme/icon-m-enter-close"
         EnterKey.onClicked: {
-
             searchTerm = text
-            loadData("append")
+            search(text)
             focus = false
         }
     }
 
 
+
     function loadData(placement){
         var msg = {
             'action': 'search_tweets',
-            'model' : modelSE,
-            'mode'  : "append",
+            'model' : Logic.modelSE,
+            'mode'  : placement,
             'params'  : {'q' : searchTerm},
             'conf'  : Logic.getConfTW()
         };
-        modelSE.clear()
         if (searchTerm)
             worker.sendMessage(msg);
     }
@@ -54,8 +54,8 @@ SilicaListView {
 
 
 
-    model: modelSE
-    delegate: CmpTweet {}
+    model: Logic.modelSE
+    delegate: Tweet {}
 
 
     anchors {
@@ -68,7 +68,7 @@ SilicaListView {
 
 
     ViewPlaceholder {
-        enabled: modelSE.count === 0 && headerItem.text !== ""
+        enabled: Logic.modelSE.count === 0 && headerItem.text !== ""
         text: "Searching"
         hintText: "Please wait..."
     }
@@ -96,14 +96,23 @@ SilicaListView {
     }
 
 
-    PushUpMenu {
+    PullDownMenu {
         spacing: Theme.paddingLarge
-        /*MenuItem {
-            text: qsTr("Load more")
+        MenuItem {
+            text: refresh_url //qsTr("Load more")
             onClicked: {
                 loadData("prepend")
             }
-        }*/
+        }
+    }
+    PushUpMenu {
+        spacing: Theme.paddingLarge
+        MenuItem {
+            text: next_results // qsTr("Load more")
+            onClicked: {
+                loadData("append")
+            }
+        }
     }
 
 
@@ -115,13 +124,12 @@ SilicaListView {
     onContentYChanged: {
 
         if (contentY > scrollOffset) {
-            infoPanel.open = false
+            openDrawer(false)
+
         } else {
             if (contentY < 100 && !loadStarted){
-                //timeline.loadData("prepend")
-                //loadStarted = true;
             }
-            infoPanel.open = true
+            openDrawer(true)
         }
         scrollOffset = contentY
     }

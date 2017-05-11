@@ -127,6 +127,22 @@
         <source>Item</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Retweet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unfavorite</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Favorite</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Report as spam</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>common</name>

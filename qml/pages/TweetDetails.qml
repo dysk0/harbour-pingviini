@@ -39,6 +39,13 @@ Page {
     property alias title: header.title;
     property alias screenName: tweetPanel.screenName;
     property string tweetType: "Reply";
+    property bool isFavourited: false;
+
+    WorkerScript {
+        id: worker
+        source: "../lib/Worker.js"
+        onMessage: myText.text = messageObject.reply
+    }
 
 
     // The effective value will be restricted by ApplicationWindow.allowedOrientations
@@ -46,9 +53,23 @@ Page {
     Component.onCompleted: {
         if (selected){
             title =  tweets.get(selected).name
+            favourited = tweets.get(selected).isFavourited ? true : false
             header.image = tweets.get(selected).profileImageUrl
+
             tweetPanel.tweetId = tweets.get(selected).id_str;
+            var msg = {
+                'action'    : 'createConversation',
+                'selectedId': tweetPanel.tweetId,
+                'timeline'  : Logic.modelTL,
+                'mentions'  : Logic.modelMN,
+                'model'     : modelCO,
+                'conf'  : Logic.getConfTW()
+            };
+            worker.sendMessage(msg);
         }
+    }
+    ListModel {
+        id: modelCO
     }
 
     ProfileHeader {
@@ -71,7 +92,56 @@ Page {
 
     SilicaListView {
         id: listView
-        model: 1
+        model: modelCO
+        RemorseItem { id: remorse }
+        PullDownMenu {
+            id: menu
+            spacing: Theme.paddingLarge
+            MenuItem {
+                text: qsTr("Report as spam")
+                onClicked: {
+                    var msg = {
+                        'bgAction'    : 'users_reportSpam',
+                        'params': { screen_name: screenName, user_id: tweets.get(selected).userIdStr},
+                        'model'     : false,
+                        'conf'  : Logic.getConfTW()
+                    };
+                    worker.sendMessage(msg);
+                }
+            }
+            MenuItem {
+                text: qsTr("Retweet")
+                onClicked: {
+
+
+                    var msg = {
+                        'bgAction'    : 'statuses_retweet_ID',
+                        'params': { id: tweets.get(selected).id_str},
+                        'model'     : false,
+                        'conf'  : Logic.getConfTW()
+                    };
+                    worker.sendMessage(msg);
+                }
+            }
+            MenuItem {
+                text: isFavourited ? qsTr("Unfavorite") : qsTr("Favorite")
+                onClicked: {
+                    isFavourited  = !isFavourited ;
+                    tweets.setProperty(selected, "isFavourited", isFavourited)
+                    worker.sendMessage({
+                                           'bgAction'    : isFavourited ? 'favorites_create' : 'favorites_destroy',
+                                                                          'params': { id: tweets.get(selected).id_str},
+                                           'model'     : false,
+                                           'conf'  : Logic.getConfTW()
+                                       });
+
+
+
+
+
+                }
+            }
+        }
         anchors {
             top: header.bottom
             bottom: tweetPanel.top
@@ -104,7 +174,7 @@ Page {
                 font.pixelSize: Theme.fontSizeMedium
                 color: (pressed ? Theme.highlightColor : Theme.primaryColor)
             }
-            Image {
+            MediaBlock {
                 id: mediaImg
                 anchors {
                     left: parent.left
@@ -114,26 +184,12 @@ Page {
                     rightMargin: Theme.paddingLarge
                     leftMargin: Theme.paddingLarge
                 }
-                opacity: pressed ? 0.6 : 1
-                fillMode: Image.PreserveAspectCrop
-                asynchronous: true
-                width: 200
-                height: 0
-                visible: {
-                    if (selected){
-                        source = tweets.get(selected).mediaUrl
-                        height = 200
-                        return true
-                    } else {
-                        height = 0
-                        return false
-                    }
-                }
-                Component.onCompleted: {
-                    height = (sourceSize.height*width)/sourceSize.width
-                    console.log(sourceSize.height)
-                }
+                model: selected ? tweets.get(selected).media : false
+
+                height: 100
             }
+
+
 
         }
 
@@ -144,12 +200,12 @@ Page {
 
             Label {
                 x: Theme.horizontalPageMargin
-                text: qsTr("Item") + " " + index
+                text: qsTr("Item") + " " + name + " | " + modelCO.count + " |"
                 anchors.verticalCenter: parent.verticalCenter
                 color: delegate.highlighted ? Theme.highlightColor : Theme.primaryColor
             }
             onClicked: function(){
-                console.log("Clicked " + index)
+                console.log("Clicked " + index + " | " + modelCO.count + " |")
             }
         }
         VerticalScrollDecorator {}

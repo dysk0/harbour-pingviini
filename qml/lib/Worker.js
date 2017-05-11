@@ -7,6 +7,17 @@ function showError(status, statusText) {
     console.log(statusText)
 }
 
+function findRelated(model, id){
+    var res = [];
+    for(var i = 0; i < model.count; i++){
+        var tweet = model.get(i)
+        if (id.indexOf(tweet.id_str) > -1 || id.indexOf(tweet.inReplyToStatusId) > -1) {
+            res.push(tweet)
+            console.log(tweet.id_str + ' / ' + tweet.inReplyToStatusId);
+        }
+    }
+    return res;
+}
 
 
 
@@ -109,12 +120,25 @@ WorkerScript.onMessage = function(msg) {
 
 
     if (msg.action === 'search_tweets') {
+        var resetSearch = false;
+        if (msg.mode === "resetSearch") {
+            resetSearch = true;
+            msg.mode = "append"
+        }
 
-        sinceId = false;
-        maxId = false;
-        params = {}
+        params = { "include_entities" : true, "result_type": "recent", "count" : 100}
         if (msg.params.q) {
-            params['q'] = msg.params.q
+            params['q'] = msg.params.q + " AND -filter:retweets AND -filter:replies"
+        }
+        if (msg.model.count && !resetSearch) {
+            if (msg.mode === "append") {
+                params['max_id'] = msg.model.get(msg.model.count-1).id
+            }
+            if (msg.mode === "prepend") {
+                params['since_id'] = msg.model.get(0).id
+            }
+        } else {
+            msg.mode = "append";
         }
 
         console.log('search_tweets '+JSON.stringify(params))
@@ -123,11 +147,9 @@ WorkerScript.onMessage = function(msg) {
                     'search_tweets',
                     msg.params,
                     function (reply) {
-
                         if (!reply || !reply.statuses || !reply.statuses.length) {
                             return;
                         }
-
 
                         var i = 0;
                         if (msg.mode === "prepend") {
@@ -136,12 +158,23 @@ WorkerScript.onMessage = function(msg) {
                             i = 1;
                         }
 
+                        if (resetSearch) {
+                            i = 0;
+                            while (reply.statuses.length < msg.model.count-1){
+                                msg.model.remove(0)
+                            }
+                        }
+
                         for (i; i < reply.statuses.length; i++) {
                             var tweet;
 
                             if (msg.mode === "append") {
                                 tweet = parseTweet(reply.statuses[i])
-                                msg.model.append(tweet)
+                                if (i < msg.model.count) {
+                                    msg.model.set(i, tweet)
+                                } else {
+                                    msg.model.append(tweet)
+                                }
                             }
                             if (msg.mode === "prepend") {
                                 tweet = parseTweet(reply.statuses[length-i-1])
@@ -150,8 +183,14 @@ WorkerScript.onMessage = function(msg) {
 
                         }
                         msg.model.sync();
+                        console.log(reply.statuses.length)
                         console.log(msg.model.count)
-
+                        WorkerScript.sendMessage({
+                                                     'success': true,
+                                                     'action': "search",
+                                                     "next_results": reply.search_metadata.next_results,
+                                                     "refresh_url":reply.search_metadata.refresh_url
+                                                 })
                     });
 
 
@@ -257,6 +296,22 @@ WorkerScript.onMessage = function(msg) {
                         WorkerScript.sendMessage({ 'success': true,  "reply": reply})
                     }
                     );
+    }
+
+    if (msg.action === "createConversation") {
+        console.log("OPAAA " + msg.selectedId)
+        var tl = findRelated(msg.mentions, [msg.selectedId]);
+        msg.model.append(tl)
+        msg.model.sync()
+    }
+
+    if (msg.bgAction){
+        console.log("BG ACTION >" + msg.bgAction)
+        console.log(JSON.stringify(msg.params))
+        cb.__call(msg.bgAction, msg.params, function (reply) {
+            console.log(JSON.stringify(reply))
+            //WorkerScript.sendMessage({ 'success': true,  "reply": reply})
+        });
     }
 
 }

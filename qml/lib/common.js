@@ -198,6 +198,7 @@ function parseTweet(tweetJson) {
 
     tweet.isVerified = originalTweetJson.user.verified;
     tweet.name = originalTweetJson.user.name;
+    tweet.userIdStr = originalTweetJson.user.id_str;
     tweet.screenName = originalTweetJson.user.screen_name;
     tweet.profileImageUrl = originalTweetJson.user.profile_image_url;
     tweet.inReplyToScreenName = originalTweetJson.in_reply_to_screen_name;

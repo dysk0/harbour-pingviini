@@ -1,7 +1,6 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 import QtMultimedia 5.0
-import "./cmp/"
 
 
 Item {
@@ -56,72 +55,101 @@ Item {
         }
     }
 
-    MyImage {
+    Item {
         id: placeholder1
         width: 2
         height: 1
-        opacity: pressed ? 0.6 : 1
-        visible: {
-            if (count > 0 && model.get(0).type === "photo"){
-                mediaURL = model.get(0).src
-                height = 200
-                return true
-            } else {
-                height = 0
-                return false
+
+
+        Image {
+            id: mediaImg
+            anchors {
+                fill: parent
+            }
+            opacity: pressed ? 0.6 : 1
+            fillMode: Image.PreserveAspectCrop
+            asynchronous: true
+            visible: {
+                if (count > 0 && model.get(0).type === "photo"){
+                    source = model.get(0).src
+                    height = 200
+                    return true
+                } else {
+                    height = 0
+                    return false
+                }
             }
         }
+        visible: false
+
     }
-    MyImage {
+
+    Item {
         id: placeholder2
-        width: 2
-        height: 1
-        opacity: pressed ? 0.6 : 1
-        visible: {
-            if (count > 0 && model.get(1).type === "photo"){
-                mediaURL = model.get(1).src
-                height = 200
-                return true
-            } else {
-                height = 0
-                return false
+        Image {
+            anchors {
+                fill: parent
+            }
+            opacity: pressed ? 0.6 : 1
+            fillMode: Image.PreserveAspectCrop
+            asynchronous: true
+            visible: {
+                if (count >= 1 && model.get(1) && model.get(1).type === "photo"){
+                    source = model.get(1).src
+                    height = 200
+                    return true
+                } else {
+                    height = 0
+                    return false
+                }
             }
         }
+        visible: false
     }
-    MyImage {
+    Item {
         id: placeholder3
-        width: 2
-        height: 1
-        opacity: pressed ? 0.6 : 1
-        visible: {
-            if (count > 0 && model.get(2).type === "photo"){
-                mediaURL = model.get(2).src
-                height = 200
-                return true
-            } else {
-                height = 0
-                return false
+        Image {
+            anchors {
+                fill: parent
+            }
+            opacity: pressed ? 0.6 : 1
+            fillMode: Image.PreserveAspectCrop
+            asynchronous: true
+            visible: {
+                if (count >= 2){
+                    source = model.get(2).src
+                    height = 200
+                    return true
+                } else {
+                    height = 0
+                    return false
+                }
             }
         }
+        visible: false
     }
-    MyImage {
+    Rectangle {
         id: placeholder4
-        width: 2
-        height: 1
-        opacity: pressed ? 0.6 : 1
-        visible: {
-            if (count > 0 && model.get(3).type === "photo"){
-                mediaURL = model.get(3).src
-                height = 200
-                return true
-            } else {
-                height = 0
-                return false
+        Image {
+            anchors {
+                fill: parent
+            }
+            opacity: pressed ? 0.6 : 1
+            fillMode: Image.PreserveAspectCrop
+            asynchronous: true
+            visible: {
+                if (count >= 3){
+                    source = model.get(3).src
+                    height = 200
+                    return true
+                } else {
+                    height = 0
+                    return false
+                }
             }
         }
+        visible: false
     }
+
 }
-
-
-
 
