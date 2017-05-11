@@ -53,7 +53,7 @@ Page {
     Component.onCompleted: {
         if (selected){
             title =  tweets.get(selected).name
-            favourited = tweets.get(selected).isFavourited ? true : false
+            isFavourited = tweets.get(selected).isFavourited ? true : false
             header.image = tweets.get(selected).profileImageUrl
 
             tweetPanel.tweetId = tweets.get(selected).id_str;
