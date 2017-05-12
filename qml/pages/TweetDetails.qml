@@ -57,11 +57,24 @@ Page {
             header.image = tweets.get(selected).profileImageUrl
 
             tweetPanel.tweetId = tweets.get(selected).id_str;
+
+
+            var since = tweets.get(selected).createdAt
+            var until = new Date(new Date().setDate(new Date(since).getDate() + 7));
+            console.log(since)
+            console.log(until)
+            console.log(since.toISOString().substr(0, 10))
+            console.log(until.toISOString().substr(0, 10))
+            var user = '@'+tweets.get(selected).screenName + (tweets.get(selected).inReplyToStatusId ? ' OR @'+tweets.get(selected).inReplyToScreenName : '')
             var msg = {
-                'action'    : 'createConversation',
-                'selectedId': tweetPanel.tweetId,
-                'timeline'  : Logic.modelTL,
-                'mentions'  : Logic.modelMN,
+                'bgAction'    : 'search_tweets',
+                'params': {
+                    f: "tweets",
+                    count: 100,
+                    result_type: "recent",
+                    q: user + ' -RT  filter:replies since:'+since.toISOString().substr(0, 10)+ ' until:'+until.toISOString().substr(0, 10),
+                    since_id: tweets.get(selected).inReplyToStatusId ? tweets.get(selected).inReplyToStatusId: tweets.get(selected).id
+                },
                 'model'     : modelCO,
                 'conf'  : Logic.getConfTW()
             };
@@ -195,7 +208,7 @@ Page {
 
 
         /**/
-        delegate: BackgroundItem {
+        delegate: CmpTweet{} /*BackgroundItem {
             id: delegate
 
             Label {
@@ -207,7 +220,7 @@ Page {
             onClicked: function(){
                 console.log("Clicked " + index + " | " + modelCO.count + " |")
             }
-        }
+        }*/
         VerticalScrollDecorator {}
     }
 

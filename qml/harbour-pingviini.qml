@@ -59,5 +59,7 @@ ApplicationWindow
     function showHttpError(status, statusText){
         console.log(JSON.stringify([status, statusText]))
     }
+
+
 }
 

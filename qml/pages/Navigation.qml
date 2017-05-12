@@ -9,28 +9,29 @@ import Sailfish.Silica 1.0
 SilicaGridView {
     id: gridView
     property bool isPortrait: false
+    FontLoader { id: rosettaFont; source: "../rosetta-icons.ttf" }
     ListModel {
         id: listModel
         ListElement {
-            icon: "image://theme/icon-m-home?"
+            icon: ""
             slug: "timeline"
             name: "Timeline"
             active: true
         }
         ListElement {
-            icon: "image://theme/icon-m-region?"
+            icon: ""
             slug: "mentions"
             name: "Mentions"
             active: false
         }
         ListElement {
-            icon: "image://theme/icon-m-message?"
+            icon: ""
             slug: "msgs"
             name: "Messagess"
             active: false
         }
         ListElement {
-            icon: "image://theme/icon-m-search?"
+            icon: ""
             slug: "search"
             name: "Search"
             active: false
@@ -45,6 +46,7 @@ SilicaGridView {
 
 
     delegate: BackgroundItem {
+        clip: true
         id: rectangle
         width: gridView.cellWidth
         height: gridView.cellHeight
@@ -56,16 +58,19 @@ SilicaGridView {
         }
         GlassItem {
             id: effect
-            visible: false
-            objectName: "menuitem"
-            height: Theme.paddingSmall
-            width: parent.width
+            /*Timer {
+                repeat: false
+                running: Qt.application.active
+                interval: 1000
+                onTriggered: effect.dimmed = !effect.dimmed
+            }*/
             dimmed: true
-            radius: 0.06
-            falloffRadius: 0.19
-            ratio: 0.0
+            anchors.bottom: isPortrait ? false : parent.bottom
+            anchors.bottomMargin: isPortrait ? 0 : -height/2
+            anchors.horizontalCenter: isPortrait ? false : parent.horizontalCenter
+
+
             color: Theme.highlightColor
-            cache: false
         }
 
         OpacityRampEffect {
@@ -73,11 +78,19 @@ SilicaGridView {
             offset: 0.5
         }
 
-        Image {
+        /*Image {
             source: model.icon + (highlighted
                                   ? Theme.highlightColor
                                   : (model.active ? Theme.primaryColor : Theme.secondaryHighlightColor))
             anchors.centerIn: parent
+        }*/
+        Text {
+            anchors.centerIn: parent
+            text: model.icon
+            color: (highlighted
+                    ? Theme.highlightColor
+                    : (model.active ? Theme.primaryColor : Theme.secondaryHighlightColor))
+            font { family: rosettaFont.name; pixelSize: Theme.fontSizeLarge;  }
         }
 
         Label {

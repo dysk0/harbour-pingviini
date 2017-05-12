@@ -310,6 +310,25 @@ WorkerScript.onMessage = function(msg) {
         console.log(JSON.stringify(msg.params))
         cb.__call(msg.bgAction, msg.params, function (reply) {
             console.log(JSON.stringify(reply))
+            if (msg.model){
+                var tweets = [];
+                if (msg.bgAction === "search_tweets" && reply.statuses){
+                    tweets = reply.statuses;
+                }
+                for(var i = 0; i < tweets.length; i++){
+                    var tweet = parseTweet(tweets[i]);
+                    if (msg.bgAction === "search_tweets"){
+                        if (msg.params.since_id === tweet.inReplyToStatusId || msg.params.since_id === tweet.id)
+                            msg.model.append(tweet)
+                    } else {
+                        msg.model.append(tweet)
+                    }
+
+
+                }
+                msg.model.sync();
+            }
+
             //WorkerScript.sendMessage({ 'success': true,  "reply": reply})
         });
     }

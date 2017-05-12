@@ -124,10 +124,6 @@
 <context>
     <name>TweetDetails</name>
     <message>
-        <source>Item</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Retweet</source>
         <translation type="unfinished"></translation>
     </message>

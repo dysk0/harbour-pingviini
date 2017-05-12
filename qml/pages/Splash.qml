@@ -40,7 +40,7 @@ Page {
     }
     Timer {
         id: splashTimer
-        interval: 2500; running: false; repeat: false
+        interval: 500; running: false; repeat: false
         onTriggered: {
             //pageStack.replace(Qt.resolvedUrl("Conversation.qml"), {})
 

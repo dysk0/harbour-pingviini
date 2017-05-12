@@ -31,22 +31,16 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 import "../pages/cmp/"
-import "../lib/Logic.js" as Logic
+
 
 CoverBackground {
-    /*Label {
+    property string status: "value"
+    Label {
         id: label
         anchors.centerIn: parent
-        text: Logic.OAUTH_TOKEN+"\n"+Logic.OAUTH_TOKEN_SECRET
-    }*/
-    PingviiniiLogo {
-        id: logo
-        opacity: 0;
-        width: Theme.itemSizeMedium
-        height: width
-        anchors.centerIn: parent
-        Behavior on opacity { NumberAnimation {} }
+        text: status
     }
+
 
 
 
@@ -54,11 +48,11 @@ CoverBackground {
         id: coverAction
 
         CoverAction {
-            iconSource: "image://theme/icon-cover-next"
+            iconSource: "image://theme/icon-cover-sync"
         }
 
         CoverAction {
-            iconSource: "image://theme/icon-cover-pause"
+            iconSource: "image://theme/icon-cover-new"
         }
     }
 }

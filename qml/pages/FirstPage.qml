@@ -19,6 +19,7 @@ Page {
     property int currentIndexDM: 0
     allowedOrientations: Orientation.All
     signal openDrawer (bool open)
+
     onOpenDrawer: {
         infoPanel.open = open
     }
@@ -91,15 +92,17 @@ Page {
     }*/
     onStatusChanged: {
         if (status === PageStatus.Active) {
-
-
-
+            app.cover.status = "BABABAB"
             //pageStack.pushAttached(Qt.resolvedUrl("Navigation.qml"), {"settings": {}})
             var str = "Fri Feb 10 14:16:37 +0000 2017"
             //2017-02-10T13:47:17.000Z
 
             print(Date.fromLocaleString(locale, str, "ddd MMM dd HH:mm:ss +0000 yyyy"));
             //console.log(parseISO8601(str))
+        }
+        if (status == PageStatus.Deactivating) {
+            app.cover.status = "Aaa"
+
         }
     }
     function showError(status, statusText) {

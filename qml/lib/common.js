@@ -194,6 +194,7 @@ function parseTweet(tweetJson) {
     else originalTweetJson = tweetJson;
     tweet.plainText = __unescapeHtml(originalTweetJson.text);
     tweet.richText = __toRichText(originalTweetJson.text, originalTweetJson.entities);
+
     tweet.highlights = __toHighlights(originalTweetJson.text, originalTweetJson.entities);
 
     tweet.isVerified = originalTweetJson.user.verified;
@@ -202,11 +203,12 @@ function parseTweet(tweetJson) {
     tweet.screenName = originalTweetJson.user.screen_name;
     tweet.profileImageUrl = originalTweetJson.user.profile_image_url;
     tweet.inReplyToScreenName = originalTweetJson.in_reply_to_screen_name;
-    tweet.inReplyToStatusId = originalTweetJson.in_reply_to_status_id_str;
+    tweet.inReplyToStatusId = originalTweetJson.in_reply_to_status_id;
+    tweet.inReplyToStatusIdStr = originalTweetJson.in_reply_to_status_id_str;
     tweet.latitude = "";
     tweet.longitude = "";
     tweet.mediaUrl = "";
-
+    //tweet.richText = tweet.id + " <br> "+tweet.id_str + " <br><br> "+tweet.inReplyToStatusId + " <br> "+tweet.inReplyToStatusIdStr
     tweet.media = [];
 
     if (tweetJson.extended_entities && tweetJson.extended_entities.media){
