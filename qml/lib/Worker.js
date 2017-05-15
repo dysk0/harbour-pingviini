@@ -126,15 +126,15 @@ WorkerScript.onMessage = function(msg) {
             msg.mode = "append"
         }
 
-        params = { "include_entities" : true, "result_type": "recent", "count" : 100}
+        params = { "include_entities" : true, "result_type": "recent", count : 50}
         if (msg.params.q) {
-            params['q'] = msg.params.q + " AND -filter:retweets AND -filter:replies"
+            params['q'] = msg.params.q + " AND -filter:retweets "
         }
         if (msg.model.count && !resetSearch) {
             if (msg.mode === "append") {
                 params['max_id'] = msg.model.get(msg.model.count-1).id
             }
-            if (msg.mode === "prepend") {
+            if (msg.mode === "prepend" && msg.model.count) {
                 params['since_id'] = msg.model.get(0).id
             }
         } else {
@@ -145,13 +145,16 @@ WorkerScript.onMessage = function(msg) {
 
         cb.__call(
                     'search_tweets',
-                    msg.params,
+                    params,
                     function (reply) {
+                        console.log('search_tweets '+JSON.stringify(reply.search_metadata))
                         if (!reply || !reply.statuses || !reply.statuses.length) {
                             return;
                         }
 
                         var i = 0;
+                        var length = reply.statuses.length
+                        console.log(length)
                         if (msg.mode === "prepend") {
                             length--;
                         } else if (msg.mode === "append"){
@@ -160,36 +163,31 @@ WorkerScript.onMessage = function(msg) {
 
                         if (resetSearch) {
                             i = 0;
-                            while (reply.statuses.length < msg.model.count-1){
+                            while (msg.model.count){
                                 msg.model.remove(0)
                             }
+                            msg.model.sync();
                         }
 
-                        for (i; i < reply.statuses.length; i++) {
+                        for (i; i < length; i++) {
                             var tweet;
 
                             if (msg.mode === "append") {
                                 tweet = parseTweet(reply.statuses[i])
-                                if (i < msg.model.count) {
-                                    msg.model.set(i, tweet)
-                                } else {
-                                    msg.model.append(tweet)
-                                }
+                                msg.model.append(tweet)
                             }
                             if (msg.mode === "prepend") {
+                                console.log(length-i-1)
                                 tweet = parseTweet(reply.statuses[length-i-1])
                                 msg.model.insert(0, tweet)
                             }
 
                         }
                         msg.model.sync();
-                        console.log(reply.statuses.length)
                         console.log(msg.model.count)
                         WorkerScript.sendMessage({
                                                      'success': true,
                                                      'action': "search",
-                                                     "next_results": reply.search_metadata.next_results,
-                                                     "refresh_url":reply.search_metadata.refresh_url
                                                  })
                     });
 

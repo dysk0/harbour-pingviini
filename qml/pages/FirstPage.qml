@@ -42,10 +42,6 @@ Page {
         id: worker
         source: "../lib/Worker.js"
         onMessage: {
-            if(messageObject.action === "search"){
-                searchViewComponent.next_results = messageObject.next_results
-                searchViewComponent.refresh_url = messageObject.refresh_url
-            }
             console.log(JSON.stringify(messageObject))
         }
     }

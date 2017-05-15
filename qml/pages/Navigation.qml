@@ -1,5 +1,6 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
+import QtGraphicalEffects 1.0
 
 
 
@@ -13,25 +14,25 @@ SilicaGridView {
     ListModel {
         id: listModel
         ListElement {
-            icon: ""
+            icon: "../home.svg" //""
             slug: "timeline"
             name: "Timeline"
             active: true
         }
         ListElement {
-            icon: ""
+            icon: "image://theme/icon-m-alarm?" //""
             slug: "mentions"
             name: "Mentions"
             active: false
         }
         ListElement {
-            icon: ""
+            icon: "image://theme/icon-m-mail?" //""
             slug: "msgs"
             name: "Messagess"
             active: false
         }
         ListElement {
-            icon: ""
+            icon: "image://theme/icon-m-search?" //""
             slug: "search"
             name: "Search"
             active: false
@@ -84,8 +85,25 @@ SilicaGridView {
                                   : (model.active ? Theme.primaryColor : Theme.secondaryHighlightColor))
             anchors.centerIn: parent
         }*/
+        Image {
+            id: image
+            source: model.icon + (highlighted
+                                  ? Theme.highlightColor
+                                  : (model.active ? Theme.primaryColor : Theme.secondaryHighlightColor))
+            anchors.centerIn: parent
+            smooth: true
+            visible: false
+        }
+        ColorOverlay {
+            anchors.fill: image
+            source: image
+            color: (highlighted
+                    ? Theme.highlightColor
+                    : (model.active ? Theme.primaryColor : Theme.secondaryHighlightColor))
+        }
         Text {
             anchors.centerIn: parent
+            visible: false
             text: model.icon
             color: (highlighted
                     ? Theme.highlightColor

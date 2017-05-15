@@ -10,8 +10,6 @@ SilicaListView {
     property string searchTerm: headerItem.text
     property bool loadStarted : false;
     property var locale: Qt.locale()
-    property string refresh_url: ""
-    property string next_results: ""
     property int scrollOffset;
 
     signal search(string term);
@@ -21,6 +19,7 @@ SilicaListView {
         Logic.modelSE.clear()
         searchTerm = term;
         headerItem.text = term
+        searchPage.positionViewAtBeginning()
         loadData("resetSearch")
     }
 
@@ -39,11 +38,12 @@ SilicaListView {
 
 
     function loadData(placement){
+        var params = {'q' : searchTerm};
         var msg = {
             'action': 'search_tweets',
             'model' : Logic.modelSE,
             'mode'  : placement,
-            'params'  : {'q' : searchTerm},
+            'params'  : params,
             'conf'  : Logic.getConfTW()
         };
         if (searchTerm)
@@ -55,7 +55,15 @@ SilicaListView {
 
 
     model: Logic.modelSE
-    delegate: Tweet {}
+    delegate: CmpTweet {
+        onClicked: {
+            pageStack.push(Qt.resolvedUrl("TweetDetails.qml"), {
+                               "tweets": Logic.modelSE,
+                               "screenName": Logic.modelSE.get(index).screenName,
+                               "selected": index
+                           })
+        }
+    }
 
 
     anchors {
@@ -99,7 +107,7 @@ SilicaListView {
     PullDownMenu {
         spacing: Theme.paddingLarge
         MenuItem {
-            text: refresh_url //qsTr("Load more")
+            text: qsTr("Load more")
             onClicked: {
                 loadData("prepend")
             }
@@ -108,7 +116,7 @@ SilicaListView {
     PushUpMenu {
         spacing: Theme.paddingLarge
         MenuItem {
-            text: next_results // qsTr("Load more")
+            text: qsTr("Load more")
             onClicked: {
                 loadData("append")
             }

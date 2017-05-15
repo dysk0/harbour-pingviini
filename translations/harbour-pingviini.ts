@@ -99,6 +99,13 @@
     </message>
 </context>
 <context>
+    <name>SearchView</name>
+    <message>
+        <source>Load more</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Timeline</name>
     <message>
         <source>Show navigation</source>

@@ -89,19 +89,21 @@ BackgroundItem {
         font.pixelSize: Theme.fontSizeSmall
         color: (pressed ? Theme.highlightColor : Theme.primaryColor)
     }
-
-    Image {
+    FontLoader { id: rosettaFont; source: "../rosetta-icons.ttf" }
+    Label {
         id: iconVerified
         y: Theme.paddingLarge
         anchors {
             left: lblName.right
             leftMargin: Theme.paddingSmall
-            verticalCenter: lblName.verticalCenter
+            baseline: lblName.baseline
         }
         visible: isVerified
         width: isVerified ? Theme.iconSizeExtraSmall : 0
         height: width
-        source: "image://theme/icon-s-installed?" + (pressed ? Theme.primaryColor : Theme.secondaryColor)
+        text: ""
+        font { family: rosettaFont.name; pixelSize: Theme.fontSizeExtraSmall;  }
+        color: (pressed ? Theme.primaryColor : Theme.secondaryColor)
     }
 
     Label {

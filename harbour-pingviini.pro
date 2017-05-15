@@ -77,7 +77,8 @@ DISTFILES += \
     qml/pages/cmp/Tweet.qml \
     qml/pages/cmp/MediaBlock.qml \
     qml/pages/cmp/MyImage.qml \
-    qml/pages/ImageFullScreen.qml
+    qml/pages/ImageFullScreen.qml \
+    qml/home.svg
 
 HEADERS += \
     src/selector/imageuploader.h \
