@@ -26,13 +26,13 @@ SilicaGridView {
             active: false
         }
         ListElement {
-            icon: "image://theme/icon-m-mail?" //""
+            icon: "../mesagess.svg"  //""
             slug: "msgs"
             name: "Messagess"
             active: false
         }
         ListElement {
-            icon: "image://theme/icon-m-search?" //""
+            icon: "../search.svg" //""
             slug: "search"
             name: "Search"
             active: false

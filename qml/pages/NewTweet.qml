@@ -2,6 +2,7 @@ import QtQuick 2.0
 import Sailfish.Silica 1.0
 import QtPositioning 5.2
 import harbour.pingviini.Uploader 1.0
+import harbour.pingviini.MyObject 1.0
 import "../lib/Logic.js" as Logic
 
 
@@ -194,7 +195,9 @@ Item {
                     }
                 }
             }
-
+            MyObject {
+                id: test2
+            }
             Switch {
                 icon.source: "image://theme/icon-m-image"
                 onClicked: {
@@ -206,6 +209,9 @@ Item {
                             header.title = "My name: " + dialog.img
 
                             test.source = dialog.img
+                            test2.setFile(dialog.img)
+                            test2.upload();
+                            console.log(test2.getBase64())
 
 
 

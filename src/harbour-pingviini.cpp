@@ -36,7 +36,7 @@
 #include "selector/imageuploader.h"
 #include "selector/thumbnailprovider.h"
 #include "selector/filesmodel.h"
-
+#include "myobject.h"
 
 int main(int argc, char *argv[])
 {
@@ -50,14 +50,15 @@ int main(int argc, char *argv[])
     // To display the view, call "show()" (will show fullscreen on device).
     QScopedPointer<QGuiApplication> application(SailfishApp::application(argc, argv));
     QStringList args = application->arguments();
-        bool daemonized = args.contains("-daemon");
+    bool daemonized = args.contains("-daemon");
 
-        if(daemonized )
-            return 0;
+    if(daemonized )
+        return 0;
 
     FilesModel::registerMetaTypes();
     qmlRegisterType<FilesModel>("harbour.pingviini.FilesModel", 1, 0, "FilesModel");
     qmlRegisterType<ImageUploader>("harbour.pingviini.Uploader", 1, 0, "ImageUploader");
+    qmlRegisterType<MyObject>("harbour.pingviini.MyObject", 1, 0, "MyObject");
 
     QScopedPointer<QQuickView> view(SailfishApp::createView());
     QQmlEngine* engine = view->engine();

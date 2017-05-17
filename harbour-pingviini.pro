@@ -19,7 +19,8 @@ SOURCES += src/harbour-pingviini.cpp \
     src/selector/thumbnailprovider.cpp \
     src/selector/filesmodel.cpp \
     src/selector/imageuploader.cpp \
-    src/selector/filesmodelworker.cpp
+    src/selector/filesmodelworker.cpp \
+    src/myobject.cpp
 
 OTHER_FILES += qml/harbour-pingviini.qml \
     qml/cover/CoverPage.qml \
@@ -78,10 +79,13 @@ DISTFILES += \
     qml/pages/cmp/MediaBlock.qml \
     qml/pages/cmp/MyImage.qml \
     qml/pages/ImageFullScreen.qml \
-    qml/home.svg
+    qml/home.svg \
+    qml/mesagess.svg \
+    qml/search.svg
 
 HEADERS += \
     src/selector/imageuploader.h \
     src/selector/exif/exif.h \
     src/selector/filesmodel.h \
-    src/selector/filesmodelworker.h
+    src/selector/filesmodelworker.h \
+    src/myobject.h
