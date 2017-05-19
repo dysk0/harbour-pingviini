@@ -19,8 +19,7 @@ SOURCES += src/harbour-pingviini.cpp \
     src/selector/thumbnailprovider.cpp \
     src/selector/filesmodel.cpp \
     src/selector/imageuploader.cpp \
-    src/selector/filesmodelworker.cpp \
-    src/myobject.cpp
+    src/selector/filesmodelworker.cpp
 
 OTHER_FILES += qml/harbour-pingviini.qml \
     qml/cover/CoverPage.qml \
@@ -87,5 +86,4 @@ HEADERS += \
     src/selector/imageuploader.h \
     src/selector/exif/exif.h \
     src/selector/filesmodel.h \
-    src/selector/filesmodelworker.h \
-    src/myobject.h
+    src/selector/filesmodelworker.h

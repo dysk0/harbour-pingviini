@@ -31,6 +31,7 @@ Item {
             holder.height = placeholder1.height
             break;
         case 3:
+        case 4:
             placeholder1.visible = true;
             placeholder2.visible = true;
             placeholder3.visible = true;

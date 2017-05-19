@@ -18,12 +18,14 @@ SilicaGridView {
             slug: "timeline"
             name: "Timeline"
             active: true
+            unread: false
         }
         ListElement {
             icon: "image://theme/icon-m-alarm?" //""
             slug: "mentions"
             name: "Mentions"
             active: false
+            unread: false
         }
         ListElement {
             icon: "../mesagess.svg"  //""
@@ -36,6 +38,7 @@ SilicaGridView {
             slug: "search"
             name: "Search"
             active: false
+            unread: false
         }
     }
     model: listModel
@@ -59,18 +62,25 @@ SilicaGridView {
         }
         GlassItem {
             id: effect
-            /*Timer {
-                repeat: false
-                running: Qt.application.active
-                interval: 1000
-                onTriggered: effect.dimmed = !effect.dimmed
-            }*/
+            visible: !isPortrait && unread
+            width: Theme.itemSizeMedium
+            height: Theme.itemSizeMedium
             dimmed: true
-            anchors.bottom: isPortrait ? false : parent.bottom
-            anchors.bottomMargin: isPortrait ? 0 : -height/2
-            anchors.horizontalCenter: isPortrait ? false : parent.horizontalCenter
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: -height/2
+            anchors.horizontalCenter: parent.horizontalCenter
+            color: Theme.highlightColor
+        }
 
-
+        GlassItem {
+            id: effect2
+            visible: isPortrait && unread
+            width: Theme.itemSizeMedium
+            height: Theme.itemSizeMedium
+            dimmed: false
+            anchors.right: parent.right;
+            anchors.rightMargin: -height/2;
+            anchors.verticalCenter: parent.verticalCenter
             color: Theme.highlightColor
         }
 
@@ -130,7 +140,10 @@ SilicaGridView {
                 family: Theme.fontFamilyHeading
             }
         }
-        onClicked: navigateTo(model.slug)
+        onClicked: {
+            navigateTo(model.slug)
+            effect.state = "right"
+        }
 
     }
     function navigateTo(slug){

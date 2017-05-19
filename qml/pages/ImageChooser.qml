@@ -92,12 +92,12 @@ Dialog
                 text: qsTr("SD Card")
                 onClicked: {
                     if (!!rootPage) {
-                        folder = "/home/nemo/";
+                        folder = $HOME;
                         rootPage.sortRole = FilesModel.NameRole;
                         rootPage.sortOrder = Qt.AscendingOrder;
                         pageStack.pop(rootPage);
                     } else {
-                        folder = "/home/nemo/";
+                        folder = $HOME;
                         sortRole = FilesModel.NameRole;
                         sortOrder = Qt.AscendingOrder;
                     }
@@ -108,12 +108,12 @@ Dialog
                 text: qsTr("Home")
                 onClicked: {
                     if (!!rootPage) {
-                        folder = "/home/nemo/";
+                        folder = $HOME;
                         rootPage.sortRole = FilesModel.NameRole;
                         rootPage.sortOrder = Qt.AscendingOrder;
                         pageStack.pop(rootPage);
                     } else {
-                        folder = "/home/nemo/";
+                        folder = $HOME;
                         sortRole = FilesModel.NameRole;
                         sortOrder = Qt.AscendingOrder;
                     }

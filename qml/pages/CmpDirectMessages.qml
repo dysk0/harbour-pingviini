@@ -275,13 +275,13 @@ SilicaListView {
         }
         //console.log((contentY+200) + ' ' + listView.contentHeight)
         if (contentY > scrollOffsetDM) {
-            infoPanel.open = false
+            openDrawer(false)
         } else {
             if (contentY < 100 && !loadStarted){
                 //timelineDM.loadData("prepend")
                 //loadStarted = true;
             }
-            infoPanel.open = true
+            openDrawer(true)
         }
     }
 }

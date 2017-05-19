@@ -9,6 +9,17 @@
     </message>
 </context>
 <context>
+    <name>Browser</name>
+    <message>
+        <source>Web mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reading mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CmpDirectMessages</name>
     <message>
         <source>Messages</source>

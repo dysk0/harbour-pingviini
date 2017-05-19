@@ -21,7 +21,7 @@ Page {
     signal openDrawer (bool open)
 
     onOpenDrawer: {
-        infoPanel.open = open
+        infoPanel.open = !isPortrait ? true : open
     }
 
     signal buttonPressedAtBPage();
@@ -142,7 +142,7 @@ Page {
         id: newTweet
         width: Theme.iconSizeLarge
         height: width
-        visible: !infoPanel.open
+        visible: !isPortrait ? true : !infoPanel.open
         icon.source: "image://theme/icon-l-add"
         onClicked: {
             pageStack.push(Qt.resolvedUrl("TweetDetails.qml"), {title: "New Tweet", tweetType: "New"})

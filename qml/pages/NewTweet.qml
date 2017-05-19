@@ -2,7 +2,6 @@ import QtQuick 2.0
 import Sailfish.Silica 1.0
 import QtPositioning 5.2
 import harbour.pingviini.Uploader 1.0
-import harbour.pingviini.MyObject 1.0
 import "../lib/Logic.js" as Logic
 
 
@@ -195,50 +194,19 @@ Item {
                     }
                 }
             }
-            MyObject {
-                id: test2
-            }
+
             Switch {
                 icon.source: "image://theme/icon-m-image"
+                visible: true
                 onClicked: {
                     if (checked){
                         var dialog = pageStack.push(Qt.resolvedUrl("ImageChooser.qml"),
                                                     {"name": header.title})
                         dialog.accepted.connect(function() {
                             console.log(JSON.stringify(dialog.img))
-                            header.title = "My name: " + dialog.img
-
-                            test.source = dialog.img
-                            test2.setFile(dialog.img)
-                            test2.upload();
-                            console.log(test2.getBase64())
+                           // header.title = "My name: " + dialog.img
 
 
-
-
-                            var xhr = new XMLHttpRequest();
-
-
-
-                            xhr.onprogress = function(evt) {
-                            if (evt.lengthComputable) {
-                                evt.target.curLoad = evt.loaded;
-                                evt.target.log.parentNode.parentNode.previousSibling.textContent =
-                                    Number(evt.loaded/k).toFixed() + "/"+ Number(evt.total/k).toFixed() + "kB";
-                            }
-                            if (evt.lengthComputable) {
-                                var loaded = (evt.loaded / evt.total);
-                                if (loaded < 1) {
-                                    var newW = loaded * width;
-                                    if (newW < 10) newW = 10;
-                                        evt.target.log.style.width = newW + "px";
-                                    }
-                                }
-                            };
-
-                            xhr.open("POST", "https://upload.twitter.com/1.1/media/upload.json");
-                            xhr.overrideMimeType('text/plain; charset=x-user-defined-binary');
-                            xhr.sendAsBinary(file.getAsBinary());
 
 
                         })
