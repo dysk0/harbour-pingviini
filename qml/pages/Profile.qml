@@ -23,7 +23,7 @@ Page {
         id: worker
         source: "../lib/Worker.js"
         onMessage: {
-            console.log(JSON.stringify(messageObject))
+            //console.log(JSON.stringify(messageObject))
             if(messageObject.action === "users_show" || messageObject.action === "friendships_destroy" || messageObject.action ===  "friendships_create"){
                 followers_count = messageObject.reply.followers_count
                 friends_count = messageObject.reply.friends_count
@@ -37,128 +37,110 @@ Page {
             }
         }
     }
-
-
-
     // The effective value will be restricted by ApplicationWindow.allowedOrientations
     allowedOrientations: Orientation.All
-
-
-    SilicaFlickable {
-        anchors {
-            fill: parent
-        }
-        contentHeight: column.height + Theme.paddingLarge
-
-
-
-
-        Component.onCompleted: {
-            var msg = {
-                'action': 'users_show',
-                'screen_name': username,
-                'conf'  : Logic.getConfTW()
-            };
-            worker.sendMessage(msg);
-        }
-
-
-
-        Column {
-            id: column
-            spacing: Theme.paddingLarge
-            width: parent.width
-            ProfileHeader {
-                id: header
-                bg: profile_background
-                title: name
-                description: '@'+username
-                image: profileImage
-            }
-            ExpandingSectionGroup {
-                currentIndex: 0
-                anchors {
-                    top: header.bottom
-                    bottom: parent.bottom
-                    left: parent.left
-                    right: parent.right
-                }
-                ExpandingSection {
-                    title: "Summary"
-                    content.sourceComponent: Column {
-                        spacing: Theme.paddingMedium
-                        anchors.bottomMargin: Theme.paddingLarge
-                        DetailItem {
-                            visible: location != "" ? true : false
-                            label: "Location"
-                            value: location
-                        }
-                        DetailItem {
-                            visible: followers_count ? true : false
-                            label: "Followers"
-                            value: followers_count
-                        }
-                        DetailItem {
-                            visible: friends_count ? true : false
-                            label: "Following"
-                            value: (friends_count)
-                        }
-                        DetailItem {
-                            visible: statuses_count ? true : false
-                            label: "Tweets"
-                            value: (statuses_count)
-                        }
-                        DetailItem {
-                            visible: favourites_count ? true : false
-                            label: "Favourites"
-                            value: (favourites_count)
-                        }
-                        Row {
-                            anchors.horizontalCenter:     parent.horizontalCenter
-                            Button {
-                                id: btnFollow
-                                text: (following ? "Unfollow" : "Follow")
-                                onClicked: {
-
-                                    var msg = {
-                                        'action': following ? "friendships_destroy" : "friendships_create",
-                                                              'screen_name': username,
-                                                              'conf'  : Logic.getConfTW()
-                                    };
-                                    worker.sendMessage(msg);
-                                    following = !following
-                                }
-                            }
-                        }
-                        Label {
-                            text: " "
-                        }
-                    }
-
-                }
-                /*ExpandingSection {
-                    title: "Tweets"
-                    content.sourceComponent: Column {
-                        width: parent.width
-
-                        Repeater {
-                            model: 100
-
-                            TextSwitch {
-                                text: "Option " + (index + 1)
-                            }
-                        }
-                    }
-                }*/
-            }
-        }
-
-
-
-
-        /*
-
-
-    */
+    Component.onCompleted: {
+        var msg = {
+            'action': 'users_show',
+            'screen_name': username,
+            'conf'  : Logic.getConfTW()
+        };
+        worker.sendMessage(msg);
     }
+
+
+
+    MyList {
+        header: ProfileHeader {
+            id: header
+            bg: profile_background
+            title: name
+            description: '@'+username
+            image: profileImage
+        }
+
+        anchors {
+            top: parent.top
+            bottom: expander.top
+            left: parent.left
+            right: parent.right
+        }
+        clip: true
+
+           model: ListModel {}
+        action: "statuses_userTimeline"
+        vars: { 'screen_name': '@'+username}
+        conf: Logic.getConfTW()
+    }
+
+
+    ExpandingSectionGroup {
+        id: expander
+        //currentIndex: 0
+        anchors {
+            bottom: parent.bottom
+            left: parent.left
+            right: parent.right
+        }
+        ExpandingSection {
+            title: "Summary"
+            content.sourceComponent: Column {
+                spacing: Theme.paddingMedium
+                anchors.bottomMargin: Theme.paddingLarge
+                DetailItem {
+                    visible: location != "" ? true : false
+                    label: "Location"
+                    value: location
+                }
+                DetailItem {
+                    visible: followers_count ? true : false
+                    label: "Followers"
+                    value: followers_count
+                }
+                DetailItem {
+                    visible: friends_count ? true : false
+                    label: "Following"
+                    value: (friends_count)
+                }
+                DetailItem {
+                    visible: statuses_count ? true : false
+                    label: "Tweets"
+                    value: (statuses_count)
+                }
+                DetailItem {
+                    visible: favourites_count ? true : false
+                    label: "Favourites"
+                    value: (favourites_count)
+                }
+                Row {
+                    anchors.horizontalCenter:     parent.horizontalCenter
+                    Button {
+                        id: btnFollow
+                        text: (following ? "Unfollow" : "Follow")
+                        onClicked: {
+
+                            var msg = {
+                                'action': following ? "friendships_destroy" : "friendships_create",
+                                                      'screen_name': username,
+                                                      'conf'  : Logic.getConfTW()
+                            };
+                            worker.sendMessage(msg);
+                            following = !following
+                        }
+                    }
+                }
+                Label {
+                    text: " "
+                }
+            }
+
+        }
+        /*ExpandingSection {
+            title: "Tweets"
+
+        }*/
+    }
+
+
+
 }

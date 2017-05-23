@@ -305,25 +305,58 @@ WorkerScript.onMessage = function(msg) {
 
     if (msg.bgAction){
         console.log("BG ACTION >" + msg.bgAction)
+        console.log("BG mode >" + msg.mode)
+
+        if (msg.model.count) {
+            if (msg.mode === "append") {
+                msg.params['max_id'] = msg.model.get(msg.model.count-1).id
+            }
+            if (msg.mode === "prepend" && msg.model.count) {
+                msg.params['since_id'] = msg.model.get(0).id
+            }
+        } else {
+            msg.mode = "append";
+        }
         console.log(JSON.stringify(msg.params))
         cb.__call(msg.bgAction, msg.params, function (reply) {
-            console.log(JSON.stringify(reply))
+            //console.log(JSON.stringify(reply))
             if (msg.model){
                 var tweets = [];
                 if (msg.bgAction === "search_tweets" && reply.statuses){
                     tweets = reply.statuses;
+                } else {
+                    tweets = reply;
                 }
-                for(var i = 0; i < tweets.length; i++){
+                var length = tweets.length
+
+                var i = 0
+                if (msg.bgAction !== "search_tweets"){
+                    if (msg.mode === "prepend") {
+                        length--;
+                    } else if (msg.mode === "append"){
+                        i = 1;
+                    }
+                }
+
+
+                for(i; i < length; i++){
                     var tweet = parseTweet(tweets[i]);
                     if (msg.bgAction === "search_tweets"){
                         if (msg.params.since_id === tweet.inReplyToStatusId || msg.params.since_id === tweet.id)
                             msg.model.append(tweet)
                     } else {
-                        msg.model.append(tweet)
+                        if (msg.mode === "append") {
+                            msg.model.append(tweet)
+                        }
+                        if (msg.mode === "prepend") {
+                            console.log(length-i-1)
+                            msg.model.insert(0, tweet)
+                        }
                     }
 
 
                 }
+                console.log(msg.model.count)
                 msg.model.sync();
             }
 

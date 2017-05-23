@@ -147,7 +147,7 @@ BackgroundItem {
         height: richText.length ? paintedHeight : 0
         //text: (highlights.length > 0 ? Theme.highlightText(plainText, new RegExp(highlights, "igm"), Theme.highlightColor) : plainText)
         //textFormat:Text.RichText
-        onLinkActivated: page.onLinkActivated(link)
+        onLinkActivated: parent.onNavigateTo(link)//page.onLinkActivated(link)
         text: richText
         textFormat:Text.RichText
         linkColor : Theme.highlightColor

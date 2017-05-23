@@ -18,6 +18,10 @@
         <source>Reading mode</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Open in Browser</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>CmpDirectMessages</name>
@@ -104,6 +108,13 @@
         <source>Pingviini</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Load more</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>MyList</name>
     <message>
         <source>Load more</source>
         <translation type="unfinished"></translation>

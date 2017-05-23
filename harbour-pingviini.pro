@@ -80,7 +80,8 @@ DISTFILES += \
     qml/pages/ImageFullScreen.qml \
     qml/home.svg \
     qml/mesagess.svg \
-    qml/search.svg
+    qml/search.svg \
+    qml/pages/cmp/MyList.qml
 
 HEADERS += \
     src/selector/imageuploader.h \

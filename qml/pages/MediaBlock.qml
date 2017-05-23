@@ -35,6 +35,7 @@ Item {
             placeholder1.visible = true;
             placeholder2.visible = true;
             placeholder3.visible = true;
+            placeholder4.visible = false;
 
             placeholder1.width = holder.width - Theme.paddingSmall - Theme.itemSizeLarge;
             placeholder1.height = Theme.itemSizeLarge*2+Theme.paddingSmall

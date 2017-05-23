@@ -40,39 +40,23 @@
 
 int main(int argc, char *argv[])
 {
-    // SailfishApp::main() will display "qml/template.qml", if you need more
-    // control over initialization, you can use:
-    //
-    //   - SailfishApp::application(int, char *[]) to get the QGuiApplication *
-    //   - SailfishApp::createView() to get a new QQuickView * instance
-    //   - SailfishApp::pathTo(QString) to get a QUrl to a resource file
-    //
-    // To display the view, call "show()" (will show fullscreen on device).
-    QScopedPointer<QGuiApplication> application(SailfishApp::application(argc, argv));
-    QStringList args = application->arguments();
-    bool daemonized = args.contains("-daemon");
+    QScopedPointer<QGuiApplication> app(SailfishApp::application(argc, argv));
+    QScopedPointer<QQuickView> view(SailfishApp::createView());
+    QQmlContext *context = view.data()->rootContext();
 
-    if(daemonized )
-        return 0;
 
     FilesModel::registerMetaTypes();
     qmlRegisterType<FilesModel>("harbour.pingviini.FilesModel", 1, 0, "FilesModel");
     qmlRegisterType<ImageUploader>("harbour.pingviini.Uploader", 1, 0, "ImageUploader");
 
 
-    QScopedPointer<QQuickView> view(SailfishApp::createView());
     QQmlEngine* engine = view->engine();
-    QObject::connect(engine, SIGNAL(quit()), application.data(), SLOT(quit()));
+    QObject::connect(engine, SIGNAL(quit()), app.data(), SLOT(quit()));
     engine->addImageProvider(QStringLiteral("thumbnail"), new ThumbnailProvider);
 
+
+
     view->setSource(SailfishApp::pathTo("qml/harbour-pingviini.qml"));
-
-    if(daemonized)
-        application->setQuitOnLastWindowClosed(false);
-    else
-        view->show();
-
-    return application->exec();
-
-    //return SailfishApp::main(argc, argv);
+    view->show();
+    return app->exec();
 }

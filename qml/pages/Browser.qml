@@ -37,13 +37,28 @@ import QtWebKit 3.0
 import Sailfish.Silica 1.0
 
 Page {
-    id: webViewPage
+    id: browser
     property string href;
     property bool screenReaderMode: true
+    property bool loaded: false
     property string articleContent: ""
     property string articleTitle: ""
     property string articleDate: ""
     property string articleImage: ""
+    onLoadedChanged: {
+        pullDownMenu.busy = pullDownMenu2.busy = !loaded
+    }
+    onStatusChanged: {
+        if (status === PageStatus.Active) {
+            fetchData();
+        }
+
+    }
+    onScreenReaderModeChanged: {
+        loaded = false;
+        fetchData();
+    }
+
     allowedOrientations: Orientation.All
     function fetchData(){
         var xhr = new XMLHttpRequest();
@@ -52,12 +67,11 @@ Page {
             if ( xhr.readyState === xhr.DONE ) {
                 if ( xhr.status === 200 ) {
                     console.log(xhr.responseText)
-                    loading.running = false;
                     var response = JSON.parse(xhr.responseText);
                     if (response.date_published)
                         //articleDate = new Date(response.date_published.replace(/^(\w+) (\w+) (\d+) ([\d:]+) \+0000 (\d+)$/,"$1, $2 $3 $5 $4 GMT"));
-                    if (response.title)
-                        articleTitle = response.title;
+                        if (response.title)
+                            articleTitle = response.title;
                     if (response.lead_image_url)
                         articleImage = response.lead_image_url
                     if (response.content)
@@ -67,48 +81,115 @@ Page {
                 }  else {
 
                 }
-                loading.running = false;
+                loaded = true;
             }
         }
         xhr.setRequestHeader("Content-Type", 'application/json');
         xhr.setRequestHeader("x-api-key", 'uakC11NlSubREs1r5NjkOCS1NJEkwti6DnDutcYC');
-        xhr.send();
+
+        if (screenReaderMode)
+            xhr.send();
+        else
+            webView.url = 'https://mercury.postlight.com/amp?url='+href
     }
 
-    onStatusChanged: {
 
-        if (status === PageStatus.Active && screenReaderMode) {
-            fetchData();
-        }
-
-    }
 
     BusyIndicator {
         id: loading
         size: BusyIndicatorSize.Large
         anchors.centerIn: parent
-        running: true
+        running: !loaded
     }
 
-    SilicaFlickable {
-        anchors.fill: parent
-        height: parent.height
-        contentHeight: screenReaderMode ? article.height : parent.height
-        VerticalScrollDecorator {}
+    SilicaWebView {
+        enabled: !screenReaderMode
+        visible: !screenReaderMode
+        id: webView
+        anchors {
+            fill: parent
+        }
+
         PullDownMenu {
-            spacing: Theme.paddingLarge
+            id: pullDownMenu
+            MenuItem {
+                text: qsTr("Open in Browser")
+                onClicked: {
+                    Qt.openUrlExternally(href);
+                }
+            }
             MenuItem {
                 text: screenReaderMode ? qsTr("Web mode") : qsTr("Reading mode")
                 onClicked: {
                     screenReaderMode = !screenReaderMode
-                    loading.running = true
+                }
+            }
+        }
+
+        opacity: 0
+        onLoadingChanged: {
+            switch (loadRequest.status)
+            {
+            case WebView.LoadSucceededStatus:
+                opacity = 1
+                loaded = true;
+                break
+            case WebView.LoadFailedStatus:
+                opacity = 0
+                loaded = true;
+                viewPlaceHolder.errorString = loadRequest.errorString
+                break
+            default:
+                opacity = 0
+                loaded = false;
+                break
+            }
+        }
+        FadeAnimation on opacity {}
+    }
+    ViewPlaceholder {
+        id: viewPlaceHolder
+        property string errorString
+        enabled: webView.opacity === 0 && loaded && !screenReaderMode
+        text: errorString
+        hintText: "Check network connectivity and pull down to reload"
+    }
+
+
+
+    SilicaFlickable {
+        visible: screenReaderMode
+        enabled: screenReaderMode
+        anchors {
+            fill: parent
+        }
+        contentHeight: article.height
+        VerticalScrollDecorator {}
+        PullDownMenu {
+            id: pullDownMenu2
+            MenuItem {
+                text: qsTr("Open in Browser")
+                onClicked: {
+                    Qt.openUrlExternally(href);
+                }
+            }
+            MenuItem {
+                text: screenReaderMode ? qsTr("Web mode") : qsTr("Reading mode")
+                onClicked: {
+                    screenReaderMode = !screenReaderMode
                 }
             }
         }
         Column {
-            visible: screenReaderMode
+
             id: article
             width: parent.width
+
+            Rectangle {
+                height: Theme.itemSizeExtraSmall/3
+                width: parent.width
+                opacity: 0
+            }
 
             Label {
                 id: title
@@ -121,7 +202,6 @@ Page {
                 anchors {
                     left: parent.left
                     right: parent.right
-                    topMargin: Theme.paddingLarge
                     leftMargin: Theme.paddingLarge
                     rightMargin: Theme.paddingLarge
                 }
@@ -141,9 +221,10 @@ Page {
                     rightMargin: Theme.paddingLarge
                 }
             }
-            Label {
-                text: " "
-                visible: image.visible
+            Rectangle {
+                height: image.visible ? Theme.itemSizeExtraSmall/3 : 0
+                width: parent.width
+                opacity: 0
             }
             Image {
                 id: image
@@ -167,16 +248,14 @@ Page {
                                      height = width / ratio
                                  }
             }
-            Label {
-                text: " "
-                visible: image.visible
+            Rectangle {
+                height: image.visible ? Theme.itemSizeExtraSmall/3 : 0
+                width: parent.width
+                opacity: 0
             }
-
-
-
             Label {
                 id: content
-                readonly property string _linkStyle: "<style>a:link { color: " + Theme.primaryColor + "; } h1, h2, h3, h4 { color: " + Theme.highlightColor + "; } img { margin: "+Theme.paddingLarge+" 0; width: 100%}</style>"
+                readonly property string _linkStyle: "<style>a:link { color: " + Theme.primaryColor + "; } h1, h2, h3, h4 { color: " + Theme.highlightColor + "; } img { margin: "+Theme.paddingLarge+" 0; width: 100\%}</style>"
                 textFormat: Text.RichText
                 text: _linkStyle + articleContent;
                 font.pixelSize: Theme.fontSizeSmall
@@ -192,56 +271,12 @@ Page {
                 }
 
             }
-
-        }
-
-
-        SilicaWebView {
-            enabled: !screenReaderMode
-            visible: !screenReaderMode
-            id: webView
-            url: 'https://mercury.postlight.com/amp?url='+href
-            anchors {
-                top: parent.top
-                left: parent.left
-                right: parent.right
-                bottom: parent.bottom
+            Rectangle {
+                height: Theme.itemSizeExtraSmall/3
+                width: parent.width
+                opacity: 0
             }
 
-
-
-            opacity: 0
-            onLoadingChanged: {
-                switch (loadRequest.status)
-                {
-                case WebView.LoadSucceededStatus:
-                    opacity = 1
-                    loading.running = false
-                    break
-                case WebView.LoadFailedStatus:
-                    opacity = 0
-                    loading.running = false
-                    viewPlaceHolder.errorString = loadRequest.errorString
-                    break
-                default:
-                    opacity = 0
-                    break
-                }
-            }
-
-            FadeAnimation on opacity {}
         }
-
-        /* ViewPlaceholder {
-            id: viewPlaceHolder
-            property string errorString
-
-            enabled: webView.opacity === 0 && !webView.loading
-            text: errorString
-            hintText: "Check network connectivity and pull down to reload"
-        }*/
-
-
-
     }
 }

@@ -34,17 +34,28 @@ import "../pages/cmp/"
 
 
 CoverBackground {
-    property string status: "value"
+    property string status: "pingviini"
     Label {
         id: label
         anchors.centerIn: parent
         text: status
     }
+    PingviiniiLogo {
+        id: logo
+        anchors {
+            centerIn: parent
+        }
+        width: parent.width
+        height: parent.width
+        opacity: 1;
+        anchors.fill: parent
+        Behavior on opacity { NumberAnimation {} }
+    }
 
 
 
 
-    CoverActionList {
+    /*CoverActionList {
         id: coverAction
 
         CoverAction {
@@ -54,6 +65,6 @@ CoverBackground {
         CoverAction {
             iconSource: "image://theme/icon-cover-new"
         }
-    }
+    }*/
 }
 

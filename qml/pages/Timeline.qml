@@ -7,6 +7,8 @@ import "../lib/Logic.js" as Logic
     SilicaListView {
         //property type name: value
         id: timeline
+        signal navigateTo(string slug)
+        onNavigateTo: parent.navigateTo(slug)
         anchors {
             fill: parent
             leftMargin: 0
@@ -64,7 +66,6 @@ import "../lib/Logic.js" as Logic
             description: qsTr("Pingviini")
         }
         PullDownMenu {
-            spacing: Theme.paddingLarge
             MenuItem {
                 text: qsTr("Add account")
                 onClicked: pageStack.push(Qt.resolvedUrl("AccountAdd.qml"))
@@ -83,7 +84,6 @@ import "../lib/Logic.js" as Logic
             }
         }
         PushUpMenu {
-            spacing: Theme.paddingLarge
             MenuItem {
                 text: qsTr("Load more")
                 onClicked: {

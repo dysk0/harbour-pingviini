@@ -19,6 +19,8 @@ Page {
     property int currentIndexDM: 0
     allowedOrientations: Orientation.All
     signal openDrawer (bool open)
+    signal navigateTo(string slug)
+    onNavigateTo: console.log("Navigate to " + slug )
 
     onOpenDrawer: {
         infoPanel.open = !isPortrait ? true : open
@@ -157,6 +159,8 @@ Page {
             pageStack.push(Qt.resolvedUrl("Browser.qml"), {"href" : href})
         }
     }
+
+
 
 }
 
