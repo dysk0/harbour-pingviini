@@ -30,9 +30,11 @@ Item {
             holder.height = placeholder1.height
             break;
         case 3:
+        case 4:
             placeholder1.visible = true;
             placeholder2.visible = true;
             placeholder3.visible = true;
+            placeholder4.visible = false;
 
             placeholder1.width = holder.width - Theme.paddingSmall - Theme.itemSizeLarge;
             placeholder1.height = Theme.itemSizeLarge*2+Theme.paddingSmall
@@ -55,101 +57,72 @@ Item {
         }
     }
 
-    Item {
+    MyImage {
         id: placeholder1
         width: 2
         height: 1
-
-
-        Image {
-            id: mediaImg
-            anchors {
-                fill: parent
-            }
-            opacity: pressed ? 0.6 : 1
-            fillMode: Image.PreserveAspectCrop
-            asynchronous: true
-            visible: {
-                if (count > 0 && model.get(0).type === "photo"){
-                    source = model.get(0).src
-                    height = 200
-                    return true
-                } else {
-                    height = 0
-                    return false
-                }
+        opacity: pressed ? 0.6 : 1
+        visible: {
+            if (count > 0 && model.get(0).type === "photo"){
+                mediaURL = model.get(0).src
+                height = 200
+                return true
+            } else {
+                height = 0
+                return false
             }
         }
-        visible: false
-
     }
-
-    Item {
+    MyImage {
         id: placeholder2
-        Image {
-            anchors {
-                fill: parent
-            }
-            opacity: pressed ? 0.6 : 1
-            fillMode: Image.PreserveAspectCrop
-            asynchronous: true
-            visible: {
-                if (count >= 1 && model.get(1) && model.get(1).type === "photo"){
-                    source = model.get(1).src
-                    height = 200
-                    return true
-                } else {
-                    height = 0
-                    return false
-                }
+        width: 2
+        height: 1
+        opacity: pressed ? 0.6 : 1
+        visible: {
+            if (count > 0 && model.get(1).type === "photo"){
+                mediaURL = model.get(1).src
+                height = 200
+                return true
+            } else {
+                height = 0
+                return false
             }
         }
-        visible: false
     }
-    Item {
+    MyImage {
         id: placeholder3
-        Image {
-            anchors {
-                fill: parent
-            }
-            opacity: pressed ? 0.6 : 1
-            fillMode: Image.PreserveAspectCrop
-            asynchronous: true
-            visible: {
-                if (count >= 2){
-                    source = model.get(2).src
-                    height = 200
-                    return true
-                } else {
-                    height = 0
-                    return false
-                }
+        width: 2
+        height: 1
+        opacity: pressed ? 0.6 : 1
+        visible: {
+            if (count > 0 && model.get(2).type === "photo"){
+                mediaURL = model.get(2).src
+                height = 200
+                return true
+            } else {
+                height = 0
+                return false
             }
         }
-        visible: false
     }
-    Rectangle {
+    MyImage {
         id: placeholder4
-        Image {
-            anchors {
-                fill: parent
-            }
-            opacity: pressed ? 0.6 : 1
-            fillMode: Image.PreserveAspectCrop
-            asynchronous: true
-            visible: {
-                if (count >= 3){
-                    source = model.get(3).src
-                    height = 200
-                    return true
-                } else {
-                    height = 0
-                    return false
-                }
+        width: 2
+        height: 1
+        opacity: pressed ? 0.6 : 1
+        visible: {
+            if (count > 0 && model.get(3).type === "photo"){
+                mediaURL = model.get(3).src
+                height = 200
+                return true
+            } else {
+                height = 0
+                return false
             }
         }
-        visible: false
     }
-
 }
+
+
+
 

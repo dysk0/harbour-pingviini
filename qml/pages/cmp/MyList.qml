@@ -2,9 +2,14 @@ import QtQuick 2.0
 import Sailfish.Silica 1.0
 
 SilicaListView {
+    id: myList
     property string action: ""
     property variant vars
     property variant conf
+    signal send (string notice)
+    onSend: {
+        console.log("LIST send signal emitted with notice: " + notice)
+    }
     WorkerScript {
         id: worker
         source: "../../lib/Worker.js"
@@ -66,8 +71,30 @@ SilicaListView {
         right: parent.right
     }
     clip: true
-    delegate: Tweet {
+    section {
+        property: 'section'
+        criteria: ViewSection.FullString
+        delegate: SectionHeader  {
+            text: {
+                var dat = Date.fromLocaleDateString(locale, section);
+                dat = Format.formatDate(dat, Formatter.TimepointRelativeCurrentDay)
+                if (dat === "00:00:00") {
+                    visible = false;
+                    height = 0;
+                    return  " ";
+                }else {
+                    return dat;
+                }
 
+            }
+
+        }
+    }
+
+    delegate: Tweet {
+        onSend: {
+            myList.send(notice)
+        }
     }
     add: Transition {
         NumberAnimation { property: "opacity"; from: 0; to: 1.0; duration: 800 }

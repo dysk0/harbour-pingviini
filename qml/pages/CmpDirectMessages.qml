@@ -57,7 +57,6 @@ SilicaListView {
         description: qsTr("Pingviini")
     }
     PullDownMenu {
-        spacing: Theme.paddingLarge
         MenuItem {
             text: qsTr("Load more")
             onClicked: {

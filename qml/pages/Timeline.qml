@@ -7,8 +7,10 @@ import "../lib/Logic.js" as Logic
     SilicaListView {
         //property type name: value
         id: timeline
-        signal navigateTo(string slug)
-        onNavigateTo: parent.navigateTo(slug)
+        function navigateTo(slug){
+            page.navigateTo(slug)
+        }
+
         anchors {
             fill: parent
             leftMargin: 0
@@ -97,7 +99,7 @@ import "../lib/Logic.js" as Logic
 
 
         model: Logic.modelTL
-        delegate: CmpTweet {
+        delegate: Tweet {
             onClicked: {
                 pageStack.push(Qt.resolvedUrl("TweetDetails.qml"), {
                                    "tweets": Logic.modelTL,

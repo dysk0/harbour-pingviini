@@ -3,9 +3,12 @@ import Sailfish.Silica 1.0
 import QtGraphicalEffects 1.0
 
 BackgroundItem {
+    signal send (string notice)
+
     id: delegate
     //property string text: "0"
     width: parent.width
+    signal navigateTo(string link)
     height: lblText.paintedHeight + (lblText.text.length > 0 ? Theme.paddingLarge : 0 )+ lblName.paintedHeight + lblScreenName.paintedHeight +  mediaImg.height + (isRetweet ? Theme.paddingLarge + iconRT.height : 0)
     Image {
         id: iconRT
@@ -39,8 +42,31 @@ BackgroundItem {
         height: width
         smooth: true
         source: profileImageUrl
-        visible: false
+        visible: true
+        MouseArea {
+            anchors.fill: parent
+            onClicked: {
+                pageStack.push(Qt.resolvedUrl("../Profile.qml"), {
+                                   "name": name,
+                                   "username": screenName,
+                                   "profileImage": profileImageUrl
+                               })
+            }
 
+        }
+
+    }
+
+    /*Image {
+        id: avatar
+        x: Theme.horizontalPageMargin
+        y: Theme.paddingLarge + (isRetweet ? iconRT.height+Theme.paddingMedium : 0)
+        asynchronous: true
+        width: Theme.iconSizeMedium
+        height: width
+        smooth: true
+        source: profileImageUrl
+        visible: false
     }
     Rectangle {
         id: avatarMask
@@ -67,7 +93,7 @@ BackgroundItem {
         MouseArea {
             anchors.fill: parent
             onClicked: {
-                pageStack.push(Qt.resolvedUrl("Profile.qml"), {
+                pageStack.push(Qt.resolvedUrl("../Profile.qml"), {
                                    "name": name,
                                    "username": screenName,
                                    "profileImage": profileImageUrl
@@ -75,12 +101,13 @@ BackgroundItem {
             }
 
         }
-    }
+    }*/
 
     Label {
         id: lblName
         anchors {
             top: avatar.top
+            topMargin: 0
             left: avatar.right
             leftMargin: Theme.paddingMedium
         }
@@ -99,9 +126,15 @@ BackgroundItem {
             verticalCenter: lblName.verticalCenter
         }
         visible: isVerified
-        width: isVerified ? Theme.iconSizeExtraSmall : 0
+        width: isVerified ? Theme.iconSizeExtraSmall*0.8 : 0
+        opacity: 0.8
         height: width
-        source: "image://theme/icon-s-installed?" + (pressed ? Theme.primaryColor : Theme.secondaryColor)
+        source: "../../verified.svg"
+    }
+    ColorOverlay {
+        anchors.fill: iconVerified
+        source: iconVerified
+        color: (pressed ? Theme.secondaryHighlightColor : Theme.secondaryColor)
     }
 
     Label {
@@ -147,7 +180,30 @@ BackgroundItem {
         height: richText.length ? paintedHeight : 0
         //text: (highlights.length > 0 ? Theme.highlightText(plainText, new RegExp(highlights, "igm"), Theme.highlightColor) : plainText)
         //textFormat:Text.RichText
-        onLinkActivated: parent.onNavigateTo(link)//page.onLinkActivated(link)
+        onLinkActivated: {
+            console.log(link)
+            if (link[0] === "@") {
+                pageStack.push(Qt.resolvedUrl("../Profile.qml"), {
+                                   "name": "",
+                                   "username": link.substring(1),
+                                   "profileImage": ""
+                               })
+            } else if (link[0] === "#") {
+
+                    pageStack.pop(pageStack.find(function(page) {
+                        var check = page.isFirstPage === true;
+                        if (check)
+                            page.onLinkActivated(link)
+                        return check;
+                    }));
+
+                send(link)
+            } else {
+                pageStack.push(Qt.resolvedUrl("../Browser.qml"), {"href" : link})
+            }
+
+
+        }
         text: richText
         textFormat:Text.RichText
         linkColor : Theme.highlightColor

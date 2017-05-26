@@ -23,8 +23,12 @@ Page {
         id: worker
         source: "../lib/Worker.js"
         onMessage: {
-            //console.log(JSON.stringify(messageObject))
+            console.log(JSON.stringify(messageObject))
             if(messageObject.action === "users_show" || messageObject.action === "friendships_destroy" || messageObject.action ===  "friendships_create"){
+                name = messageObject.reply.name
+                username = messageObject.reply.screen_name
+                if (profileImage ==="")
+                    profileImage = messageObject.reply.profile_image_url_https
                 followers_count = messageObject.reply.followers_count
                 friends_count = messageObject.reply.friends_count
                 statuses_count = messageObject.reply.statuses_count

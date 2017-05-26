@@ -8,6 +8,7 @@ import "./cmp/"
 Page {
     id: page
     property var locale: Qt.locale()
+    property bool isFirstPage: true
     property bool loadStarted: false
     property int scrollOffset: 0
     property string activeView: "timeline"
@@ -113,14 +114,76 @@ Page {
         }
     }
 
-    Timeline {
-        id: timelineViewComponent
 
+    MyList {
+        id: timelineViewComponent
+        onSend: {
+            console.log("Main View send signal emitted with notice: " + notice)
+            onLinkActivated(notice)
+        }
+        PullDownMenu {
+            MenuItem {
+                text: qsTr("Add account")
+                onClicked: pageStack.push(Qt.resolvedUrl("AccountAdd.qml"))
+            }
+            MenuItem {
+                text: qsTr("Load more")
+                onClicked: {
+                    loadData("prepend")
+                }
+            }
+        }
+        header: PageHeader {
+            title: qsTr("Timeline")
+            description: qsTr("Pingviini")
+        }
+
+        anchors {
+            fill: parent
+            leftMargin: 0
+            top: parent.top
+            topMargin: 0
+            rightMargin: page.isPortrait ? 0 : infoPanel.visibleSize
+            bottomMargin: page.isPortrait ? infoPanel.visibleSize : 0
+        }
+        clip: true
+
+        model: Logic.modelTL
+        action: "statuses_homeTimeline"
+        vars: {"count":200}
+        conf: Logic.getConfTW()
     }
-    Mentions {
+
+    MyList {
         id: mentionsViewComponent
         visible: false;
+        onSend: {
+            console.log("Main View send signal emitted with notice: " + notice)
+            onLinkActivated(notice)
+        }
+        header: PageHeader {
+            title: qsTr("Mentions")
+            description: qsTr("Pingviini")
+        }
+
+        anchors {
+            fill: parent
+            leftMargin: 0
+            top: parent.top
+            topMargin: 0
+            rightMargin: page.isPortrait ? 0 : infoPanel.visibleSize
+            bottomMargin: page.isPortrait ? infoPanel.visibleSize : 0
+        }
+        clip: true
+
+        model: Logic.modelMN
+        action: "statuses_mentionsTimeline"
+        vars: {"count":200}
+        conf: Logic.getConfTW()
     }
+
+
+
 
 
     CmpDirectMessages {

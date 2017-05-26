@@ -39,6 +39,29 @@
     </message>
 </context>
 <context>
+    <name>FirstPage</name>
+    <message>
+        <source>Timeline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pingviini</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mentions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add account</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Load more</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>ImageChooser</name>
     <message>
         <source>Android storage</source>
@@ -95,21 +118,6 @@
     </message>
     <message>
         <source>Unable to open the file %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>Mentions</name>
-    <message>
-        <source>Mentions</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Pingviini</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Load more</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

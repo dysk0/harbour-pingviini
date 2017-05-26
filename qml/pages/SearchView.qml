@@ -55,14 +55,8 @@ SilicaListView {
 
 
     model: Logic.modelSE
-    delegate: CmpTweet {
-        onClicked: {
-            pageStack.push(Qt.resolvedUrl("TweetDetails.qml"), {
-                               "tweets": Logic.modelSE,
-                               "screenName": Logic.modelSE.get(index).screenName,
-                               "selected": index
-                           })
-        }
+    delegate: Tweet {
+
     }
 
 

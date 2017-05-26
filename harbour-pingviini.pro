@@ -25,12 +25,10 @@ OTHER_FILES += qml/harbour-pingviini.qml \
     qml/cover/CoverPage.qml \
     qml/pages/FirstPage.qml \
     lib/* \
-    qml/pages/CmpTweet.qml \
     qml/pages/cmp/Stats.qml \
     qml/pages/JSONListModel.qml \
     qml/pages/TweetToolBar.qml \
     qml/pages/Timeline.qml \
-    qml/pages/Mentions.qml \
     qml/lib/common.js \
     qml/lib/Worker.js \
     qml/lib/codebird.js \
@@ -66,7 +64,6 @@ DISTFILES += \
     qml/pages/NewTweet.qml \
     qml/pages/TweetDetails.qml \
     qml/pages/Splash.qml \
-    qml/pages/MediaBlock.qml \
     qml/pages/Browser.qml \
     qml/pages/Conversation.qml \
     qml/logo.svg \
@@ -81,6 +78,7 @@ DISTFILES += \
     qml/home.svg \
     qml/mesagess.svg \
     qml/search.svg \
+    qml/verified.svg \
     qml/pages/cmp/MyList.qml
 
 HEADERS += \
