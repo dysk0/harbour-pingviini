@@ -51,6 +51,7 @@ Page {
     // The effective value will be restricted by ApplicationWindow.allowedOrientations
     allowedOrientations: Orientation.All
     Component.onCompleted: {
+        console.log(tweets.count)
         if (selected){
             title =  tweets.get(selected).name
             isFavourited = tweets.get(selected).isFavourited ? true : false
@@ -181,7 +182,30 @@ Page {
                 text: selected ? tweets.get(selected).richText : ""
                 height: paintedHeight
                 textFormat:Text.RichText
-                onLinkActivated: console.log(link + " link activated")
+                onLinkActivated: {
+                    console.log(link)
+                    if (link[0] === "@") {
+                        pageStack.push(Qt.resolvedUrl("Profile.qml"), {
+                                           "name": "",
+                                           "username": link.substring(1),
+                                           "profileImage": ""
+                                       })
+                    } else if (link[0] === "#") {
+
+                            pageStack.pop(pageStack.find(function(page) {
+                                var check = page.isFirstPage === true;
+                                if (check)
+                                    page.onLinkActivated(link)
+                                return check;
+                            }));
+
+                        send(link)
+                    } else {
+                        pageStack.push(Qt.resolvedUrl("Browser.qml"), {"href" : link})
+                    }
+
+
+                }
                 linkColor : Theme.highlightColor
                 wrapMode: Text.Wrap
                 font.pixelSize: Theme.fontSizeMedium
@@ -208,7 +232,7 @@ Page {
 
 
         /**/
-        delegate: CmpTweet{} /*BackgroundItem {
+        delegate: Tweet{} /*BackgroundItem {
             id: delegate
 
             Label {

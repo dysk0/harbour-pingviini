@@ -12,6 +12,13 @@ Item {
     width: width
     height: height
     Component.onCompleted: {
+        if (model && model.count && model.get(0).type === "video") {
+            while (model.count>1){
+                model.remove(model.count-1)
+            }
+            console.log(JSON.stringify(model.get(0)))
+        }
+
         switch(count){
         case 1:
             placeholder1.width = holder.width
@@ -57,20 +64,30 @@ Item {
         }
     }
 
+
+
     MyImage {
         id: placeholder1
         width: 2
         height: 1
         opacity: pressed ? 0.6 : 1
         visible: {
-            if (count > 0 && model.get(0).type === "photo"){
+            if (model && model.count){
                 mediaURL = model.get(0).src
+                if(model.get(0).type === "video" || model.get(0).type === "animated_gif"){
+                    videoURL = model.get(0).video
+                }
                 height = 200
                 return true
             } else {
                 height = 0
                 return false
             }
+        }
+        Image {
+            visible: model.get(0).type === "video" || model.get(0).type === "animated_gif"
+            anchors.centerIn: parent
+            source: "image://theme/icon-l-play"
         }
     }
     MyImage {
@@ -79,7 +96,7 @@ Item {
         height: 1
         opacity: pressed ? 0.6 : 1
         visible: {
-            if (count > 0 && model.get(1).type === "photo"){
+            if (model && model.count && model.get(1).type === "photo"){
                 mediaURL = model.get(1).src
                 height = 200
                 return true
@@ -95,7 +112,7 @@ Item {
         height: 1
         opacity: pressed ? 0.6 : 1
         visible: {
-            if (count > 0 && model.get(2).type === "photo"){
+            if (model && model.count && model.get(2).type === "photo"){
                 mediaURL = model.get(2).src
                 height = 200
                 return true
@@ -111,7 +128,7 @@ Item {
         height: 1
         opacity: pressed ? 0.6 : 1
         visible: {
-            if (count > 0 && model.get(3).type === "photo"){
+            if (model && model.count && model.get(3).type === "photo"){
                 mediaURL = model.get(3).src
                 height = 200
                 return true

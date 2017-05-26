@@ -34,13 +34,13 @@ import "../pages/cmp/"
 
 
 CoverBackground {
-    property string status: "pingviini"
+    property string status: "Pingviini"
     Label {
         id: label
         anchors.centerIn: parent
         text: status
     }
-    PingviiniiLogo {
+    /*PingviiniiLogo {
         id: logo
         anchors {
             centerIn: parent
@@ -50,7 +50,7 @@ CoverBackground {
         opacity: 1;
         anchors.fill: parent
         Behavior on opacity { NumberAnimation {} }
-    }
+    }*/
 
 
 

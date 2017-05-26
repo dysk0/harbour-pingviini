@@ -124,9 +124,13 @@ WorkerScript.onMessage = function(msg) {
         if (msg.mode === "resetSearch") {
             resetSearch = true;
             msg.mode = "append"
+
+            msg.model.clear();
+            msg.model.sync();
+
         }
 
-        params = { "include_entities" : true, "result_type": "recent", count : 50}
+        params = { "include_entities" : true, "result_type": "recent", count : 50, 'tweet_mode': "extended"}
         if (msg.params.q) {
             params['q'] = msg.params.q + " AND -filter:retweets "
         }
@@ -199,6 +203,7 @@ WorkerScript.onMessage = function(msg) {
         sinceId = false;
         maxId = false;
         params = {"include_entities":false, skip_status: true}
+        params['tweet_mode'] = "extended";
         if (msg.model.count) {
             params['max_id'] = msg.model.get(msg.model.count-1).id
         }
@@ -306,7 +311,8 @@ WorkerScript.onMessage = function(msg) {
     if (msg.bgAction){
         console.log("BG ACTION >" + msg.bgAction)
         console.log("BG mode >" + msg.mode)
-
+        msg.params['tweet_mode'] = "extended";
+        msg.params['count'] = 200;
         if (msg.model.count) {
             if (msg.mode === "append") {
                 msg.params['max_id'] = msg.model.get(msg.model.count-1).id
@@ -319,7 +325,7 @@ WorkerScript.onMessage = function(msg) {
         }
         console.log(JSON.stringify(msg.params))
         cb.__call(msg.bgAction, msg.params, function (reply) {
-            //console.log(JSON.stringify(reply))
+            console.log(JSON.stringify(reply))
             if (msg.model){
                 var tweets = [];
                 if (msg.bgAction === "search_tweets" && reply.statuses){
@@ -332,9 +338,11 @@ WorkerScript.onMessage = function(msg) {
                 var i = 0
                 if (msg.bgAction !== "search_tweets"){
                     if (msg.mode === "prepend") {
-                        length--;
+                        if (msg.model.count > 0)
+                            length--;
                     } else if (msg.mode === "append"){
-                        i = 1;
+                        if (msg.model.count > 0)
+                            i = 1;
                     }
                 }
 

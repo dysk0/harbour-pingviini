@@ -3,6 +3,7 @@ import Sailfish.Silica 1.0
 
 SilicaListView {
     id: myList
+    property var locale: Qt.locale()
     property string action: ""
     property variant vars
     property variant conf
@@ -78,7 +79,7 @@ SilicaListView {
             text: {
                 var dat = Date.fromLocaleDateString(locale, section);
                 dat = Format.formatDate(dat, Formatter.TimepointRelativeCurrentDay)
-                if (dat === "00:00:00") {
+                if (dat === "00:00:00" || dat === "00:00") {
                     visible = false;
                     height = 0;
                     return  " ";

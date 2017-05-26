@@ -6,6 +6,7 @@ import QtGraphicalEffects 1.0
 
 Page {
     property ListModel tweets;
+    property var locale: Qt.locale()
     property string name : "";
     property string username : "";
     property string profileImage: "";

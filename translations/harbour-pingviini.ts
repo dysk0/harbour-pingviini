@@ -136,29 +136,6 @@
     </message>
 </context>
 <context>
-    <name>Timeline</name>
-    <message>
-        <source>Show navigation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Pingviini</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Add account</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Load more</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Timeline</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>TweetDetails</name>
     <message>
         <source>Retweet</source>

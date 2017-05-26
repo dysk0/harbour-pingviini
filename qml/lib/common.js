@@ -192,10 +192,10 @@ function parseTweet(tweetJson) {
         tweet.isRetweet = true;
     }
     else originalTweetJson = tweetJson;
-    tweet.plainText = __unescapeHtml(originalTweetJson.text);
-    tweet.richText = __toRichText(originalTweetJson.text, originalTweetJson.entities);
+    tweet.plainText = __unescapeHtml(originalTweetJson.full_text);
+    tweet.richText = __toRichText(originalTweetJson.full_text, originalTweetJson.entities);
 
-    tweet.highlights = __toHighlights(originalTweetJson.text, originalTweetJson.entities);
+    tweet.highlights = __toHighlights(originalTweetJson.full_text, originalTweetJson.entities);
 
     tweet.isVerified = originalTweetJson.user.verified;
     tweet.name = originalTweetJson.user.name;
@@ -213,16 +213,21 @@ function parseTweet(tweetJson) {
 
     if (tweetJson.extended_entities && tweetJson.extended_entities.media){
         tweetJson.extended_entities.media.forEach(function(el) {
-            if (el.type === "photo"){
+
+            if (el.type === "video" || el.type === "animated_gif"){
+                for (var j = 0; j < el.video_info.variants.length; j++) {
+                    if (el.video_info.variants[j].content_type === "video/mp4") {
+                        tweet.media.push({
+                                             "type" : el.type,
+                                             "video": el.video_info.variants[j].url,
+                                             "src": el.media_url_https
+                                         })
+                    }
+                }
+                console.log(JSON.stringify(tweet.media))
+            } else {
                 tweet.media.push({ "type" : "photo", "src": el.media_url_https})
-            }
-            if (el.type === "video"){
-                console.log(JSON.stringify(el.video_info))
-                tweet.media.push({
-                                     "duration": el.video_info.duration_millis,
-                                     "type" : "video",
-                                     "src": el.video_info.variants[0].url
-                                 })
+
             }
 
         });

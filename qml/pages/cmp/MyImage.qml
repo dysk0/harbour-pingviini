@@ -4,6 +4,7 @@ import QtMultimedia 5.0
 
 Item {
     property string mediaURL: ""
+    property string videoURL: ""
     Image {
         anchors.fill: parent
         fillMode: Image.PreserveAspectCrop

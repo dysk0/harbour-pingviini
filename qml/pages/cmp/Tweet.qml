@@ -225,5 +225,12 @@ BackgroundItem {
         width: lblDate.x - lblName.x- Theme.paddingLarge
         height: 100
     }
+    onClicked: {
+        pageStack.push(Qt.resolvedUrl("../TweetDetails.qml"), {
+                                          "tweets": myList.model,
+                                          "screenName": screenName,
+                                          "selected": index
+                                      })
+    }
 
 }

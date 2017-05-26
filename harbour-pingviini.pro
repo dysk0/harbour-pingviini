@@ -28,7 +28,6 @@ OTHER_FILES += qml/harbour-pingviini.qml \
     qml/pages/cmp/Stats.qml \
     qml/pages/JSONListModel.qml \
     qml/pages/TweetToolBar.qml \
-    qml/pages/Timeline.qml \
     qml/lib/common.js \
     qml/lib/Worker.js \
     qml/lib/codebird.js \
@@ -79,7 +78,8 @@ DISTFILES += \
     qml/mesagess.svg \
     qml/search.svg \
     qml/verified.svg \
-    qml/pages/cmp/MyList.qml
+    qml/pages/cmp/MyList.qml \
+    qml/pages/cmp/TweetVideo.qml
 
 HEADERS += \
     src/selector/imageuploader.h \
