@@ -5,7 +5,7 @@ Pingviini is a Twitter client for Sailfish OS
 Duško Angirević [dysko@me.com](mailto:dysko@me.com)
 
 ## License
-Licensed under GNU GPLv3
+Licensed under GNU GPL v3.
 
 ## Credits
 This project uses
