@@ -4,13 +4,25 @@ import Sailfish.Silica 1.0
 SilicaListView {
     id: myList
     property var locale: Qt.locale()
+    property bool loadStarted : false;
+    property int scrollOffset;
     property string action: ""
     property variant vars
     property variant conf
     signal send (string notice)
+    signal openDrawer (bool setDrawer)
+    onOpenDrawer: {
+        console.log("Open drawer: " + setDrawer)
+    }
     onSend: {
         console.log("LIST send signal emitted with notice: " + notice)
     }
+    BusyIndicator {
+        size: BusyIndicatorSize.Large
+        running: myList.model.count === 0
+        anchors.centerIn: parent
+    }
+
     WorkerScript {
         id: worker
         source: "../../lib/Worker.js"
@@ -104,6 +116,22 @@ SilicaListView {
 
     displaced: Transition {
         NumberAnimation { properties: "x,y"; duration: 800; easing.type: Easing.InOutBack }
+    }
+
+    onCountChanged: {
+        contentY = scrollOffset
+    }
+    onContentYChanged: {
+
+        if (contentY > scrollOffset) {
+            openDrawer(false)
+
+        } else {
+            if (contentY < 100 && !loadStarted){
+            }
+            openDrawer(true)
+        }
+        scrollOffset = contentY
     }
     VerticalScrollDecorator {}
 }

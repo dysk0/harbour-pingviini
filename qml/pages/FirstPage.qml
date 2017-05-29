@@ -123,15 +123,20 @@ Page {
         }
         PullDownMenu {
             MenuItem {
+                text: qsTr("Settings")
+                onClicked: pageStack.push(Qt.resolvedUrl("Settings.qml"))
+            }
+            /*MenuItem {
                 text: qsTr("Add account")
                 onClicked: pageStack.push(Qt.resolvedUrl("AccountAdd.qml"))
-            }
+            }*/
             MenuItem {
                 text: qsTr("Load more")
                 onClicked: {
                     loadData("prepend")
                 }
             }
+
         }
         header: PageHeader {
             title: qsTr("Timeline")
@@ -152,6 +157,9 @@ Page {
         action: "statuses_homeTimeline"
         vars: {"count":200}
         conf: Logic.getConfTW()
+        onOpenDrawer: {
+            infoPanel.open = setDrawer
+        }
     }
 
     MyList {
@@ -180,6 +188,9 @@ Page {
         action: "statuses_mentionsTimeline"
         vars: {"count":200}
         conf: Logic.getConfTW()
+        onOpenDrawer: {
+            infoPanel.open = setDrawer
+        }
     }
 
 

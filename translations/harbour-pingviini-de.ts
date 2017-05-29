@@ -39,6 +39,17 @@
     </message>
 </context>
 <context>
+    <name>CreditsTranslations</name>
+    <message>
+        <source>Translate App</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Credits</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>FirstPage</name>
     <message>
         <source>Timeline</source>
@@ -53,11 +64,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Add account</source>
+        <source>Load more</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Load more</source>
+        <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -132,6 +143,29 @@
     <name>SearchView</name>
     <message>
         <source>Load more</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Settings</name>
+    <message>
+        <source>Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add / Replace Account</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Load images in tweets</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Disable this option if you want to preserve your data connection.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Authorize this app to use your Twitter account in your behalf.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

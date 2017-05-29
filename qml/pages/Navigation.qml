@@ -10,7 +10,6 @@ import QtGraphicalEffects 1.0
 SilicaGridView {
     id: gridView
     property bool isPortrait: false
-    FontLoader { id: rosettaFont; source: "../rosetta-icons.ttf" }
     ListModel {
         id: listModel
         ListElement {

@@ -79,7 +79,9 @@ DISTFILES += \
     qml/search.svg \
     qml/verified.svg \
     qml/pages/cmp/MyList.qml \
-    qml/pages/cmp/TweetVideo.qml
+    qml/pages/cmp/TweetVideo.qml \
+    qml/pages/Settings.qml \
+    qml/pages/CreditsTranslations.qml
 
 HEADERS += \
     src/selector/imageuploader.h \

@@ -1,6 +1,6 @@
 /*
-  Copyright (C) 2013 Jolla Ltd.
-  Contact: Thomas Perl <thomas.perl@jollamobile.com>
+  Copyright (C) 2017
+  Contact: Dusko Angirevic <dysko@me.com>
   All rights reserved.
 
   You may use this file under the terms of BSD license as follows:
