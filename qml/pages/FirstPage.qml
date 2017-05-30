@@ -28,6 +28,19 @@ Page {
         infoPanel.open = !isPortrait ? true : open
     }
 
+    signal notify (string what, int num)
+    onNotify: {
+        console.log(what + " a - " + num)
+        switch (what) {
+            case "statuses_homeTimeline":
+                navigation.model.setProperty(0, "unread", true)
+                break;
+            case "statuses_mentionsTimeline":
+                navigation.model.setProperty(1, "unread", true)
+                break;
+        }
+    }
+
     signal buttonPressedAtBPage();
     onButtonPressedAtBPage: console.log("Mouse pressed at B page");
 
@@ -66,30 +79,7 @@ Page {
         }
 
     }
-    /* Component.onCompleted: {
-        console.log("-------------getConf")
-        console.log(JSON.stringify(Logic.conf))
 
-        var obj = {};
-        Logic.mediator.installTo(obj);
-        obj.subscribe('confLoaded', function(){
-            console.log(typeof arguments)
-            console.log('confLoaded');
-
-            pageStack.pushAttached(Qt.resolvedUrl("SecondPage.qml"), {"model": model})
-            console.log(JSON.stringify(arguments));
-
-            var msg = {
-                'action': 'statuses_homeTimeline',
-                'model' : Logic.modelTL,
-                'mode'  : placement,
-                'conf'  : Logic.getConfTW()
-            };
-            worker.sendMessage(msg);
-        });
-
-
-    }*/
     onStatusChanged: {
 
 
@@ -124,6 +114,11 @@ Page {
             console.log("Main View send signal emitted with notice: " + notice)
             onLinkActivated(notice)
         }
+
+        onNotify: {
+            page.notify(what, num)
+        }
+
         PullDownMenu {
             MenuItem {
                 text: qsTr("Settings")

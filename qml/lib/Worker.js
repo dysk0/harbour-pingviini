@@ -301,6 +301,7 @@ WorkerScript.onMessage = function(msg) {
                             i = 1;
                     }
                 }
+                WorkerScript.sendMessage({ 'notifyNewItems': length - i })
 
 
                 for(i; i < length; i++){

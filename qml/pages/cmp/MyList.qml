@@ -11,13 +11,17 @@ SilicaListView {
     property string action: ""
     property variant vars
     property variant conf
-    signal send (string notice)
+
+    signal notify (string what, int num)
+    onNotify: {
+        console.log(what + " - " + num)
+    }
+
     signal openDrawer (bool setDrawer)
-
-
     onOpenDrawer: {
         //console.log("Open drawer: " + setDrawer)
     }
+    signal send (string notice)
     onSend: {
         console.log("LIST send signal emitted with notice: " + notice)
     }
@@ -36,6 +40,10 @@ SilicaListView {
                 viewPlaceHolder.text = "Error"
                 viewPlaceHolder.hintText = messageObject.message
                 console.log(JSON.stringify(messageObject))
+            }
+            if (messageObject.notifyNewItems){
+                console.log(JSON.stringify(messageObject.notifyNewItems))
+                notify(action, messageObject.notifyNewItems)
             }
         }
     }
