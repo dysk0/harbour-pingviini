@@ -46,60 +46,6 @@ WorkerScript.onMessage = function(msg) {
     var maxId;
     var params;
 
-
-
-    if (msg.action === 'statuses_homeTimeline' || msg.action === 'statuses_mentionsTimeline') {
-        params = {"count":200}
-        if (msg.model.count) {
-            if (msg.mode === "append") {
-                params['max_id'] = msg.model.get(msg.model.count-1).id
-            }
-            if (msg.mode === "prepend") {
-                params['since_id'] = msg.model.get(0).id
-            }
-        } else {
-            msg.mode = "append";
-        }
-
-        if (msg.model.count){
-            console.log("First id: " + msg.model.get(0).id)
-            console.log("Last id: " + msg.model.get(msg.model.count-1).id)
-        }
-        console.log("Mode: " + msg.mode)
-        console.log(JSON.stringify(params))
-        cb.__call(
-                    msg.action,
-                    params,
-                    function (reply, rate, err) {
-                        //msg.model.clear()
-                        var length = reply.length
-                        var i = 0;
-                        if (msg.mode === "prepend") {
-                            length--;
-                        } else if (msg.mode === "append"){
-                            i = msg.model.count === 0 ? 0 : 1 ;
-                        }
-
-                        for (i; i < length; i++) {
-                            var tweet;
-
-                            if (msg.mode === "append") {
-                                tweet = parseTweet(reply[i])
-                                msg.model.append(tweet)
-                            }
-                            if (msg.mode === "prepend") {
-                                tweet = parseTweet(reply[length-i-1])
-                                msg.model.insert(0, tweet)
-                            }
-
-                        }
-                        msg.model.sync();
-                        console.log(msg.model.count);
-                        // console.log(JSON.stringify(err));
-                    }
-                    );
-    }
-
     if (msg.action === 'statuses_update') {
         cb.__call(
                     msg.action,
@@ -310,7 +256,8 @@ WorkerScript.onMessage = function(msg) {
 
     if (msg.bgAction){
         console.log("BG ACTION >" + msg.bgAction)
-        console.log("BG mode >" + msg.mode)
+        console.log("BG MODE >" + msg.mode)
+        console.log("CONF >" + JSON.stringify(msg.conf))
         msg.params['tweet_mode'] = "extended";
         msg.params['count'] = 200;
         if (msg.model.count) {

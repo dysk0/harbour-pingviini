@@ -39,6 +39,13 @@ SilicaListView {
             }
         }
     }
+    Timer {
+        interval: 60000;
+        running: true;
+        repeat: true
+        onTriggered: loadData("prepend")
+    }
+
     Component.onCompleted: {
         var msg = {
             'bgAction'  : action,

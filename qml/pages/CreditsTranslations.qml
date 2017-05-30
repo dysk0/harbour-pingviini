@@ -25,6 +25,12 @@ Page {
 
             ListElement {
                 section: "Translation"
+                name: "	Italian"
+                author: "fravaccaro"
+                url: "https://github.com/fravaccaro"
+            }
+            ListElement {
+                section: "Translation"
                 name: "Dutch"
                 author: "d9h02f"
                 url: "https://github.com/d9h02f"
