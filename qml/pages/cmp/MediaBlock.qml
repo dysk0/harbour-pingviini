@@ -16,7 +16,7 @@ Item {
             while (model.count>1){
                 model.remove(model.count-1)
             }
-            console.log(JSON.stringify(model.get(0)))
+            //console.log(JSON.stringify(model.get(0)))
         }
 
         switch(count){
@@ -85,7 +85,7 @@ Item {
             }
         }
         Image {
-            visible: model.get(0).type === "video" || model.get(0).type === "animated_gif"
+            visible: count && (model.get(0).type === "video" || model.get(0).type === "animated_gif")
             anchors.centerIn: parent
             source: "image://theme/icon-l-play"
         }
@@ -96,7 +96,7 @@ Item {
         height: 1
         opacity: pressed ? 0.6 : 1
         visible: {
-            if (model && model.count && model.get(1).type === "photo"){
+            if (model && model.count && model.get(1) && model.get(1).type === "photo"){
                 mediaURL = model.get(1).src
                 height = 200
                 return true
@@ -112,7 +112,7 @@ Item {
         height: 1
         opacity: pressed ? 0.6 : 1
         visible: {
-            if (model && model.count && model.get(2).type === "photo"){
+            if (model && model.count && model.get(2) && model.get(2).type === "photo"){
                 mediaURL = model.get(2).src
                 height = 200
                 return true
@@ -128,7 +128,7 @@ Item {
         height: 1
         opacity: pressed ? 0.6 : 1
         visible: {
-            if (model && model.count && model.get(3).type === "photo"){
+            if (model && model.count && model.get(3) && model.get(3).type === "photo"){
                 mediaURL = model.get(3).src
                 height = 200
                 return true

@@ -102,12 +102,6 @@
         <source>Sort by date</source>
         <translation type="unfinished"></translation>
     </message>
-    <message numerus="yes">
-        <source>Send %n image(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-        </translation>
-    </message>
     <message>
         <source>Select images</source>
         <translation type="unfinished"></translation>
@@ -120,23 +114,27 @@
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Send image</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ImageUploader</name>
     <message>
         <source>The file %1 does not exists</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Unable to open the file %1</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
     <name>MyList</name>
     <message>
         <source>Load more</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -185,33 +183,6 @@
     </message>
     <message>
         <source>Report as spam</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>common</name>
-    <message>
-        <source>Now</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Just now</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message numerus="yes">
-        <source>%n min(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n hr(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-        </translation>
-    </message>
-    <message>
-        <source>Yesterday %1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -1,5 +1,6 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
+import org.nemomobile.notifications 1.0
 import "../lib/Logic.js" as Logic
 import "./cmp/"
 
@@ -90,6 +91,8 @@ Page {
 
     }*/
     onStatusChanged: {
+
+
         if (status === PageStatus.Active) {
             app.cover.status = "BABABAB"
             //pageStack.pushAttached(Qt.resolvedUrl("Navigation.qml"), {"settings": {}})
@@ -126,10 +129,6 @@ Page {
                 text: qsTr("Settings")
                 onClicked: pageStack.push(Qt.resolvedUrl("Settings.qml"))
             }
-            /*MenuItem {
-                text: qsTr("Add account")
-                onClicked: pageStack.push(Qt.resolvedUrl("AccountAdd.qml"))
-            }*/
             MenuItem {
                 text: qsTr("Load more")
                 onClicked: {
@@ -233,6 +232,19 @@ Page {
             pageStack.push(Qt.resolvedUrl("Browser.qml"), {"href" : href})
         }
     }
+
+
+        Notification {
+            id: notification
+            category: "x-nemo.example"
+            summary: "Notification summary"
+            previewBody : "sss"
+            body: "Notification body"
+            onClicked: console.log("Clicked")
+            urgency: Notification.Critical
+
+        }
+
 
 
 

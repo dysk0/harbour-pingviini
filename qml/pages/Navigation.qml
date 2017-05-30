@@ -117,7 +117,6 @@ SilicaGridView {
             color: (highlighted
                     ? Theme.highlightColor
                     : (model.active ? Theme.primaryColor : Theme.secondaryHighlightColor))
-            font { family: rosettaFont.name; pixelSize: Theme.fontSizeLarge;  }
         }
 
         Label {

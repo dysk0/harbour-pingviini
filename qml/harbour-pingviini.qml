@@ -54,6 +54,11 @@ ApplicationWindow
         Logic.initialize();
     }
     Component.onDestruction: {
+        if (Logic.modelTL.count)
+            Logic.conf['last_id_TL'] = Logic.modelTL.get(0).id
+        if (Logic.modelMN.count)
+            Logic.conf['last_id_MN'] = Logic.modelMN.get(0).id
+
         Logic.saveData()
     }
     function showHttpError(status, statusText){

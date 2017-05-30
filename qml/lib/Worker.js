@@ -324,8 +324,17 @@ WorkerScript.onMessage = function(msg) {
             msg.mode = "append";
         }
         console.log(JSON.stringify(msg.params))
-        cb.__call(msg.bgAction, msg.params, function (reply) {
-            console.log(JSON.stringify(reply))
+        cb.__call(msg.bgAction, msg.params, function (reply, rate, err) {
+            console.log(JSON.stringify(rate));
+            if ('errors' in reply) {
+                reply.errors.forEach(function(entry) {
+                    WorkerScript.sendMessage({ 'error': true,  "message": entry.message})
+                });
+                console.log(JSON.stringify(reply.errors))
+            }
+            //console.log(JSON.stringify(reply))
+
+
             if (msg.model){
                 var tweets = [];
                 if (msg.bgAction === "search_tweets" && reply.statuses){
@@ -348,16 +357,19 @@ WorkerScript.onMessage = function(msg) {
 
 
                 for(i; i < length; i++){
-                    var tweet = parseTweet(tweets[i]);
+                    var tweet;
                     if (msg.bgAction === "search_tweets"){
+                        tweet = parseTweet(tweets[i]);
                         if (msg.params.since_id === tweet.inReplyToStatusId || msg.params.since_id === tweet.id)
                             msg.model.append(tweet)
                     } else {
                         if (msg.mode === "append") {
+                            tweet = parseTweet(tweets[i]);
                             msg.model.append(tweet)
                         }
                         if (msg.mode === "prepend") {
-                            console.log(length-i-1)
+                            tweet = parseTweet(tweets[length-i-1]);
+                            console.log(length-i)
                             msg.model.insert(0, tweet)
                         }
                     }
@@ -367,6 +379,7 @@ WorkerScript.onMessage = function(msg) {
                 console.log(msg.model.count)
                 msg.model.sync();
             }
+
 
             //WorkerScript.sendMessage({ 'success': true,  "reply": reply})
         });

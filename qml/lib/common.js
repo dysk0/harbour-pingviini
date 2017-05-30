@@ -130,33 +130,9 @@ function parseISO8601(str) {
         return null;
     }
 }
-function timeDiff(tweetTimeStr) {
-    var tweetTime = new Date(tweetTimeStr)
-    var diff = new Date().getTime() - tweetTime.getTime() // milliseconds
-
-    if (diff <= 0) return qsTr("Now")
-
-    diff = Math.round(diff / 1000) // seconds
-
-    if (diff < 60) return qsTr("Just now")
-
-    diff = Math.round(diff / 60) // minutes
-
-    if (diff < 60) return qsTr("%n min(s)", "", diff)
-
-    diff = Math.round(diff / 60) // hours
-
-    if (diff < 24) return qsTr("%n hr(s)", "", diff)
-
-    diff = Math.round(diff / 24) // days
-
-    if (diff === 1) return qsTr("Yesterday %1").arg(Qt.formatTime(tweetTime, "h:mm AP").toString())
-    if (diff < 7 ) return Qt.formatDate(tweetTime, "ddd d MMM").toString()
-
-    return Qt.formatDate(tweetTime, Qt.SystemLocaleShortDate).toString()
-}
 
 function parseDM(dmJson, isReceiveDM) {
+    //console.log(JSON.stringify(dmJson))
     var dm = {
         id: dmJson.id,
         richText: dmJson.text,

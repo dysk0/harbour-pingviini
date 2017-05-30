@@ -1,6 +1,8 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 
+
+
 SilicaListView {
     id: myList
     property var locale: Qt.locale()
@@ -11,15 +13,17 @@ SilicaListView {
     property variant conf
     signal send (string notice)
     signal openDrawer (bool setDrawer)
+
+
     onOpenDrawer: {
-        console.log("Open drawer: " + setDrawer)
+        //console.log("Open drawer: " + setDrawer)
     }
     onSend: {
         console.log("LIST send signal emitted with notice: " + notice)
     }
     BusyIndicator {
         size: BusyIndicatorSize.Large
-        running: myList.model.count === 0
+        running: myList.model.count === 0 && !viewPlaceHolder.visible
         anchors.centerIn: parent
     }
 
@@ -27,7 +31,12 @@ SilicaListView {
         id: worker
         source: "../../lib/Worker.js"
         onMessage: {
-            //console.log(JSON.stringify(messageObject))
+            if (messageObject.error){
+                viewPlaceHolder.visible = true;
+                viewPlaceHolder.text = "Error"
+                viewPlaceHolder.hintText = messageObject.message
+                console.log(JSON.stringify(messageObject))
+            }
         }
     }
     Component.onCompleted: {
@@ -49,6 +58,13 @@ SilicaListView {
             'conf'      : conf
         };
         worker.sendMessage(msg);
+    }
+
+    ViewPlaceholder {
+        id: viewPlaceHolder
+        enabled: model.count === 0
+        text: ""
+        hintText: ""
     }
 
     PullDownMenu {
@@ -120,6 +136,10 @@ SilicaListView {
 
     onCountChanged: {
         contentY = scrollOffset
+        console.log("CountChanged!")
+
+        //last_id_MN
+
     }
     onContentYChanged: {
 
@@ -134,4 +154,5 @@ SilicaListView {
         scrollOffset = contentY
     }
     VerticalScrollDecorator {}
+
 }

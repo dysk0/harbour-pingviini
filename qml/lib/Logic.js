@@ -45,58 +45,36 @@ function getConfTW(){
     }
 }
 
-JSON.flatten = function(data) {
-    var result = {};
-    function recurse (cur, prop) {
-        if (Object(cur) !== cur) {
-            result[prop] = cur;
-        } else if (Array.isArray(cur)) {
-             for(var i=0, l=cur.length; i<l; i++)
-                 recurse(cur[i], prop + "[" + i + "]");
-            if (l == 0)
-                result[prop] = [];
-        } else {
-            var isEmpty = true;
-            for (var p in cur) {
-                isEmpty = false;
-                recurse(cur[p], prop ? prop+"."+p : p);
-            }
-            if (isEmpty && prop)
-                result[prop] = {};
-        }
-    }
-    recurse(data, "");
-    return result;
-}
+
 var modelDMsent = Qt.createQmlObject('import QtQuick 2.0; ListModel {   }', Qt.application, 'InternalQmlObject');
 var modelDMrecived = Qt.createQmlObject('import QtQuick 2.0; ListModel {   }', Qt.application, 'InternalQmlObject');
 var modelTL = Qt.createQmlObject('import QtQuick 2.0; ListModel {   }', Qt.application, 'InternalQmlObject');
 var modelMN = Qt.createQmlObject('import QtQuick 2.0; ListModel {   }', Qt.application, 'InternalQmlObject');
 var modelSE = Qt.createQmlObject('import QtQuick 2.0; ListModel {   }', Qt.application, 'InternalQmlObject');
 var mediator = (function(){
-     var subscribe = function(channel, fn){
-          if(!mediator.channels[channel]) mediator.channels[channel] = [];
-          mediator.channels[channel].push({ context : this, callback : fn });
-          return this;
-     };
-     var publish = function(channel){
-          if(!mediator.channels[channel]) return false;
-          var args = Array.prototype.slice.call(arguments, 1);
-          for(var i = 0, l = mediator.channels[channel].length; i < l; i++){
-               var subscription = mediator.channels[channel][i];
-               subscription.callback.apply(subscription.context.args);
-          };
-          return this;
-     };
-     return {
-          channels : {},
-          publish : publish,
-          subscribe : subscribe,
-          installTo : function(obj){
-               obj.subscribe = subscribe;
-               obj.publish = publish;
-          }
-     };
+    var subscribe = function(channel, fn){
+        if(!mediator.channels[channel]) mediator.channels[channel] = [];
+        mediator.channels[channel].push({ context : this, callback : fn });
+        return this;
+    };
+    var publish = function(channel){
+        if(!mediator.channels[channel]) return false;
+        var args = Array.prototype.slice.call(arguments, 1);
+        for(var i = 0, l = mediator.channels[channel].length; i < l; i++){
+            var subscription = mediator.channels[channel][i];
+            subscription.callback.apply(subscription.context.args);
+        };
+        return this;
+    };
+    return {
+        channels : {},
+        publish : publish,
+        subscribe : subscribe,
+        installTo : function(obj){
+            obj.subscribe = subscribe;
+            obj.publish = publish;
+        }
+    };
 }());
 
 var db = LS.LocalStorage.openDatabaseSync("pingviinia", "", "pingviini", 100000);
@@ -144,8 +122,8 @@ function initialize() {
 function saveData() {
     db.transaction(function(tx) {
         if (conf.OAUTH_TOKEN){
-        var rs2 = tx.executeSql('UPDATE settings SET value = ? WHERE key = ?', [JSON.stringify(conf), "conf"]);
-        console.log("Saving... "+JSON.stringify(conf)+"\n"+JSON.stringify(rs2))
+            var rs2 = tx.executeSql('UPDATE settings SET value = ? WHERE key = ?', [JSON.stringify(conf), "conf"]);
+            console.log("Saving... "+JSON.stringify(conf)+"\n"+JSON.stringify(rs2))
         }
     });
 }
