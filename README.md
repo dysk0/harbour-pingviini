@@ -15,3 +15,5 @@ This project uses
 
 Pingviini was translated to few languages. Thanks to all contributors (current and future)!
 - Dutch: [d9h02f](https://github.com/d9h02f)
+- Italian: [fravaccaro](https://github.com/fravaccaro)
+
