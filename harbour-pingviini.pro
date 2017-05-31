@@ -57,7 +57,6 @@ DISTFILES += \
     qml/pages/AccountAdd.qml \
     qml/component/Tweet.qml \
     qml/pages/Navigation.qml \
-    qml/pages/CmpDirectMessages.qml \
     qml/pages/SearchView.qml \
     qml/pages/jsonpath.js \
     qml/pages/NewTweet.qml \
@@ -81,7 +80,8 @@ DISTFILES += \
     qml/pages/cmp/MyList.qml \
     qml/pages/cmp/TweetVideo.qml \
     qml/pages/Settings.qml \
-    qml/pages/CreditsTranslations.qml
+    qml/pages/CreditsTranslations.qml \
+    qml/pages/DirectMessages.qml
 
 HEADERS += \
     src/selector/imageuploader.h \

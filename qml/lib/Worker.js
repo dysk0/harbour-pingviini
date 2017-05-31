@@ -144,38 +144,66 @@ WorkerScript.onMessage = function(msg) {
 
     }
 
-    if (msg.action === 'directMessages' || msg.action === 'directMessages_sent') {
-        console.log('directMessages '+JSON.stringify(msg))
-        sinceId = false;
-        maxId = false;
-        params = {"include_entities":false, skip_status: true}
-        params['tweet_mode'] = "extended";
-        if (msg.model.count) {
-            params['max_id'] = msg.model.get(msg.model.count-1).id
+    if (msg.action === 'directMessages_events_list') {
+        console.log('directMessages_events_list '+JSON.stringify(msg))
+        params = { count: 50}
+        if (msg.cursor !== ""){
+            params['cursor'] = msg.cursor
+        } else {
+            msg.model.clear();
+            msg.viewModel.clear();
         }
+
         var shownDMs = []
-        console.log('directMessages '+JSON.stringify(params))
+        console.log('directMessages_events_list '+JSON.stringify(params))
         cb.__call(
                     msg.action,
                     params,
                     function (reply, rate, err) {
-                        var length = reply.length
+                        console.log(JSON.stringify([rate.limit, rate.remaining, new Date(rate.reset*1000)]));
+                        if ('errors' in reply) {
+                            reply.errors.forEach(function(entry) {
+                                WorkerScript.sendMessage({ 'error': true,  "message": entry.message})
+                            });
+                            console.log(JSON.stringify(reply.errors))
+                        }
+
+                        WorkerScript.sendMessage({ 'next_cursor': reply.next_cursor ? reply.next_cursor : "" } )
+
+
+                        console.log(JSON.stringify(reply))
+                        if (!reply.events)
+                            return;
+                        var length = reply.events.length
                         console.log(length)
                         var i = 0;
 
+                        var uniqueUsers = [];
+                        for (var msgs = 0;  msg.model.count >msgs; msgs++){
+                            var  m = msg.model.get(msg)
+                            uniqueUsers.push( m.sender_id +"-" + m.recipient_id)
+                        }
+                        console.log("PREV> " +JSON.stringify(uniqueUsers))
+
+
                         for (i; i < length; i++) {
                             var tweet = {};
-                            //console.log(JSON.stringify(reply[i]))
-                            tweet = parseDM(reply[i], msg.action === 'directMessages_sent' ? false : true)
+                            //console.log(JSON.stringify(reply.events[i]))
+                            tweet = parseDM(reply.events[i], false)
                             msg.model.append(tweet)
-                            if (!shownDMs[tweet.screenName]) {
-                                shownDMs[tweet.screenName] = true;
-                                if (msg.viewModel)
-                                    msg.viewModel.append(tweet)
+                            if(msg.viewModel){
+                                if( uniqueUsers.indexOf(tweet.sender_id +"-"+tweet.recipient_id) > -1 || uniqueUsers.indexOf(tweet.recipient_id +"-"+tweet.sender_id) > -1 ) {
+                                    console.log("IMA > "+tweet.sender_id +"-"+tweet.recipient_id)
+                                } else {
+                                    console.log("NEMA > "+tweet.sender_id +"-"+tweet.recipient_id)
+                                    msg.viewModel.append(tweet);
+                                    uniqueUsers.push(tweet.sender_id +"-"+tweet.recipient_id)
+                                }
                             }
-
                         }
+                        console.log("ALL> " +JSON.stringify(uniqueUsers))
                         msg.model.sync();
+
                         if(msg.viewModel)
                             msg.viewModel.sync();
                         console.log(msg.model.count);
@@ -279,7 +307,7 @@ WorkerScript.onMessage = function(msg) {
                 });
                 console.log(JSON.stringify(reply.errors))
             }
-            //console.log(JSON.stringify(reply))
+
 
 
             if (msg.model){
@@ -310,6 +338,9 @@ WorkerScript.onMessage = function(msg) {
                         tweet = parseTweet(tweets[i]);
                         if (msg.params.since_id === tweet.inReplyToStatusId || msg.params.since_id === tweet.id)
                             msg.model.append(tweet)
+                    } else if (msg.bgAction === "directMessages_events_list"){
+                        tweet = parseDM(tweets[i]);
+                        msg.model.append(tweet)
                     } else {
                         if (msg.mode === "append") {
                             tweet = parseTweet(tweets[i]);

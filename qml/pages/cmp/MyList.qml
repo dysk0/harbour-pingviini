@@ -48,7 +48,7 @@ SilicaListView {
         }
     }
     Timer {
-        interval: 60000;
+        interval: 5*60*1000;
         running: true;
         repeat: true
         onTriggered: loadData("prepend")
@@ -83,6 +83,10 @@ SilicaListView {
     }
 
     PullDownMenu {
+        MenuItem {
+            text: qsTr("Settings")
+            onClicked: pageStack.push(Qt.resolvedUrl("../Settings.qml"))
+        }
         MenuItem {
             visible: action === 'statuses_userTimeline'
             text: (following ? "Unfollow" : "Follow")

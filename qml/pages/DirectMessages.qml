@@ -7,7 +7,7 @@ import QtGraphicalEffects 1.0
 SilicaListView {
     id: timelineDM
 
-    property int loadPage: 0
+    property string next_cursor: "";
     anchors {
         fill: parent
         leftMargin: 0
@@ -31,25 +31,33 @@ SilicaListView {
         id: modelDM
     }
 
+    WorkerScript {
+        id: dmWorker
+        source: "../lib/Worker.js"
+        onMessage: {
+            console.log(JSON.stringify(messageObject))
+            if (messageObject.next_cursor)
+                next_cursor = messageObject.next_cursor
+        }
+    }
     function loadData(placement){
 
         var msg = {
-            'action': 'directMessages',
-            'model' : Logic.modelDMrecived,
+            'action': 'directMessages_events_list',
+            'model' : Logic.modelDM,
             'viewModel' : modelDM,
-            'page'  : loadPage,
-            'mode'  : placement,
+            'cursor' : next_cursor,
             'conf'  : Logic.getConfTW()
         };
-        page ++;
-        worker.sendMessage(msg);
-        msg = {
+
+        dmWorker.sendMessage(msg);
+        /*msg = {
             'action': 'directMessages_sent',
             'model' : Logic.modelDMsent,
             'mode'  : placement,
             'conf'  : Logic.getConfTW()
         };
-        worker.sendMessage(msg);
+        worker.sendMessage(msg);*/
     }
 
     header: PageHeader {
@@ -60,7 +68,8 @@ SilicaListView {
         MenuItem {
             text: qsTr("Load more")
             onClicked: {
-                timelineDM.loadData("prepend")
+                next_cursor = ""
+                loadData("prepend")
             }
         }
     }
@@ -212,7 +221,9 @@ SilicaListView {
                 rightMargin: Theme.paddingLarge
             }
             text: richText
+            maximumLineCount: 1
             elide: Text.ElideRight
+            wrapMode: Text.NoWrap
             font.pixelSize: Theme.fontSizeSmall
             color: (pressed ? Theme.highlightColor : Theme.primaryColor)
         }
