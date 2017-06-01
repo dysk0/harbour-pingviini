@@ -81,7 +81,8 @@ DISTFILES += \
     qml/pages/cmp/TweetVideo.qml \
     qml/pages/Settings.qml \
     qml/pages/CreditsTranslations.qml \
-    qml/pages/DirectMessages.qml
+    qml/pages/DirectMessages.qml \
+    qml/notification.svg
 
 HEADERS += \
     src/selector/imageuploader.h \
