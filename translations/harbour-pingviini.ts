@@ -24,7 +24,18 @@
     </message>
 </context>
 <context>
-    <name>CmpDirectMessages</name>
+    <name>CreditsTranslations</name>
+    <message>
+        <source>Translate App</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Credits</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DirectMessages</name>
     <message>
         <source>Messages</source>
         <translation type="unfinished"></translation>
@@ -39,18 +50,15 @@
     </message>
 </context>
 <context>
-    <name>CreditsTranslations</name>
-    <message>
-        <source>Translate App</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Credits</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>FirstPage</name>
+    <message>
+        <source>Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Load more</source>
+        <translation type="unfinished"></translation>
+    </message>
     <message>
         <source>Timeline</source>
         <translation type="unfinished"></translation>
@@ -61,14 +69,6 @@
     </message>
     <message>
         <source>Mentions</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Load more</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -135,6 +135,10 @@
     <message>
         <source>Load more</source>
         <translation></translation>
+    </message>
+    <message>
+        <source>Settings</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

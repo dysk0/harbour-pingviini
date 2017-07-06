@@ -108,7 +108,7 @@ Page {
     }
 
 
-    MyList {
+   MyList {
         id: timelineViewComponent
         onSend: {
             console.log("Main View send signal emitted with notice: " + notice)
@@ -191,10 +191,11 @@ Page {
 
 
 
-    CmpDirectMessages {
+    DirectMessages {
         id: dmsgViewComponent
         visible: false;
     }
+
     SearchView {
         id: searchViewComponent
         visible: false;

@@ -20,7 +20,7 @@ SilicaGridView {
             unread: false
         }
         ListElement {
-            icon: "image://theme/icon-m-alarm?" //""
+            icon: "../notification.svg"
             slug: "mentions"
             name: "Mentions"
             active: false

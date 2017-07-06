@@ -135,15 +135,15 @@ function parseDM(dmJson, isReceiveDM) {
     //console.log(JSON.stringify(dmJson))
     var dm = {
         id: dmJson.id,
-        richText: dmJson.text,
-        name: dmJson.sender.name,
-        screenName: (isReceiveDM ? dmJson.sender_screen_name : dmJson.recipient_screen_name),
-        profileImageUrl: (isReceiveDM ? dmJson.sender.profile_image_url_https : dmJson.sender.profile_image_url_https),
-        createdAt: getValidDate(dmJson.created_at),
-        isVerified: false,
-        isReceiveDM: isReceiveDM
+        richText: dmJson.message_create.message_data.text,
+        sender_id: dmJson.message_create.sender_id,
+        recipient_id: dmJson.message_create.target.recipient_id,
+        name: dmJson.message_create.sender_id,
+        //screenName: name,
+        //profileImageUrl: (isReceiveDM ? dmJson.sender.profile_image_url_https : dmJson.sender.profile_image_url_https),
+        createdAt: dmJson.created_timestamp
     }
-    dm.section = dm.createdAt.toLocaleDateString()
+    //dm.section = dm.createdAt.toLocaleDateString()
     return dm;
 }
 
