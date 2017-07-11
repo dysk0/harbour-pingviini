@@ -6,23 +6,31 @@ import "."
 
 
 Page {
-    SilicaListView {
+    SilicaGridView {
+        id: grid
         anchors.fill: parent
         header: PageHeader {
             title: Logic.modelUsers.count + " Users"
         }
         model: Logic.modelUsers
+        cellWidth: width / 8
+        cellHeight: cellWidth
+
         delegate: BackgroundItem {
-            width: parent.width
-            height: Theme.itemSizeLarge
+            width: grid.cellWidth
+            height: grid.cellWidth
             Image {
                 id: avatarImg
-                width: Theme.itemSizeLarge
-                height: width
-                source: avatar
+                anchors.fill: parent
+                source: model.avatar
+                /*Label {
+                    text: id_str
+                    font.pixelSize: Theme.fontSizeExtraSmall
+                    anchors.margins: 20
+                }*/
             }
 
-            Column {
+            /*Column {
                 anchors {
                     left: avatarImg.right
                     verticalCenter: parent.verticalCenter
@@ -30,14 +38,14 @@ Page {
 
                 Label {
                     text: name
+                    font.family: Theme.fontFamilyHeading
                 }
+
                 Label {
-                    text: id
+                    text: '@'+screen_name
+                    font.pixelSize: Theme.fontSizeExtraSmall
                 }
-                Label {
-                    text: screen_name
-                }
-            }
+            }*/
         }
     }
 }

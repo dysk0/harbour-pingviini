@@ -77,7 +77,7 @@ Page {
                     Logic.conf['USER'] = messageObject.reply.name;
                     console.log(JSON.stringify(messageObject.reply))
                     pageStack.replace(Qt.resolvedUrl("MainPage.qml"), {})
-                    pullData();
+                    //pullData();
                 } else {
                     pageStack.replace(Qt.resolvedUrl("AccountAdd.qml"), {})
                 }

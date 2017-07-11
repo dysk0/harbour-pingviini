@@ -174,7 +174,7 @@ function getUserFromModel(id) {
 function addUsersToModel(modelUsers, data) {
     if (!modelUsers)
         return;
-
+    console.log(JSON.stringify(data))
     var exists = false;
     for(var i = 0; i< modelUsers.count; i++){
         if (modelUsers.get(i).id === data.id){
@@ -182,15 +182,12 @@ function addUsersToModel(modelUsers, data) {
             break;
         }
     }
-    if (!exists)
+    if (!exists){
         modelUsers.append(data)
+    }
 }
 
 function parseTweet(tweetJson, modelUsers) {
-
-
-        addUsersToModel(modelUsers, { "name": tweetJson.user.name, "id": tweetJson.user.id, "id_str": tweetJson.user.id_str, "screen_name":  tweetJson.user.screen_name, "avatar": tweetJson.user.profile_image_url })
-
 
 
     var tweet = {
@@ -219,6 +216,7 @@ function parseTweet(tweetJson, modelUsers) {
 
     tweet.isVerified = originalTweetJson.user.verified;
     tweet.name = originalTweetJson.user.name;
+    tweet.userId = originalTweetJson.user.id;
     tweet.userIdStr = originalTweetJson.user.id_str;
     tweet.screenName = originalTweetJson.user.screen_name;
     tweet.profileImageUrl = originalTweetJson.user.profile_image_url;

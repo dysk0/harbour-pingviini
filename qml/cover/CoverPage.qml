@@ -78,6 +78,27 @@ CoverBackground {
         anchors.centerIn: parent
         text: "status"
     }
+    SilicaGridView {
+        id: grid
+        anchors.fill: parent
+        header: PageHeader {
+            title: Logic.modelUsers.count + " Users"
+        }
+        model: Logic.modelUsers
+        cellWidth: width / 2
+        cellHeight: cellWidth
+
+        delegate: BackgroundItem {
+            width: grid.cellWidth
+            height: grid.cellWidth
+            Image {
+                id: avatarImg
+                anchors.fill: parent
+                source: model.avatar
+            }
+
+        }
+    }
     /*PingviiniiLogo {
         id: logo
         anchors {

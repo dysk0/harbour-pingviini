@@ -54,6 +54,9 @@ ApplicationWindow
     function showHttpError(status, statusText){
         console.log(JSON.stringify([status, statusText]))
     }
+    ListModel {
+        onCountChanged: { console.log(count) }
+    }
 
 
 }
