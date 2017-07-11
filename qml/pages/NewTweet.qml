@@ -20,6 +20,35 @@ Item {
         left: parent.left
         right: parent.right
     }
+
+    ListModel {
+        id: mediaModel
+        onCountChanged: {
+            //btnAddImage.enabled = mediaModel.count < 4
+        }
+    }
+    ImageUploader {
+        id: imageUploader
+
+        onProgressChanged: {
+            console.log("progress "+progress)
+            uploadProgress.width = parent.width*progress
+        }
+
+        onSuccess: {
+            uploadProgress.width =0
+            console.log(replyData);
+            mediaModel.append(JSON.parse(replyData))
+        }
+
+        onFailure: {
+            uploadProgress.width =0
+            //btnAddImage.enabled = true;
+            console.log(status)
+            console.log(statusText)
+
+        }
+    }
     WorkerScript {
         id: worker
         source: "../lib/Worker.js"
@@ -200,20 +229,28 @@ Item {
                 visible: true
                 onClicked: {
                     if (checked){
-                        var dialog = pageStack.push(Qt.resolvedUrl("ImageChooser.qml"),
-                                                    {"name": header.title})
-                        dialog.accepted.connect(function() {
-                            console.log(JSON.stringify(dialog.img))
-                           // header.title = "My name: " + dialog.img
+                        var imagePicker = pageStack.push("Sailfish.Pickers.ImagePickerPage", { "allowedOrientations" : Orientation.All });
+                        imagePicker.selectedContentChanged.connect(function () {
+                            var imagePath = imagePicker.selectedContent;
+                            console.log(imagePath)
+                            imageUploader.setUploadUrl("https://upload.twitter.com/1.1/media/upload.json")
+                            imageUploader.setUploadUrl("https://httpbin.org/post")
+                            imageUploader.setFile(imagePath);
+                            imageUploader.setAuthorizationHeader(Logic.conf.OAUTH_TOKEN);
+                            imageUploader.upload();
+                        });
 
-
-
-
-                        })
                     }
                 }
             }
         }
+    }
+    Rectangle {
+        id: uploadProgress
+        color: Theme.highlightBackgroundColor
+        anchors.bottom: parent.bottom
+        anchors.left: parent.left
+        height: 3
     }
 
 }

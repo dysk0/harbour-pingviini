@@ -205,8 +205,8 @@ BackgroundItem {
 
         }
         text: richText
-        textFormat:Text.RichText
-        linkColor : Theme.highlightColor
+        textFormat:Text.StyledText
+        linkColor : (pressed ? Theme.primaryColor : Theme.highlightColor)
         wrapMode: Text.Wrap
         font.pixelSize: Theme.fontSizeSmall
         color: (pressed ? Theme.highlightColor : Theme.primaryColor)
@@ -227,7 +227,7 @@ BackgroundItem {
     }
     onClicked: {
         pageStack.push(Qt.resolvedUrl("../TweetDetails.qml"), {
-                                          "tweets": myList.model,
+                                          "tweets": [],
                                           "screenName": screenName,
                                           "selected": index
                                       })

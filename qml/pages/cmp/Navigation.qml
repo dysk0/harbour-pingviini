@@ -2,38 +2,39 @@ import QtQuick 2.0
 import Sailfish.Silica 1.0
 import QtGraphicalEffects 1.0
 
-
-
-
-
-
 SilicaGridView {
+    signal slideshowShow(int vIndex);
+    signal slideshowIndexChanged(int vIndex);
+    onSlideshowIndexChanged: {
+        navigateTo(vIndex)
+    }
+
     id: gridView
     property bool isPortrait: false
     ListModel {
         id: listModel
         ListElement {
-            icon: "../home.svg" //""
+            icon: "../../home.svg" //""
             slug: "timeline"
             name: "Timeline"
             active: true
             unread: false
         }
         ListElement {
-            icon: "../notification.svg"
+            icon: "../../notification.svg"
             slug: "mentions"
             name: "Mentions"
             active: false
             unread: false
         }
         ListElement {
-            icon: "../mesagess.svg"  //""
+            icon: "../../mesagess.svg"  //""
             slug: "msgs"
             name: "Messagess"
             active: false
         }
         ListElement {
-            icon: "../search.svg" //""
+            icon: "../../search.svg" //""
             slug: "search"
             name: "Search"
             active: false
@@ -96,9 +97,7 @@ SilicaGridView {
         }*/
         Image {
             id: image
-            source: model.icon + (highlighted
-                                  ? Theme.highlightColor
-                                  : (model.active ? Theme.primaryColor : Theme.secondaryHighlightColor))
+            source: model.icon
             anchors.centerIn: parent
             smooth: true
             visible: false
@@ -139,6 +138,8 @@ SilicaGridView {
             }
         }
         onClicked: {
+            slideshowShow(index)
+            console.log(index)
             navigateTo(model.slug)
             effect.state = "right"
         }
@@ -146,31 +147,12 @@ SilicaGridView {
     }
     function navigateTo(slug){
         for(var i = 0; i < listModel.count; i++){
-            if (listModel.get(i).slug === slug)
+            if (listModel.get(i).slug === slug || i===slug)
                 listModel.setProperty(i, 'active', true);
             else
                 listModel.setProperty(i, 'active', false);
         }
-        dmsgViewComponent.visible = false
-        timelineViewComponent.visible = false
-        mentionsViewComponent.visible = false
-        searchViewComponent.visible = false
-        if (slug === "msgs"){
-            dmsgViewComponent.visible = true
-        }
-        if (slug === "timeline"){
-            timelineViewComponent.visible = true
-        }
-        if (slug === "mentions"){
-            mentionsViewComponent.visible = true
-        }
-        if (slug === "search"){
-            searchViewComponent.visible = true
-        }
-
-
         console.log(slug)
-
     }
 
 

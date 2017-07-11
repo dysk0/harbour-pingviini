@@ -50,13 +50,20 @@
     </message>
 </context>
 <context>
-    <name>FirstPage</name>
+    <name>ImageUploader</name>
     <message>
-        <source>Settings</source>
+        <source>The file %1 does not exists</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>MainPage</name>
+    <message>
+        <source>Pingviini</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Load more</source>
+        <source>Messages</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -64,69 +71,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Pingviini</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Mentions</source>
         <translation type="unfinished"></translation>
     </message>
-</context>
-<context>
-    <name>ImageChooser</name>
     <message>
-        <source>Android storage</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>SD Card</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Home</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Sort ascending</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Sort descending</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Sort by name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Sort by date</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Select images</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Back</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Send image</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>ImageUploader</name>
-    <message>
-        <source>The file %1 does not exists</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to open the file %1</source>
+        <source>Search</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

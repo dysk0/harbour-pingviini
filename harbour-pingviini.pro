@@ -23,10 +23,8 @@ SOURCES += src/harbour-pingviini.cpp \
 
 OTHER_FILES += qml/harbour-pingviini.qml \
     qml/cover/CoverPage.qml \
-    qml/pages/FirstPage.qml \
     lib/* \
     qml/pages/cmp/Stats.qml \
-    qml/pages/JSONListModel.qml \
     qml/pages/TweetToolBar.qml \
     qml/lib/common.js \
     qml/lib/Worker.js \
@@ -56,9 +54,8 @@ DISTFILES += \
     sha1.js \
     qml/pages/AccountAdd.qml \
     qml/component/Tweet.qml \
-    qml/pages/Navigation.qml \
+    qml/pages/cmp/Navigation.qml \
     qml/pages/SearchView.qml \
-    qml/pages/jsonpath.js \
     qml/pages/NewTweet.qml \
     qml/pages/TweetDetails.qml \
     qml/pages/Splash.qml \
@@ -68,7 +65,6 @@ DISTFILES += \
     qml/pages/Profile.qml \
     qml/pages/cmp/ProfileHeader.qml \
     qml/pages/cmp/PingviiniiLogo.qml \
-    qml/pages/ImageChooser.qml \
     qml/pages/cmp/Tweet.qml \
     qml/pages/cmp/MediaBlock.qml \
     qml/pages/cmp/MyImage.qml \
@@ -82,7 +78,9 @@ DISTFILES += \
     qml/pages/Settings.qml \
     qml/pages/CreditsTranslations.qml \
     qml/pages/DirectMessages.qml \
-    qml/notification.svg
+    qml/notification.svg \
+    qml/pages/MainPage.qml \
+    qml/pages/UsersDebug.qml
 
 HEADERS += \
     src/selector/imageuploader.h \

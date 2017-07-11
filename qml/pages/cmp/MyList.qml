@@ -1,17 +1,24 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
-
+import "../../lib/Logic.js" as Logic
+import "."
 
 
 SilicaListView {
     id: myList
+    property string type;
+    property string title
+    property string description
+    property ListModel mdl: []
+    property variant params: []
     property var locale: Qt.locale()
     property bool loadStarted : false;
     property int scrollOffset;
     property string action: ""
-    property variant vars
+    property variant vars: { }
     property variant conf
-
+    property bool notifier : false;
+    model:  mdl
     signal notify (string what, int num)
     onNotify: {
         console.log(what + " - " + num)
@@ -25,54 +32,15 @@ SilicaListView {
     onSend: {
         console.log("LIST send signal emitted with notice: " + notice)
     }
+
     BusyIndicator {
         size: BusyIndicatorSize.Large
         running: myList.model.count === 0 && !viewPlaceHolder.visible
         anchors.centerIn: parent
     }
-
-    WorkerScript {
-        id: worker
-        source: "../../lib/Worker.js"
-        onMessage: {
-            if (messageObject.error){
-                viewPlaceHolder.visible = true;
-                viewPlaceHolder.text = "Error"
-                viewPlaceHolder.hintText = messageObject.message
-                console.log(JSON.stringify(messageObject))
-            }
-            if (messageObject.notifyNewItems){
-                console.log(JSON.stringify(messageObject.notifyNewItems))
-                notify(action, messageObject.notifyNewItems)
-            }
-        }
-    }
-    Timer {
-        interval: 5*60*1000;
-        running: true;
-        repeat: true
-        onTriggered: loadData("prepend")
-    }
-
-    Component.onCompleted: {
-        var msg = {
-            'bgAction'  : action,
-            'params'    : vars,
-            'model'     : model,
-            'conf'      : conf
-        };
-        worker.sendMessage(msg);
-    }
-
-    function loadData(mode){
-        var msg = {
-            'bgAction'  : action,
-            'params'    : vars,
-            'model'     : model,
-            'mode'      : mode,
-            'conf'      : conf
-        };
-        worker.sendMessage(msg);
+    header: PageHeader {
+        title: myList.title
+        description: myList.description
     }
 
     ViewPlaceholder {
@@ -84,10 +52,14 @@ SilicaListView {
 
     PullDownMenu {
         MenuItem {
+            text: "Users"
+            onClicked: pageStack.push(Qt.resolvedUrl("../UsersDebug.qml"))
+        }
+        MenuItem {
             text: qsTr("Settings")
             onClicked: pageStack.push(Qt.resolvedUrl("../Settings.qml"))
         }
-        MenuItem {
+        /*MenuItem {
             visible: action === 'statuses_userTimeline'
             text: (following ? "Unfollow" : "Follow")
             onClicked: {
@@ -96,7 +68,7 @@ SilicaListView {
                 worker.sendMessage(msg);
                 following = !following
             }
-        }
+        }*/
         MenuItem {
             text: qsTr("Load more")
             onClicked: {
@@ -104,74 +76,95 @@ SilicaListView {
             }
         }
     }
-    PushUpMenu {
-        MenuItem {
-            text: qsTr("Load more")
-            onClicked: {
-                loadData("append")
-            }
-        }
-    }
-    anchors {
-        top: parent.top
-        bottom: parent.bottom
-        left: parent.left
-        right: parent.right
-    }
+
+
     clip: true
     section {
         property: 'section'
-        criteria: ViewSection.FullString
         delegate: SectionHeader  {
-            text: {
-                var dat = Date.fromLocaleDateString(locale, section);
-                dat = Format.formatDate(dat, Formatter.TimepointRelativeCurrentDay)
-                if (dat === "00:00:00" || dat === "00:00") {
-                    visible = false;
-                    height = 0;
-                    return  " ";
-                }else {
-                    return dat;
-                }
-
-            }
-
+            height: Theme.itemSizeExtraSmall
+            text: Format.formatDate(section, Formatter.DateMedium)
         }
     }
 
-    delegate: Tweet {
-        onSend: {
-            myList.send(notice)
-        }
-    }
+
     add: Transition {
         NumberAnimation { property: "opacity"; from: 0; to: 1.0; duration: 800 }
         NumberAnimation { property: "x"; duration: 800; easing.type: Easing.InOutBack }
     }
 
-    displaced: Transition {
+    remove: Transition {
         NumberAnimation { properties: "x,y"; duration: 800; easing.type: Easing.InOutBack }
     }
 
     onCountChanged: {
-        contentY = scrollOffset
-        console.log("CountChanged!")
+        loadStarted = false;
+        /*contentY = scrollOffset
+        console.log("CountChanged!")*/
 
-        //last_id_MN
+    }
 
+    footer: Item{
+        width: parent.width
+        height: Theme.itemSizeLarge
+        Button {
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.margins: Theme.paddingSmall
+            anchors.bottomMargin: Theme.paddingLarge
+            visible: false
+            onClicked: {
+                loadData("append")
+            }
+        }
+        BusyIndicator {
+            size: BusyIndicatorSize.Small
+            running: loadStarted;
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.horizontalCenter: parent.horizontalCenter
+        }
     }
     onContentYChanged: {
 
-        if (contentY > scrollOffset) {
-            openDrawer(false)
-
-        } else {
-            if (contentY < 100 && !loadStarted){
-            }
-            openDrawer(true)
+        if (Math.abs(contentY - scrollOffset) > Theme.itemSizeMedium) {
+            openDrawer(contentY - scrollOffset  > 0 ? false : true )
+            scrollOffset = contentY
         }
-        scrollOffset = contentY
+
+        if(contentY+height > footerItem.y && !loadStarted){
+            loadData("append")
+            loadStarted = true;
+        }
     }
     VerticalScrollDecorator {}
+
+    WorkerScript {
+        id: worker
+        source: "../../lib/Worker.js"
+        onMessage: {
+            if (messageObject.error){
+                console.log(JSON.stringify(messageObject))
+            }
+            if (messageObject.fireNotification && notifier){
+                Logic.notifier(messageObject.data)
+            }
+
+        }
+    }
+
+    function loadData(mode){
+        var msg = {
+            'bgAction'  : action,
+            'params'    : vars,
+            'model'     : model,
+            'modelUsers': Logic.modelUsers,
+            'mode'      : mode,
+            'conf'      : conf
+        };
+        worker.sendMessage(msg);
+    }
+
+    Component.onCompleted: {
+        loadData("prepend")
+    }
 
 }

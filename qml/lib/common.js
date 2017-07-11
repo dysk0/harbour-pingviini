@@ -1,4 +1,7 @@
-
+String.prototype.replaceAll = function(search, replacement) {
+    var target = this;
+    return target.replace(new RegExp(search, 'g'), replacement);
+};
 var __HTML_ENTITIES = {
     "&amp;": "&",
     "&lt;": "<",
@@ -6,6 +9,9 @@ var __HTML_ENTITIES = {
 }
 function getValidDate(twitterDate) {
     return new Date(twitterDate.replace(/^(\w+) (\w+) (\d+) ([\d:]+) \+0000 (\d+)$/,"$1, $2 $3 $5 $4 GMT"));
+}
+function getDate(ts){
+    return new Date(ts.getFullYear(), ts.getMonth(), ts.getDate(), 0, 0, 0)
 }
 
 function __unescapeHtml(text) {
@@ -91,8 +97,8 @@ function __linkHashtags(text, hashtagsEntities) {
 var CASHTAG_REGEXP = /(?:^|\s)(\$[a-z]{1,6}(?:[._][a-z]{1,2})?)(?=$|[\s\!'#%&"\(\)*\+,\\\-\.\/:;<=>\?@\[\]\^_{|}~\$])/gi;
 function linkText(text, href, italic) {
     var html = "";
-    if (italic) html = "<a style=\"color: "+highlightColor+"; text-decoration: none\" href=\"%1\">%2</a>";
-    else html = "<a style=\"color: "+highlightColor+"; text-decoration: none\" href=\"%1\">%2</a>";
+    if (italic) html = "<a style=\"text-decoration: none\" href=\"%1\">%2</a>";
+    else html = "<a style=\"text-decoration: none\" href=\"%1\">%2</a>";
     html = html.arg(href).arg(text)
     //console.log(html )
     return html ;
@@ -131,23 +137,62 @@ function parseISO8601(str) {
     }
 }
 
-function parseDM(dmJson, isReceiveDM) {
-    //console.log(JSON.stringify(dmJson))
-    var dm = {
-        id: dmJson.id,
-        richText: dmJson.message_create.message_data.text,
-        sender_id: dmJson.message_create.sender_id,
-        recipient_id: dmJson.message_create.target.recipient_id,
-        name: dmJson.message_create.sender_id,
-        //screenName: name,
-        //profileImageUrl: (isReceiveDM ? dmJson.sender.profile_image_url_https : dmJson.sender.profile_image_url_https),
-        createdAt: dmJson.created_timestamp
+function parseEntities(text, entities){
+    if (entities.user_mentions){
+        entities.user_mentions.forEach(function(item) {
+            //console.info(JSON.stringify(item))
+            text = text.replace(new RegExp( '@'+item.screen_name, "gi" ), '<a href="@'+item.screen_name+'">@'+item.screen_name+'</a>');
+        });
     }
-    //dm.section = dm.createdAt.toLocaleDateString()
-    return dm;
+    if (entities.hashtags){
+        entities.hashtags.forEach(function(item) {
+            //console.info(JSON.stringify(item))
+            text = text.replace('#'+item.text, '<a href="#'+item.text+'">#'+item.text+'</a>');
+        });
+    }
+    if (entities.urls){
+        entities.urls.forEach(function(item) {
+            //console.info(JSON.stringify(item))
+            text = text.replaceAll(item.url, '<a href="'+item.url+'">'+item.display_url+"</a>")
+        });
+    }
+    return text;
+}
+function getUserFromModel(id) {
+    for(var i = 0; i< modelUsers.count; i++){
+        if (modelUsers.get(i).id === id){
+            return modelUsers.get(i);
+        }
+    }
+    return {
+        name: "Not found",
+        id: "0000000",
+        screen_name:  "Not found",
+        avatar: ""
+    };
+}
+function addUsersToModel(modelUsers, data) {
+    if (!modelUsers)
+        return;
+
+    var exists = false;
+    for(var i = 0; i< modelUsers.count; i++){
+        if (modelUsers.get(i).id === data.id){
+            exists = true;
+            break;
+        }
+    }
+    if (!exists)
+        modelUsers.append(data)
 }
 
-function parseTweet(tweetJson) {
+function parseTweet(tweetJson, modelUsers) {
+
+
+        addUsersToModel(modelUsers, { "name": tweetJson.user.name, "id": tweetJson.user.id, "id_str": tweetJson.user.id_str, "screen_name":  tweetJson.user.screen_name, "avatar": tweetJson.user.profile_image_url })
+
+
+
     var tweet = {
         id: tweetJson.id,
         id_str: tweetJson.id_str,
@@ -161,17 +206,16 @@ function parseTweet(tweetJson) {
         highlights: "",
         retweetScreenName: tweetJson.user.screen_name
     }
-    tweet.section = tweet.createdAt.toLocaleDateString()
+    tweet.section = getDate(tweet.createdAt)
+
     var originalTweetJson = {};
     if (tweetJson.retweeted_status) {
         originalTweetJson = tweetJson.retweeted_status;
         tweet.isRetweet = true;
+    } else {
+        originalTweetJson = tweetJson;
     }
-    else originalTweetJson = tweetJson;
-    tweet.plainText = __unescapeHtml(originalTweetJson.full_text);
-    tweet.richText = __toRichText(originalTweetJson.full_text, originalTweetJson.entities);
 
-    tweet.highlights = __toHighlights(originalTweetJson.full_text, originalTweetJson.entities);
 
     tweet.isVerified = originalTweetJson.user.verified;
     tweet.name = originalTweetJson.user.name;
@@ -183,38 +227,51 @@ function parseTweet(tweetJson) {
     tweet.inReplyToStatusIdStr = originalTweetJson.in_reply_to_status_id_str;
     tweet.latitude = "";
     tweet.longitude = "";
-    tweet.mediaUrl = "";
-    //tweet.richText = tweet.id + " <br> "+tweet.id_str + " <br><br> "+tweet.inReplyToStatusId + " <br> "+tweet.inReplyToStatusIdStr
-    tweet.media = [];
-
-    if (tweetJson.extended_entities && tweetJson.extended_entities.media){
-        tweetJson.extended_entities.media.forEach(function(el) {
-
-            if (el.type === "video" || el.type === "animated_gif"){
-                for (var j = 0; j < el.video_info.variants.length; j++) {
-                    if (el.video_info.variants[j].content_type === "video/mp4") {
-                        tweet.media.push({
-                                             "type" : el.type,
-                                             "video": el.video_info.variants[j].url,
-                                             "src": el.media_url_https
-                                         })
-                    }
-                }
-                //console.log(JSON.stringify(tweet.media))
-            } else {
-                tweet.media.push({ "type" : "photo", "src": el.media_url_https})
-
-            }
-
-        });
-
-        tweet.mediaUrl = tweetJson.entities.media[0].media_url_https
-        tweet.plainText = tweet.plainText.replace(tweetJson.entities.media[0].url, "")
-        tweet.plainText = tweet.plainText + '<a href="blablabla">test M</a>'
+    tweet.is_quote_status = originalTweetJson.is_quote_status ? true : false;
+    if (tweet.is_quote_status) {
+        tweet.quote_status_id = originalTweetJson.quoted_status_id
     }
 
-//    /tweet.mediaPhotos = tweet.mediaPhotos.join("/#/")
 
-    //console.log(" ---------------------- "); console.log(JSON.stringify(tweetJson)); console.log(" ---------------------- "); console.log(JSON.stringify(tweet))
+    var text = originalTweetJson.full_text ? originalTweetJson.full_text : originalTweetJson.text
+
+    tweet.media = [];
+
+    if (originalTweetJson.entities){
+        text = parseEntities(text, originalTweetJson.entities);
+        if (originalTweetJson.extended_entities && originalTweetJson.extended_entities.media){
+            originalTweetJson.extended_entities.media.forEach(function(item) {
+                var media;
+                if (item.type ==="photo"){
+                    media = {
+                        id:         item.id,
+                        id_str:     item.id_str,
+                        type:       item.type,
+                        cover:      item.media_url_https+":small",
+                        media:      item.media_url_https+":large"
+                    }
+                    //console.info(JSON.stringify(item))
+                } else {
+                    media = {
+                        id:         item.id,
+                        id_str:     item.id_str,
+                        type:       item.type,
+                        cover:      item.media_url_https+":medium",
+                        media:      item.video_info.variants.length ? item.video_info.variants[item.video_info.variants.length-1].url : false
+                    }
+                }
+                tweet.media.push(media)
+                text = text.replaceAll(item.url, '')
+            });
+        }
+    }
+
+    tweet.richText = text;
+
+    //if(tweet.screenName === "dysko"){
+    //console.log(JSON.stringify(originalTweetJson))
+    //console.log(JSON.stringify(tweet))
+    //}
+
     return tweet;
 }

@@ -60,14 +60,6 @@ SilicaListView {
     }
 
 
-    anchors {
-        fill: parent
-        leftMargin: 0
-        topMargin: 0
-        rightMargin: page.isPortrait ? 0 : infoPanel.visibleSize
-        bottomMargin: page.isPortrait ? infoPanel.visibleSize : 0
-    }
-
 
     ViewPlaceholder {
         enabled: Logic.modelSE.count === 0 && headerItem.text !== ""
@@ -141,6 +133,18 @@ SilicaListView {
 
     VerticalScrollDecorator {}
 
+    WorkerScript {
+        id: worker
+        source: "../../lib/Worker.js"
+        onMessage: {
+            if (messageObject.error){
+                console.log(JSON.stringify(messageObject))
+            }
+            if (messageObject.fireNotification && notifier){
+                Logic.notifier(messageObject.data)
+            }
 
+        }
+    }
 }
 

@@ -19,6 +19,7 @@ Page {
 
 
 
+
     // The effective value will be restricted by ApplicationWindow.allowedOrientations
     allowedOrientations: Orientation.All
 
@@ -66,24 +67,24 @@ Page {
         }
 
         delegate: BackgroundItem {
-            height: lblText.paintedHeight + lblDate.paintedHeight + Theme.paddingSmall
+            height: lblText.paintedHeight + lblDate.paintedHeight + Theme.paddingMedium
             Label {
                 id: lblText
                 anchors {
                     left: parent.left
                     right: parent.right
-                    topMargin: Theme.paddingSmall
+                    topMargin: Theme.paddingMedium
                     leftMargin: Theme.paddingLarge
                     rightMargin: Theme.paddingLarge
                 }
                 onLinkActivated: page.onLinkActivated(link)
-                text: richText
+                text: model.text
                 textFormat:Text.RichText
                 linkColor : Theme.highlightColor
                 wrapMode: Text.Wrap
                 font.pixelSize: Theme.fontSizeSmall
-                horizontalAlignment: isReceiveDM ? Text.AlignLeft :Text.AlignRight
-                color: (pressed ? Theme.highlightColor : (isReceiveDM ? Theme.highlightColor : Theme.primaryColor))
+                horizontalAlignment: sent ? Text.AlignLeft :Text.AlignRight
+                color: (pressed ? Theme.highlightColor : (sent ? Theme.highlightColor : Theme.primaryColor))
             }
 
             Label {
@@ -96,7 +97,7 @@ Page {
                 color: (pressed ? Theme.highlightColor : Theme.secondaryColor)
                 text: Format.formatDate(createdAt, new Date() - createdAt < 60*60*1000 ? Formatter.DurationElapsedShort : Formatter.TimepointRelativeCurrentDayDetailed)
                 font.pixelSize: Theme.fontSizeExtraSmall
-                horizontalAlignment: isReceiveDM ? Text.AlignLeft :Text.AlignRight
+                horizontalAlignment: sent ? Text.AlignLeft :Text.AlignRight
                 width: lblText.width
                 anchors {
                     top: lblText.bottom
@@ -106,6 +107,9 @@ Page {
                     rightMargin: Theme.paddingLarge
                     bottomMargin: Theme.paddingSmall
                 }
+            }
+            onClicked: {
+                console.log(JSON.stringify(model.get(index)))
             }
         }
     }

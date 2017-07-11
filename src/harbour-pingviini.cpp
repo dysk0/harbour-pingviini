@@ -42,17 +42,18 @@ int main(int argc, char *argv[])
 {
     QScopedPointer<QGuiApplication> app(SailfishApp::application(argc, argv));
     QScopedPointer<QQuickView> view(SailfishApp::createView());
-    QQmlContext *context = view.data()->rootContext();
+    //QQmlContext *context = view.data()->rootContext();
 
 
-    FilesModel::registerMetaTypes();
-    qmlRegisterType<FilesModel>("harbour.pingviini.FilesModel", 1, 0, "FilesModel");
+    //FilesModel::registerMetaTypes();
+    //qmlRegisterType<FilesModel>("harbour.pingviini.FilesModel", 1, 0, "FilesModel");
+    //qmlRegisterType<ImageUploader>("harbour.pingviini.Uploader", 1, 0, "ImageUploader");
     qmlRegisterType<ImageUploader>("harbour.pingviini.Uploader", 1, 0, "ImageUploader");
 
 
     QQmlEngine* engine = view->engine();
     QObject::connect(engine, SIGNAL(quit()), app.data(), SLOT(quit()));
-    engine->addImageProvider(QStringLiteral("thumbnail"), new ThumbnailProvider);
+    //engine->addImageProvider(QStringLiteral("thumbnail"), new ThumbnailProvider);
 
 
 

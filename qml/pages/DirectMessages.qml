@@ -8,14 +8,6 @@ SilicaListView {
     id: timelineDM
 
     property string next_cursor: "";
-    anchors {
-        fill: parent
-        leftMargin: 0
-        topMargin: 0
-        rightMargin: page.isPortrait ? 0 : infoPanel.visibleSize
-        bottomMargin: page.isPortrait ? infoPanel.visibleSize : 0
-    }
-
     Component.onCompleted: {
         if (modelDM.count === 0){
             loadData("append")
