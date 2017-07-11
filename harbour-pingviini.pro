@@ -55,7 +55,6 @@ DISTFILES += \
     qml/pages/AccountAdd.qml \
     qml/component/Tweet.qml \
     qml/pages/cmp/Navigation.qml \
-    qml/pages/SearchView.qml \
     qml/pages/NewTweet.qml \
     qml/pages/TweetDetails.qml \
     qml/pages/Splash.qml \

@@ -1,5 +1,6 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
+import "../../lib/Logic.js" as Logic
 import QtGraphicalEffects 1.0
 
 BackgroundItem {
@@ -9,7 +10,7 @@ BackgroundItem {
     //property string text: "0"
     width: parent.width
     signal navigateTo(string link)
-    height: lblText.paintedHeight + (lblText.text.length > 0 ? Theme.paddingLarge : 0 )+ lblName.paintedHeight + lblScreenName.paintedHeight +  mediaImg.height + (isRetweet ? Theme.paddingLarge + iconRT.height : 0)
+    height: mnu.height + lblText.paintedHeight + (lblText.text.length > 0 ? Theme.paddingLarge : 0 )+ lblName.paintedHeight + lblScreenName.paintedHeight +  mediaImg.height + (isRetweet ? Theme.paddingLarge + iconRT.height : 0)
     Image {
         id: iconRT
         y: Theme.paddingLarge
@@ -56,52 +57,6 @@ BackgroundItem {
         }
 
     }
-
-    /*Image {
-        id: avatar
-        x: Theme.horizontalPageMargin
-        y: Theme.paddingLarge + (isRetweet ? iconRT.height+Theme.paddingMedium : 0)
-        asynchronous: true
-        width: Theme.iconSizeMedium
-        height: width
-        smooth: true
-        source: profileImageUrl
-        visible: false
-    }
-    Rectangle {
-        id: avatarMask
-        x: Theme.horizontalPageMargin
-        y: Theme.paddingLarge
-        width: Theme.iconSizeMedium
-        height: width
-        smooth: true
-        color: Theme.primaryColor
-        radius: Theme.iconSizeMedium*0.08
-        anchors.centerIn: avatar
-        visible: true
-
-    }
-
-    OpacityMask {
-        id: maskedProfilePicture
-        source: avatar
-        maskSource: avatarMask
-        anchors.fill: avatar
-        visible: avatar.status === Image.Ready ? true : false
-        opacity: avatar.status === Image.Ready ? 1 : 0
-        Behavior on opacity { NumberAnimation {} }
-        MouseArea {
-            anchors.fill: parent
-            onClicked: {
-                pageStack.push(Qt.resolvedUrl("../Profile.qml"), {
-                                   "name": name,
-                                   "username": screenName,
-                                   "profileImage": profileImageUrl
-                               })
-            }
-
-        }
-    }*/
 
     Label {
         id: lblName
@@ -231,6 +186,79 @@ BackgroundItem {
                                           "screenName": screenName,
                                           "selected": index
                                       })
+    }
+
+    ContextMenu {
+        id: mnu
+
+        MenuItem {
+            text: model.favorited ? qsTr("Unfavorite") : qsTr("Favorite")
+            onClicked: {
+                var msg = {
+                    'headlessAction': 'favorites_' + (favorited ? 'destroy' : 'create'),
+                    'params': {'id': id_str}
+                };
+                Logic.mediator.publish("bgCommand", msg)
+                favorited = !favorited
+            }
+            Image {
+                id: icFA
+                anchors {
+                    leftMargin: Theme.horizontalPageMargin
+                    left: parent.left
+                    verticalCenter: parent.verticalCenter
+                }
+                width: Theme.iconSizeExtraSmall
+                height: width
+                source: "image://theme/icon-s-favorite?" + (!model.favorited ? Theme.highlightColor : Theme.primaryColor)
+            }
+            Label {
+                anchors {
+                    left: icFA.right
+                    leftMargin: Theme.paddingMedium
+                    verticalCenter: parent.verticalCenter
+                }
+                text: favoriteCount
+                font.pixelSize: Theme.fontSizeExtraSmall
+                color: !model.favorited ? Theme.highlightColor : Theme.primaryColor
+            }
+        }
+        MenuItem {
+            text: qsTr("Retweet")
+            enabled: !retweeted
+            onClicked: {
+                var msg = {
+                    'headlessAction': 'statuses_retweet_ID',
+                    'params': {'id': id_str}
+                };
+                Logic.mediator.publish("bgCommand", msg)
+                retweeted = true;
+            }
+            Image {
+                id: icRT
+                anchors {
+                    leftMargin: Theme.horizontalPageMargin
+                    left: parent.left
+                    verticalCenter: parent.verticalCenter
+                }
+                width: Theme.iconSizeExtraSmall
+                height: width
+                source: "image://theme/icon-s-retweet?" + (!model.retweeted ? Theme.highlightColor : Theme.primaryColor)
+            }
+            Label {
+                anchors {
+                    left: icRT.right
+                    leftMargin: Theme.paddingMedium
+                    verticalCenter: parent.verticalCenter
+                }
+                text: retweetCount
+                font.pixelSize: Theme.fontSizeExtraSmall
+                color: !model.retweeted ? Theme.highlightColor : Theme.primaryColor
+            }
+        }
+    }
+    onPressAndHold: {
+        mnu.show(delegate)
     }
 
 }

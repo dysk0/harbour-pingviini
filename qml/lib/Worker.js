@@ -89,7 +89,7 @@ WorkerScript.onMessage = function(msg) {
                 });
                 console.log(JSON.stringify(reply.errors))
             }
-
+            console.log(JSON.stringify(reply))
             if (msg.model){
                 var items = [];
                 var parser = false;
@@ -97,9 +97,11 @@ WorkerScript.onMessage = function(msg) {
                 case "search_tweets":
                     if ('statuses' in reply)
                         items = reply.statuses;
+                    parser = parseTweet
                     break;
                 case "statuses_homeTimeline":
                 case "statuses_mentionsTimeline":
+                case "statuses_userTimeline":
                     items = reply;
                     parser = parseTweet
                     break;
@@ -149,8 +151,6 @@ WorkerScript.onMessage = function(msg) {
                     if (msg.mode === "prepend") {
                         msg.model.insert(0, items[length-k-1])
                     }
-                    //if (msg.modelUsers && tweet.userIdStr)
-                    //    msg.modelUsers.append({ "name": tweet.name, "id_str": tweet.userIdStr, "id": tweet.userId, "screen_name":  tweet.screenName, "profileImageUrl": tweet.profileImageUrl })
                 }
 
 
@@ -177,7 +177,7 @@ WorkerScript.onMessage = function(msg) {
                         msg.modelUsers.remove(item)
                     });
                 }
-                console.log("USERS " + JSON.stringify(indexesToRemove))
+                //console.log("USERS " + JSON.stringify(indexesToRemove))
                 msg.modelUsers.sync();
             }
             //WorkerScript.sendMessage({ 'success': true,  "reply": reply})

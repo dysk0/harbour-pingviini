@@ -95,6 +95,8 @@ Page {
             property string search;
             onSearchChanged: {
                 mdl = Qt.createQmlObject('import QtQuick 2.0; ListModel {   }', Qt.application, 'InternalQmlObject');
+                tlSearch.action = "search_tweets"
+                //Logic.modelSE.clear()
                 tlSearch.vars = {'q' : search }
                 loadData("append")
 
@@ -110,7 +112,8 @@ Page {
             width: parent.width
             height: parent.height
             onOpenDrawer:  infoPanel.open = setDrawer
-            action: "search_tweets"
+            action: ""
+            delegate: Tweet {}
             header: SearchField {
                 width: parent.width
                 text: tlSearch.search
@@ -180,6 +183,22 @@ Page {
         } else {
             pageStack.push(Qt.resolvedUrl("Browser.qml"), {"href" : href})
         }
+    }
+    WorkerScript {
+        id: worker
+        source: "../lib/Worker.js"
+        onMessage: {
+            if (messageObject.error){
+                console.log(JSON.stringify(messageObject))
+            }
+        }
+    }
+    Component.onCompleted: {
+        var obj = {};
+        Logic.mediator.installTo(obj);
+        obj.subscribe('bgCommand', function(msg){
+            worker.sendMessage({conf: Logic.getConfTW(), headlessAction: msg[0].headlessAction, params: msg[0].params});
+        })
     }
 }
 

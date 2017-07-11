@@ -85,7 +85,7 @@ CoverBackground {
             title: Logic.modelUsers.count + " Users"
         }
         model: Logic.modelUsers
-        cellWidth: width / 2
+        cellWidth: width / 4
         cellHeight: cellWidth
 
         delegate: BackgroundItem {

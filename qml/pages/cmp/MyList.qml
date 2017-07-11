@@ -9,7 +9,7 @@ SilicaListView {
     property string type;
     property string title
     property string description
-    property ListModel mdl: []
+    property ListModel mdl: { }
     property variant params: []
     property var locale: Qt.locale()
     property bool loadStarted : false;

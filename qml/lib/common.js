@@ -196,10 +196,11 @@ function parseTweet(tweetJson, modelUsers) {
         source: tweetJson.source.replace(/<[^>]+>/ig, ""),
         createdAt: getValidDate(tweetJson.created_at),
         isVerified: false,
-        isFavourited: tweetJson.favorited,
+        favorited: tweetJson.favorited,
         favoriteCount: tweetJson.favorite_count,
-        isRetweet: tweetJson.retweeted,
+        retweeted: tweetJson.retweeted,
         retweetCount: tweetJson.retweet_count,
+        isRetweet: false,
         highlights: "",
         retweetScreenName: tweetJson.user.screen_name
     }
@@ -207,8 +208,8 @@ function parseTweet(tweetJson, modelUsers) {
 
     var originalTweetJson = {};
     if (tweetJson.retweeted_status) {
-        originalTweetJson = tweetJson.retweeted_status;
         tweet.isRetweet = true;
+        originalTweetJson = tweetJson.retweeted_status;
     } else {
         originalTweetJson = tweetJson;
     }
