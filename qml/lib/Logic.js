@@ -20,13 +20,14 @@
 .import QtQuick.LocalStorage 2.0 as LS
 Qt.include("common.js")
 
-
+var UNIQUE_MSGIDS = [];
 var OAUTH_CONSUMER_KEY = "BsVdhEDHrLgE8SUfAUEoVdnwD"
 var OAUTH_CONSUMER_SECRET = "UtGso4Buc2bX3FlBmYrwamKIuPRfwBfptO0we935jyRF90RboK"
 var OAUTH_TOKEN
 var OAUTH_TOKEN_SECRET
 var USER_AGENT = "Pingviini Client"
 var SCREEN_NAME
+var USER_ID
 
 function getConfTW(){
     return {
@@ -35,7 +36,8 @@ function getConfTW(){
         OAUTH_TOKEN: OAUTH_TOKEN,
         OAUTH_TOKEN_SECRET: OAUTH_TOKEN_SECRET,
         USER_AGENT: USER_AGENT,
-        SCREEN_NAME: SCREEN_NAME
+        SCREEN_NAME: SCREEN_NAME,
+        USER_ID: USER_ID
     }
 }
 
@@ -77,7 +79,7 @@ var mediator = (function(){
     };
 }());
 
-var db = LS.LocalStorage.openDatabaseSync("pingviinisss", "", "pingviini", 100000);
+var db = LS.LocalStorage.openDatabaseSync("pingviinisssaaa", "", "pingviiniaa", 100000);
 var conf = {}
 
 

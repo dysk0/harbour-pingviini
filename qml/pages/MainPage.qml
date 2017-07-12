@@ -29,7 +29,7 @@ Page {
 
     VisualItemModel {
         id: visualModel
-        /*MyList {
+        MyList {
             id: timelineViewComponent
             header: PageHeader {
                 title: qsTr("Timeline")
@@ -59,7 +59,7 @@ Page {
             height: parent.height
             onOpenDrawer:  infoPanel.open = setDrawer
             delegate: Tweet {}
-        }*/
+        }
         MyList {
             id: dmList
             header: PageHeader {
@@ -74,28 +74,94 @@ Page {
             height: parent.height
             onOpenDrawer:  infoPanel.open = setDrawer
             delegate: BackgroundItem {
-                height: Theme.itemSizeLarge
-                Column {
-                    anchors.fill: parent
-                    Label { text: sender_name}
-                    Label { text: recipient_name}
+                height: Theme.itemSizeMedium + Theme.paddingMedium*2
+                anchors.left: parent.left
+                anchors.right: parent.right
+                Image {
+                    id: mainAvatar
+                    anchors {
+                        top: parent.top
+                        topMargin: Theme.paddingLarge
+                        left: parent.left
+                        leftMargin: Theme.horizontalPageMargin
+                    }
+                    width: Theme.iconSizeMedium
+                    height: width
+                    source: !model.revert ? model.sender_avatar : model.recipient_avatar
+                    smooth: true
+                    opacity: status === Image.Ready ? 1.0 : 0.0
+                    Behavior on opacity { FadeAnimator {} }
+                    asynchronous: true
+                    Image {
+                        anchors {
+                            bottom: parent.bottom
+                            bottomMargin: -width/3
+                            left: parent.left
+                            leftMargin: -width/3
+                        }
+                        asynchronous: true
+                        width: Theme.iconSizeSmall
+                        height: width
+                        smooth: true
+                        opacity: status === Image.Ready ? 1.0 : 0.0
+                        Behavior on opacity { FadeAnimator {} }
+                        source: model.revert ? model.sender_avatar : model.recipient_avatar
+                    }
                 }
-                onPressAndHold: {
-                    console.log(JSON.stringify(Logic.getUserFromModel(user_id)))
+                Label {
+                    id: lblName
+                    anchors {
+                        left: mainAvatar.right
+                        leftMargin: Theme.paddingLarge
+                        top: mainAvatar.top
+                        right: lblDate.left
+                    }
+                    text: model.sender_name
+                    color: (pressed ? Theme.highlightColor : Theme.primaryColor)
+                    wrapMode: Text.NoWrap
+                }
+                Label {
+                    id: lblDate
+                    color: (pressed ? Theme.highlightColor : Theme.primaryColor)
+                    text: Format.formatDate(created_at, new Date() - created_at < 60*60*1000 ? Formatter.DurationElapsedShort : Formatter.TimeValueTwentyFourHours)
+                    font.pixelSize: Theme.fontSizeExtraSmall
+                    horizontalAlignment: Text.AlignRight
+                    anchors {
+                        right: parent.right
+                        baseline: lblName.baseline
+                        rightMargin: Theme.horizontalPageMargin
+                    }
+                }
+                Label {
+                    anchors {
+                        left: lblName.left
+                        right: lblDate.right
+                        top: lblName.bottom
+                    }
+                    text: model.text
+                    wrapMode: Text.NoWrap
+                    elide: Text.ElideRight
+                    font.pixelSize: Theme.fontSizeSmall
+                    maximumLineCount: 1
+                    color: (pressed ? Theme.secondaryHighlightColor : Theme.secondaryColor)
                 }
 
+
                 onClicked: {
-                    pageStack.push(Qt.resolvedUrl("Conversation.qml"), { tweets: Logic.parseDM.getThread(user_id)})
+                    //pageStack.push(Qt.resolvedUrl("Conversation.qml"), { tweets: Logic.parseDM.getThread(user_id)})
+                    console.log("MDL rec " + Logic.modelDMreceived.count)
+                    console.log("MDL sent " + Logic.modelDMsent.count)
+                    console.log("MDL DMs " + Logic.modelDM.count)
+                    generateDirMsgList()
                 }
             }
             function loadData(mode){
                 console.log("me!")
-                worker.sendMessage({conf: Logic.getConfTW(), model: Logic.modelDMreceived, mode: 'append', bgAction: 'directMessages', params: {count: 10, include_entities: false, full_text: true}});
-                worker.sendMessage({conf: Logic.getConfTW(), model: Logic.modelDMsent, mode: 'append', bgAction: 'directMessages_sent', params: {count: 10, include_entities: false, full_text: true}});
+                worker.sendMessage({conf: Logic.getConfTW(), model: Logic.modelDMreceived, mode: 'append', bgAction: 'directMessages', params: {count: 500, include_entities: false, full_text: true}});
             }
         }
 
-       /*MyList{
+        MyList{
             id: tlSearch;
             property string search;
             onSearchChanged: {
@@ -131,10 +197,10 @@ Page {
                 }
             }
             ViewPlaceholder {
-                                enabled: tlSearch.mdl === 0
-                                text: "Only #hastag search works"
-                            }
-        }*/
+                enabled: tlSearch.mdl === 0
+                text: "Only #hastag search works"
+            }
+        }
     }
 
     SlideshowView {
@@ -198,19 +264,10 @@ Page {
             }
             if (messageObject.success){
                 if (["directMessages", "directMessages_sent"].indexOf(messageObject.action) > -1){
-                    console.log(JSON.stringify(messageObject))
-                    Logic.modelDM.clear()
-                    var unique = [];
-                    for(var i = 0; i < Logic.modelDMreceived.count; i++){
-                        var msg = Logic.modelDMreceived.get(i);
-                        if (unique.indexOf(msg.id_str) == -1) {
-                            Logic.modelDM.append(msg)
-                            unique.push(msg.id_str)
-                        }
-                        //console.log(JSON.stringify(msg))
+                    generateDirMsgList()
+                    if(messageObject.action === "directMessages") {
+                        worker.sendMessage({conf: Logic.getConfTW(), model: Logic.modelDMsent, mode: 'append', bgAction: 'directMessages_sent', params: {count: 500, include_entities: false, full_text: true}});
                     }
-                    console.log(JSON.stringify(unique))
-
                 }
             }
         }
@@ -223,6 +280,73 @@ Page {
         obj.subscribe('bgCommand', function(msg){
             worker.sendMessage({conf: Logic.getConfTW(), headlessAction: msg[0].headlessAction, params: msg[0].params});
         })
+    }
+    function generateDirMsgList(){
+        console.log("MDL rec " + Logic.modelDMreceived.count)
+        console.log("MDL sent " + Logic.modelDMsent.count)
+        console.log("MDL DMs " + Logic.modelDM.count)
+        var msg, i;
+        var msgs = [];
+        var unique = []
+
+        // curent state
+        console.log("TRAZIM TRENUTNE //////////////////////////////////////////////")
+        for(i = 0; i < Logic.modelDM.count; i++){
+            unique.push(Logic.modelDM.get(i).sender_id);
+        }
+        console.log(JSON.stringify(unique))
+        console.log("STVARAM LISTU  //////////////////////////////////////////////")
+
+        for(i = 0; i < Logic.modelDMreceived.count; i++){
+            msg = Logic.modelDMreceived.get(i);
+            if (unique.indexOf(msg.sender_id) === -1) {
+                msg['revert'] = false;
+                msgs.push(msg)
+                unique.push(msg.sender_id);
+            }
+        }
+        console.log(JSON.stringify(unique))
+        console.log(JSON.stringify(msgs))
+        console.log("//////////////////////////////////////////////")
+        for(i = 0; i < unique.length; i++){
+            console.log("Trazim poslane ka " + unique[i])
+            for(var j = 0; j < Logic.modelDMsent.count; j++){
+                msg = Logic.modelDMsent.get(j);
+                if (unique[i] === msg.recipient_id) {
+                    console.log("Nasao!");
+                    if (Logic.modelDM.get(i).created_at < msg.created_at) {
+                        Logic.modelDM.set(i, {
+                                              created_at: msg.created_at,
+                                              text: msg.text,
+                                              revert: true
+                                          });
+                    }
+
+                    break;
+                }
+
+
+            }
+            /*    console.log(msg.recipient_id);
+            if (msgs[i].sender_id === msg.recipient_id) {
+                console.log("nasao!")
+                console.log(msgs[i].created_at + " \t" + msg.created_at)
+                if (new Date(msgs[i].created_at) < new Date(msg.created_at)) {
+
+                    console.log(msgs[i].created_at)
+                    console.log(msg.created_at)
+                    msgs[i].created_at = msg.created_at;
+                    msgs[i].created_at = msg.created_at;
+                    msgs[i].text = msg.text
+                    msgs[i].revert = true;
+                }
+                //break;
+            }
+        }*/
+        }
+        //Logic.modelDM.clear();
+        Logic.modelDM.append(msgs)
+        console.log(JSON.stringify(unique))
     }
 }
 
