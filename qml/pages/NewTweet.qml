@@ -64,7 +64,7 @@ Item {
     function tweet(){
 
         var msg = {
-            'action': 'statuses_update',
+            'headlessAction': 'statuses_update',
             'model' : Logic.modelTL,
             'params'  : {'status': newTweet.text},
             'conf'  : Logic.getConfTW()

@@ -34,9 +34,12 @@ import "../lib/Logic.js" as Logic
 import "./cmp/"
 
 Page {
-    property ListModel tweets;
+    property variant tweet
     property string selected;
     property alias title: header.title;
+    property alias avatar: header.image;
+    property string tweet_id;
+
     property alias screenName: tweetPanel.screenName;
     property string tweetType: "Reply";
     property bool isFavourited: false;
@@ -51,22 +54,22 @@ Page {
     // The effective value will be restricted by ApplicationWindow.allowedOrientations
     allowedOrientations: Orientation.All
     Component.onCompleted: {
-        console.log(tweets.count)
-        if (selected){
-            title =  tweets.get(selected).name
-            isFavourited = tweets.get(selected).isFavourited ? true : false
-            header.image = tweets.get(selected).profileImageUrl
+        console.log(tweet.id)
+        if (tweet.id){
+            title =  tweet.name
+            screenName =  tweet.screenName
+            header.image = tweet.profileImageUrl
+            tweetPanel.tweetId = tweet.id_str;
+            isFavourited = tweet.favorited;
+            modelCO.append(tweet)
 
-            tweetPanel.tweetId = tweets.get(selected).id_str;
-
-
-            var since = tweets.get(selected).createdAt
+            var since = tweet.createdAt
             var until = new Date(new Date().setDate(new Date(since).getDate() + 7));
             console.log(since)
             console.log(until)
             console.log(since.toISOString().substr(0, 10))
             console.log(until.toISOString().substr(0, 10))
-            var user = '@'+tweets.get(selected).screenName + (tweets.get(selected).inReplyToStatusId ? ' OR @'+tweets.get(selected).inReplyToScreenName : '')
+            var user = '@'+tweet.screenName + (tweet.inReplyToStatusId ? ' OR @'+tweet.inReplyToScreenName : '')
             var msg = {
                 'bgAction'    : 'search_tweets',
                 'params': {
@@ -74,23 +77,33 @@ Page {
                     count: 100,
                     result_type: "recent",
                     q: user + ' -RT  filter:replies since:'+since.toISOString().substr(0, 10)+ ' until:'+until.toISOString().substr(0, 10),
-                    since_id: tweets.get(selected).inReplyToStatusId ? tweets.get(selected).inReplyToStatusId: tweets.get(selected).id
+                    since_id: tweet.inReplyToStatusId ? tweet.inReplyToStatusId: tweet.id
                 },
+                'mode'      : 'prepend',
                 'model'     : modelCO,
-                'conf'  : Logic.getConfTW()
+                'conf'      : Logic.getConfTW()
             };
             worker.sendMessage(msg);
         }
     }
     ListModel {
         id: modelCO
+        onCountChanged: {
+            modelCO2.clear()
+            for(var i= 0; i < count; i++) {
+                console.log(i)
+                modelCO2.insert(0, get(i))
+            }
+        }
+    }
+    ListModel {
+        id: modelCO2
     }
 
     ProfileHeader {
         id: header
         title: ""
         description: screenName ? '@'+screenName : ""
-
     }
 
     NewTweet {
@@ -106,7 +119,7 @@ Page {
 
     SilicaListView {
         id: listView
-        model: modelCO
+        model: modelCO2
         RemorseItem { id: remorse }
         PullDownMenu {
             id: menu
@@ -114,45 +127,31 @@ Page {
             MenuItem {
                 text: qsTr("Report as spam")
                 onClicked: {
-                    var msg = {
-                        'bgAction'    : 'users_reportSpam',
-                        'params': { screen_name: screenName, user_id: tweets.get(selected).userIdStr},
-                        'model'     : false,
-                        'conf'  : Logic.getConfTW()
-                    };
-                    worker.sendMessage(msg);
+                    Logic.mediator.publish("bgCommand", {
+                                               'headlessAction': 'users_reportSpam',
+                                               'params': {'screen_name': tweet.screenName, 'user_id': tweet.id_str}
+                                           })
                 }
             }
             MenuItem {
                 text: qsTr("Retweet")
                 onClicked: {
-
-
                     var msg = {
-                        'bgAction'    : 'statuses_retweet_ID',
-                        'params': { id: tweets.get(selected).id_str},
-                        'model'     : false,
-                        'conf'  : Logic.getConfTW()
+                        'headlessAction': 'statuses_retweet_ID',
+                        'params': {'id': tweet.id_str}
                     };
-                    worker.sendMessage(msg);
+                    Logic.mediator.publish("bgCommand", msg)
+                    tweet.retweeted = true;
                 }
             }
             MenuItem {
-                text: isFavourited ? qsTr("Unfavorite") : qsTr("Favorite")
+                text: tweet.favorited ? qsTr("Unfavorite") : qsTr("Favorite")
                 onClicked: {
-                    isFavourited  = !isFavourited ;
-                    tweets.setProperty(selected, "isFavourited", isFavourited)
-                    worker.sendMessage({
-                                           'bgAction'    : isFavourited ? 'favorites_create' : 'favorites_destroy',
-                                                                          'params': { id: tweets.get(selected).id_str},
-                                           'model'     : false,
-                                           'conf'  : Logic.getConfTW()
-                                       });
-
-
-
-
-
+                    Logic.mediator.publish("bgCommand", {
+                                               'headlessAction': 'favorites_' + (tweet.favorited ? 'destroy' : 'create'),
+                                               'params': {'id': tweet.id_str}
+                                           })
+                    tweet.favorited = !tweet.favorited
                 }
             }
         }
@@ -163,88 +162,24 @@ Page {
             right: parent.right
         }
         clip: true
-
-        header: Item {
-            width: parent.width
-            height:  Theme.paddingLarge*2+ lblText.paintedHeight + mediaImg.height + ( mediaImg.height > 0 ? Theme.paddingLarge : 0)
-
-
-            Text {
-                id: lblText
-                anchors {
-                    left: parent.left
-                    right: parent.right
-                    top: parent.top
-                    topMargin: Theme.paddingLarge
-                    rightMargin: Theme.paddingLarge
-                    leftMargin: Theme.paddingLarge
-                }
-                text: selected ? tweets.get(selected).richText : ""
-                height: paintedHeight
-                textFormat:Text.RichText
-                onLinkActivated: {
-                    console.log(link)
-                    if (link[0] === "@") {
-                        pageStack.push(Qt.resolvedUrl("Profile.qml"), {
-                                           "name": "",
-                                           "username": link.substring(1),
-                                           "profileImage": ""
-                                       })
-                    } else if (link[0] === "#") {
-
-                            pageStack.pop(pageStack.find(function(page) {
-                                var check = page.isFirstPage === true;
-                                if (check)
-                                    page.onLinkActivated(link)
-                                return check;
-                            }));
-
-                        send(link)
-                    } else {
-                        pageStack.push(Qt.resolvedUrl("Browser.qml"), {"href" : link})
-                    }
-
-
-                }
-                linkColor : Theme.highlightColor
-                wrapMode: Text.Wrap
-                font.pixelSize: Theme.fontSizeMedium
-                color: (pressed ? Theme.highlightColor : Theme.primaryColor)
+        section {
+            property: 'section'
+            delegate: SectionHeader  {
+                height: Theme.itemSizeExtraSmall
+                text: Format.formatDate(section, Formatter.DateMedium)
             }
-            MediaBlock {
-                id: mediaImg
-                anchors {
-                    left: parent.left
-                    right: parent.right
-                    top: lblText.bottom
-                    topMargin: Theme.paddingLarge
-                    rightMargin: Theme.paddingLarge
-                    leftMargin: Theme.paddingLarge
-                }
-                model: selected ? tweets.get(selected).media : false
-
-                height: 100
-            }
-
-
-
         }
 
 
-        /**/
-        delegate: Tweet{} /*BackgroundItem {
-            id: delegate
+        add: Transition {
+            NumberAnimation { property: "opacity"; from: 0; to: 1.0; duration: 800 }
+            NumberAnimation { property: "x"; duration: 800; easing.type: Easing.InOutBack }
+        }
 
-            Label {
-                x: Theme.horizontalPageMargin
-                text: qsTr("Item") + " " + name + " | " + modelCO.count + " |"
-                anchors.verticalCenter: parent.verticalCenter
-                color: delegate.highlighted ? Theme.highlightColor : Theme.primaryColor
-            }
-            onClicked: function(){
-                console.log("Clicked " + index + " | " + modelCO.count + " |")
-            }
-        }*/
+        remove: Transition {
+            NumberAnimation { properties: "x,y"; duration: 800; easing.type: Easing.InOutBack }
+        }
+        delegate: Tweet{}
         VerticalScrollDecorator {}
     }
 

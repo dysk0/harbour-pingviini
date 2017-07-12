@@ -74,8 +74,12 @@ Page {
                             articleTitle = response.title;
                     if (response.lead_image_url)
                         articleImage = response.lead_image_url
-                    if (response.content)
+                    if (response.content){
                         articleContent = response.content;
+                    } else {
+                        screenReaderMode = false;
+                    }
+
                     if (response.content && response.lead_image_url)
                         articleContent = articleContent.replace(articleImage, "")
                 }  else {
@@ -85,7 +89,7 @@ Page {
             }
         }
         xhr.setRequestHeader("Content-Type", 'application/json');
-        xhr.setRequestHeader("x-api-key", 'uakC11NlSubREs1r5NjkOCS1NJEkwti6DnDutcYC');
+        xhr.setRequestHeader("x-api-key", '9rzijHVsXpdq3XBnS5plbmEylkyGAlQf0Z4VH1Xr');
 
         if (screenReaderMode)
             xhr.send();

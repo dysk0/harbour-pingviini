@@ -29,13 +29,13 @@ Page {
 
     VisualItemModel {
         id: visualModel
-        MyList {
+        /*MyList {
             id: timelineViewComponent
             header: PageHeader {
                 title: qsTr("Timeline")
                 description: qsTr("Pingviini")
             }
-            model: Logic.modelTL
+            mdl: Logic.modelTL
             action: "statuses_homeTimeline"
             vars: {"count":200}
             conf: Logic.getConfTW()
@@ -51,7 +51,7 @@ Page {
                 title: qsTr("Mentions")
                 description: qsTr("Pingviini")
             }
-            model: Logic.modelMN
+            mdl: Logic.modelMN
             action: "statuses_mentionsTimeline"
             vars: {"count":200}
             conf: Logic.getConfTW()
@@ -59,7 +59,7 @@ Page {
             height: parent.height
             onOpenDrawer:  infoPanel.open = setDrawer
             delegate: Tweet {}
-        }
+        }*/
         MyList {
             id: dmList
             header: PageHeader {
@@ -67,8 +67,8 @@ Page {
                 description: qsTr("Pingviini")
             }
             mdl: Logic.modelDM
-            action: ""
-            vars: {"count":200}
+            action: "directMessages_sent"
+            vars: { }
             conf: Logic.getConfTW()
             width: parent.width
             height: parent.height
@@ -77,8 +77,8 @@ Page {
                 height: Theme.itemSizeLarge
                 Column {
                     anchors.fill: parent
-                    Label { text: user_id}
-                    Label { text: "aa"}
+                    Label { text: sender_name}
+                    Label { text: recipient_name}
                 }
                 onPressAndHold: {
                     console.log(JSON.stringify(Logic.getUserFromModel(user_id)))
@@ -88,9 +88,14 @@ Page {
                     pageStack.push(Qt.resolvedUrl("Conversation.qml"), { tweets: Logic.parseDM.getThread(user_id)})
                 }
             }
+            function loadData(mode){
+                console.log("me!")
+                worker.sendMessage({conf: Logic.getConfTW(), model: Logic.modelDMreceived, mode: 'append', bgAction: 'directMessages', params: {count: 10, include_entities: false, full_text: true}});
+                worker.sendMessage({conf: Logic.getConfTW(), model: Logic.modelDMsent, mode: 'append', bgAction: 'directMessages_sent', params: {count: 10, include_entities: false, full_text: true}});
+            }
         }
 
-       MyList{
+       /*MyList{
             id: tlSearch;
             property string search;
             onSearchChanged: {
@@ -129,7 +134,7 @@ Page {
                                 enabled: tlSearch.mdl === 0
                                 text: "Only #hastag search works"
                             }
-        }
+        }*/
     }
 
     SlideshowView {
@@ -191,9 +196,28 @@ Page {
             if (messageObject.error){
                 console.log(JSON.stringify(messageObject))
             }
+            if (messageObject.success){
+                if (["directMessages", "directMessages_sent"].indexOf(messageObject.action) > -1){
+                    console.log(JSON.stringify(messageObject))
+                    Logic.modelDM.clear()
+                    var unique = [];
+                    for(var i = 0; i < Logic.modelDMreceived.count; i++){
+                        var msg = Logic.modelDMreceived.get(i);
+                        if (unique.indexOf(msg.id_str) == -1) {
+                            Logic.modelDM.append(msg)
+                            unique.push(msg.id_str)
+                        }
+                        //console.log(JSON.stringify(msg))
+                    }
+                    console.log(JSON.stringify(unique))
+
+                }
+            }
         }
     }
     Component.onCompleted: {
+        //worker.sendMessage({conf: Logic.getConfTW(), model: Logic.modelDMsent, mode: 'append', bgAction: 'directMessages_sent', params: {count: 10, include_entities: false, full_text: true}});
+
         var obj = {};
         Logic.mediator.installTo(obj);
         obj.subscribe('bgCommand', function(msg){

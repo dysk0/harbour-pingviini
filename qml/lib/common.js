@@ -187,11 +187,30 @@ function addUsersToModel(modelUsers, data) {
     }
 }
 
-function parseTweet(tweetJson, modelUsers) {
+function parseDM(json) {
+    var tweet = {
+        id: json.id,
+        id_str: json.id_str,
+        createdAt: getValidDate(json.created_at),
+        text: json.text,
+        sender_id: json.sender_id_str,
+        sender_name: json.sender_screen_name,
+        sender_screen_name: json.sender.screen_name,
+        sender_avatar: json.sender.profile_image_url_https,
+        recipient_id: json.recipient_id_str,
+        recipient_name: json.recipient.name,
+        recipient_screen_name: json.recipient_screen_name,
+        recipient_avatar: json.recipient.profile_image_url_https
+    }
+    return tweet;
+}
+
+function parseTweet(tweetJson) {
 
 
     var tweet = {
         id: tweetJson.id,
+        visualStyle: 0,
         id_str: tweetJson.id_str,
         source: tweetJson.source.replace(/<[^>]+>/ig, ""),
         createdAt: getValidDate(tweetJson.created_at),

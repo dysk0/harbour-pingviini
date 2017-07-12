@@ -5,7 +5,6 @@ import QtGraphicalEffects 1.0
 
 BackgroundItem {
     signal send (string notice)
-
     id: delegate
     //property string text: "0"
     width: parent.width
@@ -39,11 +38,11 @@ BackgroundItem {
         x: Theme.horizontalPageMargin
         y: Theme.paddingLarge + (isRetweet ? iconRT.height+Theme.paddingMedium : 0)
         asynchronous: true
-        width: Theme.iconSizeMedium
+        width: visualStyle == 0 ? Theme.iconSizeMedium : 0
         height: width
         smooth: true
         source: profileImageUrl
-        visible: true
+        visible: visualStyle == 0
         MouseArea {
             anchors.fill: parent
             onClicked: {
@@ -64,8 +63,9 @@ BackgroundItem {
             top: avatar.top
             topMargin: 0
             left: avatar.right
-            leftMargin: Theme.paddingMedium
+            leftMargin: visualStyle == 0 ? Theme.paddingMedium : 0
         }
+        visible: visualStyle == 0
         text: name
         font.weight: Font.Bold
         font.pixelSize: Theme.fontSizeSmall
@@ -80,7 +80,7 @@ BackgroundItem {
             leftMargin: Theme.paddingSmall
             verticalCenter: lblName.verticalCenter
         }
-        visible: isVerified
+        visible: visualStyle == 0 ? isVerified : false
         width: isVerified ? Theme.iconSizeExtraSmall*0.8 : 0
         opacity: 0.8
         height: width
@@ -100,6 +100,7 @@ BackgroundItem {
             leftMargin: Theme.paddingMedium
             baseline: lblName.baseline
         }
+        visible: visualStyle == 0
         truncationMode: TruncationMode.Fade
         text: '@'+screenName
         font.pixelSize: Theme.fontSizeExtraSmall
@@ -145,12 +146,12 @@ BackgroundItem {
                                })
             } else if (link[0] === "#") {
 
-                    pageStack.pop(pageStack.find(function(page) {
-                        var check = page.isFirstPage === true;
-                        if (check)
-                            page.onLinkActivated(link)
-                        return check;
-                    }));
+                pageStack.pop(pageStack.find(function(page) {
+                    var check = page.isFirstPage === true;
+                    if (check)
+                        page.onLinkActivated(link)
+                    return check;
+                }));
 
                 send(link)
             } else {
@@ -181,18 +182,18 @@ BackgroundItem {
         height: 100
     }
     onClicked: {
-        pageStack.push(Qt.resolvedUrl("../TweetDetails.qml"), {
-                                          "tweets": [],
-                                          "screenName": screenName,
-                                          "selected": index
-                                      })
+        if(pageStack.depth > 1) {
+            pageStack.replace(Qt.resolvedUrl("../TweetDetails.qml"), { "tweet": model })
+        } else {
+            pageStack.push(Qt.resolvedUrl("../TweetDetails.qml"), { "tweet": model })
+        }
     }
 
     ContextMenu {
         id: mnu
 
         MenuItem {
-            text: model.favorited ? qsTr("Unfavorite") : qsTr("Favorite")
+            text: favorited ? qsTr("Unfavorite") : qsTr("Favorite")
             onClicked: {
                 var msg = {
                     'headlessAction': 'favorites_' + (favorited ? 'destroy' : 'create'),
@@ -210,7 +211,7 @@ BackgroundItem {
                 }
                 width: Theme.iconSizeExtraSmall
                 height: width
-                source: "image://theme/icon-s-favorite?" + (!model.favorited ? Theme.highlightColor : Theme.primaryColor)
+                source: "image://theme/icon-s-favorite?" + (!favorited ? Theme.highlightColor : Theme.primaryColor)
             }
             Label {
                 anchors {
@@ -220,7 +221,7 @@ BackgroundItem {
                 }
                 text: favoriteCount
                 font.pixelSize: Theme.fontSizeExtraSmall
-                color: !model.favorited ? Theme.highlightColor : Theme.primaryColor
+                color: !favorited ? Theme.highlightColor : Theme.primaryColor
             }
         }
         MenuItem {

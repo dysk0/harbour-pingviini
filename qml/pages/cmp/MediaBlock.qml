@@ -4,7 +4,7 @@ import QtMultimedia 5.0
 
 
 Item {
-    property ListModel model: []
+    property ListModel model: ({})
     property int count: model.count
     property double wRatio : 16/9
     property double hRatio : 9/16
