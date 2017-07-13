@@ -113,7 +113,8 @@ Page {
                     anchors {
                         left: mainAvatar.right
                         leftMargin: Theme.paddingLarge
-                        top: mainAvatar.top
+                        top: parent.top
+                        topMargin: Theme.paddingLarge
                         right: lblDate.left
                     }
                     text: model.sender_name
@@ -318,32 +319,26 @@ Page {
                         Logic.modelDM.set(i, {
                                               created_at: msg.created_at,
                                               text: msg.text,
+                                              section: msg.section,
                                               revert: true
                                           });
                     }
 
                     break;
                 }
-
-
             }
-            /*    console.log(msg.recipient_id);
-            if (msgs[i].sender_id === msg.recipient_id) {
-                console.log("nasao!")
-                console.log(msgs[i].created_at + " \t" + msg.created_at)
-                if (new Date(msgs[i].created_at) < new Date(msg.created_at)) {
-
-                    console.log(msgs[i].created_at)
-                    console.log(msg.created_at)
-                    msgs[i].created_at = msg.created_at;
-                    msgs[i].created_at = msg.created_at;
-                    msgs[i].text = msg.text
-                    msgs[i].revert = true;
-                }
-                //break;
-            }
-        }*/
         }
+        /*var reSort = [];
+
+
+        for(i = 0; i < Logic.modelDM.count; i++){
+            reSort.push(Logic.modelDM.get(i))
+        }
+        console.log(JSON.stringify(reSort))
+        reSort.sort(function(a,b){
+            return (a.created_at > b.created_at)
+        })*/
+
         //Logic.modelDM.clear();
         Logic.modelDM.append(msgs)
         console.log(JSON.stringify(unique))

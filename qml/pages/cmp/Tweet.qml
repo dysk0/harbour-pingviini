@@ -108,13 +108,13 @@ BackgroundItem {
     }
     Label {
         function timestamp() {
-            var txt = Format.formatDate(createdAt, Formatter.Timepoint)
-            var elapsed = Format.formatDate(createdAt, Formatter.DurationElapsedShort)
+            var txt = Format.formatDate(created_at, Formatter.Timepoint)
+            var elapsed = Format.formatDate(created_at, Formatter.DurationElapsedShort)
             return (elapsed ? elapsed  : txt )
         }
         id: lblDate
         color: (pressed ? Theme.highlightColor : Theme.primaryColor)
-        text: Format.formatDate(createdAt, new Date() - createdAt < 60*60*1000 ? Formatter.DurationElapsedShort : Formatter.TimeValueTwentyFourHours)
+        text: Format.formatDate(created_at, new Date() - created_at < 60*60*1000 ? Formatter.DurationElapsedShort : Formatter.TimeValueTwentyFourHours)
         font.pixelSize: Theme.fontSizeExtraSmall
         horizontalAlignment: Text.AlignRight
         anchors {

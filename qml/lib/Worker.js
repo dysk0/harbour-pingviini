@@ -37,9 +37,7 @@ WorkerScript.onMessage = function(msg) {
     if (msg.conf.OAUTH_TOKEN && msg.conf.OAUTH_TOKEN_SECRET){
         cb.setToken(msg.conf.OAUTH_TOKEN, msg.conf.OAUTH_TOKEN_SECRET);
     }
-    if (msg.conf.USER_ID){
-        parseDM.setUserId(msg.conf.USER_ID)
-    }
+
 
 
     var sinceId;

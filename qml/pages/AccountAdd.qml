@@ -25,7 +25,7 @@ Page {
                 console.log(JSON.stringify(Logic.getConfTW()))
                 Logic.saveData();
                 if (messageObject.reply.oauth_token)
-                    pageStack.replace(Qt.resolvedUrl("FirstPage.qml"), {})
+                    pageStack.replace(Qt.resolvedUrl("MainPage.qml"), {})
                 //Logic.initialize()
 
             } else if (messageObject.key === "oauth_authorize") {

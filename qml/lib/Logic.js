@@ -79,7 +79,7 @@ var mediator = (function(){
     };
 }());
 
-var db = LS.LocalStorage.openDatabaseSync("pingviinisssaaa", "", "pingviiniaa", 100000);
+var db = LS.LocalStorage.openDatabaseSync("pingviini", "", "pingviini", 100000);
 var conf = {}
 
 

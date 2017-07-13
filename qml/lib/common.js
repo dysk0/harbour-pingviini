@@ -63,6 +63,7 @@ function parseDM(json) {
         recipient_screen_name: json.recipient_screen_name,
         recipient_avatar: json.recipient.profile_image_url_https
     }
+    tweet.section = getDate(tweet.created_at)
     return tweet;
 }
 
@@ -74,7 +75,7 @@ function parseTweet(tweetJson) {
         visualStyle: 0,
         id_str: tweetJson.id_str,
         source: tweetJson.source.replace(/<[^>]+>/ig, ""),
-        createdAt: getValidDate(tweetJson.created_at),
+        created_at: getValidDate(tweetJson.created_at),
         isVerified: false,
         favorited: tweetJson.favorited,
         favoriteCount: tweetJson.favorite_count,
@@ -84,7 +85,7 @@ function parseTweet(tweetJson) {
         highlights: "",
         retweetScreenName: tweetJson.user.screen_name
     }
-    tweet.section = getDate(tweet.createdAt)
+    tweet.section = getDate(tweet.created_at)
 
     var originalTweetJson = {};
     if (tweetJson.retweeted_status) {
