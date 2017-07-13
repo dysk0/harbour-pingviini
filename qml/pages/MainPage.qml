@@ -149,16 +149,19 @@ Page {
 
 
                 onClicked: {
-                    //pageStack.push(Qt.resolvedUrl("Conversation.qml"), { tweets: Logic.parseDM.getThread(user_id)})
-                    console.log("MDL rec " + Logic.modelDMreceived.count)
-                    console.log("MDL sent " + Logic.modelDMsent.count)
-                    console.log("MDL DMs " + Logic.modelDM.count)
-                    generateDirMsgList()
+                    pageStack.push(Qt.resolvedUrl("Conversation.qml"), {
+                                       user_id : model.sender_id,
+                                       recipient_id : model.recipient_id,
+                                       user_name : model.sender_name,
+                                       user_screen_name : model.sender_screen_name,
+                                       user_avatar: model.sender_avatar
+                                   })
+                    //generateDirMsgList()
                 }
             }
             function loadData(mode){
                 console.log("me!")
-                worker.sendMessage({conf: Logic.getConfTW(), model: Logic.modelDMreceived, mode: 'append', bgAction: 'directMessages', params: {count: 500, include_entities: false, full_text: true}});
+                worker.sendMessage({conf: Logic.getConfTW(), model: Logic.modelDMreceived, mode: 'append', bgAction: 'directMessages', params: {count: 200, include_entities: false, full_text: true}});
             }
         }
 
@@ -267,7 +270,7 @@ Page {
                 if (["directMessages", "directMessages_sent"].indexOf(messageObject.action) > -1){
                     generateDirMsgList()
                     if(messageObject.action === "directMessages") {
-                        worker.sendMessage({conf: Logic.getConfTW(), model: Logic.modelDMsent, mode: 'append', bgAction: 'directMessages_sent', params: {count: 500, include_entities: false, full_text: true}});
+                        worker.sendMessage({conf: Logic.getConfTW(), model: Logic.modelDMsent, mode: 'append', bgAction: 'directMessages_sent', params: {count: 200, include_entities: false, full_text: true}});
                     }
                 }
             }
@@ -275,6 +278,12 @@ Page {
     }
     Component.onCompleted: {
         //worker.sendMessage({conf: Logic.getConfTW(), model: Logic.modelDMsent, mode: 'append', bgAction: 'directMessages_sent', params: {count: 10, include_entities: false, full_text: true}});
+        var store = [];
+        for (var i = 0; i < Logic.rec.length; i++){
+            console.log(JSON.stringify(Logic.rec[i]))
+            //store.push(Logic.parseDM())
+        }
+        Logic.modelDMreceived.append(store)
 
         var obj = {};
         Logic.mediator.installTo(obj);

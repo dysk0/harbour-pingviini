@@ -79,7 +79,8 @@ DISTFILES += \
     qml/pages/DirectMessages.qml \
     qml/notification.svg \
     qml/pages/MainPage.qml \
-    qml/pages/UsersDebug.qml
+    qml/pages/UsersDebug.qml \
+    qml/lib/Parser.js
 
 HEADERS += \
     src/selector/imageuploader.h \
