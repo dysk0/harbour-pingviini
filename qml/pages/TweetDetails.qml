@@ -54,8 +54,7 @@ Page {
     // The effective value will be restricted by ApplicationWindow.allowedOrientations
     allowedOrientations: Orientation.All
     Component.onCompleted: {
-        console.log(tweet.id)
-        if (tweet.id){
+        if (typeof tweet.id !== "undefined"){
             title =  tweet.name
             screenName =  tweet.screenName
             header.image = tweet.profileImageUrl
@@ -105,17 +104,24 @@ Page {
         title: ""
         description: screenName ? '@'+screenName : ""
     }
-
-    NewTweet {
-        id: tweetPanel
-        anchors {
-            bottom: parent.bottom
-            left: parent.left
-            right: parent.right
+    DockedPanel {
+        id: panel
+        open: true
+        height: tweetPanel.height
+        width: parent.width
+        onExpandedChanged: {
+            if (!expanded) {
+                show()
+            }
         }
-        type: tweetType
-        screenName: screenName ? screenName : ""
+        NewTweet {
+            width: parent.width
+            id: tweetPanel
+            type: tweetType
+            screenName: screenName ? screenName : ""
+        }
     }
+
 
     SilicaListView {
         id: listView
@@ -145,7 +151,7 @@ Page {
                 }
             }
             MenuItem {
-                text: tweet.favorited ? qsTr("Unfavorite") : qsTr("Favorite")
+                text: (typeof tweet.favorited !== "undefined" && tweet.favorited ? qsTr("Unfavorite") : qsTr("Favorite"))
                 onClicked: {
                     Logic.mediator.publish("bgCommand", {
                                                'headlessAction': 'favorites_' + (tweet.favorited ? 'destroy' : 'create'),
@@ -157,7 +163,7 @@ Page {
         }
         anchors {
             top: header.bottom
-            bottom: tweetPanel.top
+            bottom: panel.top
             left: parent.left
             right: parent.right
         }

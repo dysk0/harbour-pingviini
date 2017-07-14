@@ -1,2 +1,16 @@
-* Fri Jul 14 2017 Duško Angirević <dysko@me.com> 0.7.0-1
+* Fri Jul 14 2017 Duško Angirević <dysko@me.com> 0.7.1-0
+- Minor bugfix for RT & FAV actions
+
+* Fri Jul 14 2017 Duško Angirević <dysko@me.com> 0.7.0-0
 - Refactored and optimised app code
+* Fri Jun 30 2017 Duško Angirević <dysko@me.com> 0.6.2-0
+- Extended tweet support added to timeline, mentions and search
+* Fri Jun 23 2017 Duško Angirević <dysko@me.com> 0.5.0-0
+- Better user profile page
+- Reusing components
+- NL translation
+* Fri Jun 09 2017 Duško Angirević <dysko@me.com> 0.3.0-0
+- Added Reading Mode for URLs
+* Thu Jun 01 2017 Duško Angirević <dysko@me.com> 0.2.0-0
+- Related tweets view
+- Image view added

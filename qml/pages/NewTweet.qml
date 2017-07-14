@@ -3,6 +3,8 @@ import Sailfish.Silica 1.0
 import QtPositioning 5.2
 import harbour.pingviini.Uploader 1.0
 import "../lib/Logic.js" as Logic
+import "../lib/codebird.js" as CB
+
 
 
 
@@ -14,11 +16,27 @@ Item {
     property string placedText: ""
     property double latitude: 0
     property double longitude: 0
+    property bool attachGeo: false
+    property bool setFocus: false
+    property string nextImageSrc: ""
     width: parent.width
-    height: newTweet.height + (tweetExtra.open ? tweetExtra.height : 0)
+    height: newTweet.height + btnLocation.height + uploadedImages.height
     anchors {
         left: parent.left
         right: parent.right
+    }
+
+    PositionSource {
+        id: positionSource
+        active: attachGeo
+        //updateInterval: 120000 // 2 mins
+        property variant fromCoordinate: QtPositioning.coordinate(latitude, longitude)
+        onPositionChanged:  {
+            //var currentPosition = positionSource.position.coordinate
+            latitude = positionSource.position.coordinate.latitude
+            longitude = positionSource.position.coordinate.longitude
+            console.log(latitude + " " +longitude)
+        }
     }
 
     ListModel {
@@ -33,12 +51,20 @@ Item {
         onProgressChanged: {
             console.log("progress "+progress)
             uploadProgress.width = parent.width*progress
+            attachBtn.enabled = (mediaModel.count < 5)
         }
 
         onSuccess: {
             uploadProgress.width =0
-            console.log(replyData);
-            mediaModel.append(JSON.parse(replyData))
+            replyData = JSON.parse(replyData)
+            if (nextImageSrc !== ""){
+                mediaModel.append({
+                                      src: nextImageSrc,
+                                      media_id: replyData.media_id,
+                                      media_id_string: replyData.media_id_string
+                                  })
+                nextImageSrc = ""
+            }
         }
 
         onFailure: {
@@ -69,9 +95,18 @@ Item {
             'params'  : {'status': newTweet.text},
             'conf'  : Logic.getConfTW()
         };
-        if (switchGPS.checked && positionSource.valid) {
+
+        if (attachGeo && positionSource.valid) {
             msg.params['lat'] = latitude
             msg.params['long'] = longitude
+        }
+        if (mediaModel.count){
+            var ids = [];
+            for(var i =0; i <mediaModel.count; i++ ){
+                console.log(mediaModel.get(i).media_id)
+                ids.push(mediaModel.get(i).media_id_string)
+            }
+            msg.params['media_ids'] = ids.join(',')
         }
 
         if (type === "DM") {
@@ -84,43 +119,9 @@ Item {
             }
         }
 
-        console.log(screenName + " " + msg.params['status'].indexOf(screenName) + ' ' + type + " " + JSON.stringify(msg.params))
+        console.log(JSON.stringify(msg))
         worker.sendMessage(msg);
-    }
-
-
-
-    IconButton {
-        id: attachBtn
-        visible: newTweet.text.length == 0 ? true : false
-        width: visible ? Theme.iconSizeMedium : 0
-        height: width
-        icon.source: "image://theme/icon-s-attach"
-        anchors {
-            right: parent.right
-            bottom: newTweet.bottom
-        }
-        onClicked: {
-            tweetExtra.open = !tweetExtra.open
-        }
-
-
-    }
-    IconButton {
-        id: sendBtn
-        visible: newTweet.text.length != 0 ? true : false
-        width: Theme.iconSizeMedium
-        height: width
-        icon.source: "image://theme/icon-m-enter-next"
-        anchors {
-            right: parent.right
-            bottom: newTweet.bottom
-        }
-        onClicked: {
-            tweet()
-            newTweet.enabled = false;
-            sendBtn.enabled = false;
-        }
+        mediaModel.clear()
     }
 
     Rectangle {
@@ -131,7 +132,7 @@ Item {
         anchors {
             left: parent.left
             right: parent.right
-            bottom: newTweet.top
+            top: parent.top
         }
     }
     Rectangle {
@@ -140,10 +141,10 @@ Item {
 
         height: Theme.itemSizeSmall * 0.05
         color: Theme.highlightBackgroundColor
-        opacity: 0.3
+        opacity: 0.7
         anchors {
             left: parent.left
-            bottom: newTweet.top
+            top: parent.top
         }
     }
 
@@ -160,10 +161,10 @@ Item {
         errorHighlight: newTweet.text < 0 && type != "RT"
         anchors {
             top: parent.top
-            topMargin: Theme.paddingSmall
+            topMargin: Theme.paddingMedium
             left: parent.left
             rightMargin: Theme.paddingSmall
-            right: sendBtn.left
+            right: parent.right
 
         }
         autoScrollEnabled: true
@@ -171,12 +172,10 @@ Item {
         placeholderText: "Enter your tweet"
         text: placedText
         labelVisible: false
-        focus: true
+        focus: setFocus
         height: implicitHeight
         horizontalAlignment: Text.AlignLeft
-        EnterKey.onClicked: {
-            //tweet()
-        }
+        // EnterKey.onClicked: { tweet() }
         onTextChanged: {
             sendBtn.enabled = text.length > 140 ? false : true
             newTweet.color = (text.length > 140 ? "red": Theme.primaryColor)
@@ -184,65 +183,103 @@ Item {
 
     }
 
-    DockedPanel {
-        id: tweetExtra
 
+    SilicaGridView {
+        id: uploadedImages
         width: parent.width
-        height: Theme.itemSizeExtraLarge+Theme.paddingLarge
+        anchors.bottom: parent.bottom
+        height: mediaModel.count ? Theme.itemSizeSmall : 0
+        model: mediaModel
+        cellWidth: uploadedImages.width / 4
+        cellHeight: Theme.itemSizeSmall
+        delegate: BackgroundItem {
+            id: myDelegate
+            width: uploadedImages.cellWidth
+            height: uploadedImages.cellHeight
+            RemorseItem { id: remorse }
+            Image {
+                anchors.fill: parent
+                source: model.src
+                fillMode: Image.PreserveAspectCrop
+                clip: true
+            }
 
-        dock: Dock.Bottom
-        PositionSource {
-            id: positionSource
-            active: false
-            //updateInterval: 120000 // 2 mins
-            property variant fromCoordinate: QtPositioning.coordinate(latitude, longitude)
-            onPositionChanged:  {
-                //var currentPosition = positionSource.position.coordinate
-                latitude = positionSource.position.coordinate.latitude
-                longitude = positionSource.position.coordinate.longitude
-                console.log(latitude + " " +longitude)
+            onClicked: {
+                var idx = index
+                console.log(idx)
+                //mediaModel.remove(idx)
+                remorse.execute(myDelegate, qsTr("Delete"), function() { mediaModel.remove(idx) } )
             }
         }
-        Flow {
-            anchors.centerIn: parent
+        add: Transition {
+            NumberAnimation { property: "opacity"; from: 0; to: 1.0; duration: 800 }
+        }
 
-            Switch {
-                id: switchGPS
-                icon.source: "image://theme/icon-m-gps"
-                onClicked: {
-                    positionSource.active = checked
-                }
+        remove: Transition {
+            NumberAnimation { property: "opacity"; from: 1.0; to: 0; duration: 800 }
+        }
+        displaced: Transition {
+            NumberAnimation { properties: "x,y"; duration: 800; easing.type: Easing.InOutBack }
+        }
+    }
 
-            }
-            Image {
-                id: test
-                onStatusChanged: {
-                    if (status == Image.Ready) {
-                        console.log('Loaded')
-                        console.log(JSON.stringify(test.data))
-                    }
-                }
-            }
+    IconButton {
 
-            Switch {
-                icon.source: "image://theme/icon-m-image"
-                visible: true
-                onClicked: {
-                    if (checked){
-                        var imagePicker = pageStack.push("Sailfish.Pickers.ImagePickerPage", { "allowedOrientations" : Orientation.All });
-                        imagePicker.selectedContentChanged.connect(function () {
-                            var imagePath = imagePicker.selectedContent;
-                            console.log(imagePath)
-                            imageUploader.setUploadUrl("https://upload.twitter.com/1.1/media/upload.json")
-                            imageUploader.setUploadUrl("https://httpbin.org/post")
-                            imageUploader.setFile(imagePath);
-                            imageUploader.setAuthorizationHeader(Logic.conf.OAUTH_TOKEN);
-                            imageUploader.upload();
-                        });
+        id: btnLocation
+        anchors {
+            top: newTweet.bottom
+            topMargin: -Theme.paddingSmall
+            left: newTweet.left
+            //leftMargin: Theme.paddingMedium
+        }
+        icon.source: "image://theme/icon-s-high-importance?" + (pressed
+                                                                ? Theme.highlightColor
+                                                                : (attachGeo ? Theme.secondaryHighlightColor : Theme.primaryColor))
+        onClicked: attachGeo = !attachGeo
+    }
+    IconButton {
+        id: attachBtn
+        icon.source: "image://theme/icon-s-attach"
+        anchors {
+            left: btnLocation.right
+            top: btnLocation.top
+        }
+        onClicked: {
+            var imagePicker = pageStack.push("Sailfish.Pickers.ImagePickerPage", { "allowedOrientations" : Orientation.All });
+            imagePicker.selectedContentChanged.connect(function () {
 
-                    }
-                }
-            }
+                var conf = Logic.getConfTW();
+                var cb = new CB.Fcodebird;
+                cb.setConsumerKey(conf.OAUTH_CONSUMER_KEY, conf.OAUTH_CONSUMER_SECRET);
+                cb.setToken(conf.OAUTH_TOKEN, conf.OAUTH_TOKEN_SECRET);
+                cb.setUseProxy(false);
+
+                var imagePath = imagePicker.selectedContent;
+                var path = imagePath+"";
+
+                nextImageSrc = path.substr(7)
+
+                var sign = cb._sign('POST', 'https://upload.twitter.com/1.1/media/upload.json');
+                imageUploader.setUploadUrl("https://upload.twitter.com/1.1/media/upload.json")
+                //imageUploader.setUploadUrl("https://httpbin.org/post")
+                imageUploader.setFile(imagePath);
+                imageUploader.setAuthorizationHeader(sign);
+                imageUploader.upload();
+                 attachBtn.enabled = false;
+            });
+        }
+    }
+    IconButton {
+        id: sendBtn
+        width: Theme.iconSizeMedium
+        height: width
+        icon.source: "image://theme/icon-m-enter-next"
+        anchors {
+            right: parent.right
+            top: btnLocation.top
+        }
+        onClicked: {
+            tweet()
         }
     }
     Rectangle {

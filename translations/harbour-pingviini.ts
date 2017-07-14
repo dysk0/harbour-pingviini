@@ -91,6 +91,13 @@
     </message>
 </context>
 <context>
+    <name>NewTweet</name>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Profile</name>
     <message>
         <source>Summary</source>

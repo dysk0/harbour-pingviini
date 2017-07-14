@@ -62,6 +62,7 @@ Page {
         }
         MyList {
             id: dmList
+            property int loaded_page: 0
             header: PageHeader {
                 title: qsTr("Messages")
                 description: qsTr("Pingviini")
@@ -160,8 +161,9 @@ Page {
                 }
             }
             function loadData(mode){
-                console.log("me!")
-                worker.sendMessage({conf: Logic.getConfTW(), model: Logic.modelDMreceived, mode: 'append', bgAction: 'directMessages', params: {count: 200, include_entities: false, full_text: true}});
+                console.log(mode)
+                worker.sendMessage({conf: Logic.getConfTW(), model: Logic.modelDMreceived, mode: 'append', bgAction: 'directMessages', params: {count: 200, skip_status: true, include_entities: true, full_text: true}});
+                worker.sendMessage({conf: Logic.getConfTW(), model: Logic.modelDMsent, mode: 'append', bgAction: 'directMessages_sent', params: {count: 200, skip_status: true, include_entities: true, full_text: true}});
             }
         }
 
@@ -270,7 +272,6 @@ Page {
                 if (["directMessages", "directMessages_sent"].indexOf(messageObject.action) > -1){
                     generateDirMsgList()
                     if(messageObject.action === "directMessages") {
-                        worker.sendMessage({conf: Logic.getConfTW(), model: Logic.modelDMsent, mode: 'append', bgAction: 'directMessages_sent', params: {count: 200, include_entities: false, full_text: true}});
                     }
                 }
             }
@@ -278,34 +279,35 @@ Page {
     }
     Component.onCompleted: {
         //worker.sendMessage({conf: Logic.getConfTW(), model: Logic.modelDMsent, mode: 'append', bgAction: 'directMessages_sent', params: {count: 10, include_entities: false, full_text: true}});
-        var store = [];
+        /*var store = [];
         for (var i = 0; i < Logic.rec.length; i++){
             console.log(JSON.stringify(Logic.rec[i]))
             //store.push(Logic.parseDM())
         }
-        Logic.modelDMreceived.append(store)
+        Logic.modelDMreceived.append(store)*/
 
         var obj = {};
         Logic.mediator.installTo(obj);
         obj.subscribe('bgCommand', function(msg){
+            console.log(JSON.stringify(msg))
             worker.sendMessage({conf: Logic.getConfTW(), headlessAction: msg[0].headlessAction, params: msg[0].params});
         })
     }
     function generateDirMsgList(){
-        console.log("MDL rec " + Logic.modelDMreceived.count)
+        /*console.log("MDL rec " + Logic.modelDMreceived.count)
         console.log("MDL sent " + Logic.modelDMsent.count)
-        console.log("MDL DMs " + Logic.modelDM.count)
+        console.log("MDL DMs " + Logic.modelDM.count)*/
         var msg, i;
         var msgs = [];
         var unique = []
 
         // curent state
-        console.log("TRAZIM TRENUTNE //////////////////////////////////////////////")
+        //console.log("TRAZIM TRENUTNE //////////////////////////////////////////////")
         for(i = 0; i < Logic.modelDM.count; i++){
             unique.push(Logic.modelDM.get(i).sender_id);
         }
-        console.log(JSON.stringify(unique))
-        console.log("STVARAM LISTU  //////////////////////////////////////////////")
+        //console.log(JSON.stringify(unique))
+        //console.log("STVARAM LISTU  //////////////////////////////////////////////")
 
         for(i = 0; i < Logic.modelDMreceived.count; i++){
             msg = Logic.modelDMreceived.get(i);
@@ -315,15 +317,12 @@ Page {
                 unique.push(msg.sender_id);
             }
         }
-        console.log(JSON.stringify(unique))
-        console.log(JSON.stringify(msgs))
-        console.log("//////////////////////////////////////////////")
+        //console.log(JSON.stringify(unique))
+        //console.log("//////////////////////////////////////////////")
         for(i = 0; i < unique.length; i++){
-            console.log("Trazim poslane ka " + unique[i])
             for(var j = 0; j < Logic.modelDMsent.count; j++){
                 msg = Logic.modelDMsent.get(j);
                 if (unique[i] === msg.recipient_id) {
-                    console.log("Nasao!");
                     if (Logic.modelDM.get(i).created_at < msg.created_at) {
                         Logic.modelDM.set(i, {
                                               created_at: msg.created_at,
@@ -350,7 +349,7 @@ Page {
 
         //Logic.modelDM.clear();
         Logic.modelDM.append(msgs)
-        console.log(JSON.stringify(unique))
+        //console.log(JSON.stringify(unique))
     }
 }
 

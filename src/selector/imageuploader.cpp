@@ -43,7 +43,7 @@ void ImageUploader::setParameters(const QString &album, const QString &title, co
 }
 
 void ImageUploader::setAuthorizationHeader(const QString &authorizationHeader) {
-    m_authorizationHeader = "Bearer "+authorizationHeader.toUtf8();
+    m_authorizationHeader = authorizationHeader.toUtf8();
 }
 
 void ImageUploader::setUploadUrl(const QString &UrlString) {

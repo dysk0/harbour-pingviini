@@ -56,7 +56,8 @@ WorkerScript.onMessage = function(msg) {
                         console.log(JSON.stringify(reply));
                         console.log(JSON.stringify(err));
                         console.log("$$$$$$$$$$$$$$$$$$$ headlessAction $$$$$$$$$$$$$$");
-                    }
+                    },
+                    msg.forth ? true : false
                     );
     }
 
@@ -67,15 +68,22 @@ WorkerScript.onMessage = function(msg) {
         if (!msg.params)
             msg.params = {}
         msg.params['tweet_mode'] = "extended";
+        console.log(JSON.stringify(msg.params))
         //msg.params['count'] = 200;
-        if (msg.model.count) {
-            if (msg.mode === "append") {
-                msg.params['max_id'] = msg.model.get(msg.model.count-1).id
+        console.log(JSON.stringify(typeof msg.page))
+        console.log(JSON.stringify(typeof msg.cursor))
+        if (typeof msg.params.page === "undefined" && typeof msg.params.cursor === "undefined" ){
+            if (msg.model.count) {
+                if (msg.mode === "append") {
+                    msg.params['max_id'] = msg.model.get(msg.model.count-1).id
+                }
+                if (msg.mode === "prepend" && msg.model.count) {
+                    msg.params['since_id'] = msg.model.get(0).id
+                }
             }
-            if (msg.mode === "prepend" && msg.model.count) {
-                msg.params['since_id'] = msg.model.get(0).id
-            }
-        } else {
+        }
+
+        if (msg.model.count === 0) {
             msg.mode = "append";
         }
         console.log(JSON.stringify(msg.params))
@@ -137,7 +145,6 @@ WorkerScript.onMessage = function(msg) {
                 console.log("i: " +i + " length: " + length)
 
                 if (parser) {
-                    console.log("Parsing!")
                     for(var k = i; k < length; k++){
                         items[k] = parser(items[k])
                         //console.log(JSON.stringify(items[i]))
@@ -151,7 +158,6 @@ WorkerScript.onMessage = function(msg) {
                                                   })
                         }
                     }
-                    console.log("parsed!")
                 }
 
 

@@ -54,12 +54,12 @@ var modelRawDM= Qt.createQmlObject('import QtQuick 2.0; ListModel {   }', Qt.app
 var mediator = (function(){
     var subscribe = function(channel, fn){
         if(!mediator.channels[channel]) mediator.channels[channel] = [];
-        //console.log("object subscribed to "+channel)
+        console.log("object subscribed to "+channel)
         mediator.channels[channel].push({ context : this, callback : fn });
         return this;
     };
     var publish = function(channel){
-        //console.log("Mediator publish on channel >" + channel)
+        console.log("Mediator publish on channel >" + channel)
         if(!mediator.channels[channel]) return false;
         var args = Array.prototype.slice.call(arguments, 1);
         for(var i = 0, l = mediator.channels[channel].length; i < l; i++){
