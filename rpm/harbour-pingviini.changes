@@ -1,6 +1,7 @@
+* Fri Jul 14 2017 Duško Angirević <dysko@me.com> 0.7.2-0
+- Image upload support added
 * Fri Jul 14 2017 Duško Angirević <dysko@me.com> 0.7.1-0
 - Minor bugfix for RT & FAV actions
-
 * Fri Jul 14 2017 Duško Angirević <dysko@me.com> 0.7.0-0
 - Refactored and optimised app code
 * Fri Jun 30 2017 Duško Angirević <dysko@me.com> 0.6.2-0
