@@ -4,7 +4,7 @@ import QtMultimedia 5.0
 
 
 Item {
-    property ListModel model: []
+    property ListModel model: ({})
     property int count: model.count
     property double wRatio : 16/9
     property double hRatio : 9/16
@@ -73,9 +73,9 @@ Item {
         opacity: pressed ? 0.6 : 1
         visible: {
             if (model && model.count){
-                mediaURL = model.get(0).src
+                mediaURL = model.get(0).cover
                 if(model.get(0).type === "video" || model.get(0).type === "animated_gif"){
-                    videoURL = model.get(0).video
+                    videoURL = model.get(0).media
                 }
                 height = 200
                 return true
@@ -97,7 +97,7 @@ Item {
         opacity: pressed ? 0.6 : 1
         visible: {
             if (model && model.count && model.get(1) && model.get(1).type === "photo"){
-                mediaURL = model.get(1).src
+                mediaURL = model.get(1).cover
                 height = 200
                 return true
             } else {
@@ -113,7 +113,7 @@ Item {
         opacity: pressed ? 0.6 : 1
         visible: {
             if (model && model.count && model.get(2) && model.get(2).type === "photo"){
-                mediaURL = model.get(2).src
+                mediaURL = model.get(2).cover
                 height = 200
                 return true
             } else {
@@ -129,7 +129,7 @@ Item {
         opacity: pressed ? 0.6 : 1
         visible: {
             if (model && model.count && model.get(3) && model.get(3).type === "photo"){
-                mediaURL = model.get(3).src
+                mediaURL = model.get(3).cover
                 height = 200
                 return true
             } else {

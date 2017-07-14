@@ -3,13 +3,16 @@
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkRequest>
 #include <QtNetwork/QNetworkReply>
+#include <QtNetwork/QHttpMultiPart>
+
 #include <QtCore/QFile>
 #include <QtCore/QFileInfo>
 
-static const QUrl IMGUR_UPLOAD_URL("https://api.imgur.com/3/upload");
+//static const QUrl IMGUR_UPLOAD_URL("https://httpbin.org/post");
+//static const QUrl IMGUR_UPLOAD_URL();
 
 ImageUploader::ImageUploader(QObject *parent) : QObject(parent), m_networkAccessManager(0), m_reply(0) {
-        m_networkAccessManager = new QNetworkAccessManager(this);
+    m_networkAccessManager = new QNetworkAccessManager(this);
 }
 
 ImageUploader::~ImageUploader() {
@@ -26,8 +29,8 @@ void ImageUploader::setFile(const QString &fileName) {
 
 void ImageUploader::setParameters(const QString &album, const QString &title, const QString &description) {
     //if (!album.isEmpty()) {
-        postdata.append(QString("album=").toUtf8());
-        postdata.append(QUrl::toPercentEncoding(album));
+    postdata.append(QString("album=").toUtf8());
+    postdata.append(QUrl::toPercentEncoding(album));
     //}
     if (!title.isEmpty()) {
         postdata.append(QString("&title=").toUtf8());
@@ -40,11 +43,12 @@ void ImageUploader::setParameters(const QString &album, const QString &title, co
 }
 
 void ImageUploader::setAuthorizationHeader(const QString &authorizationHeader) {
-    m_authorizationHeader = authorizationHeader.toUtf8();
+    m_authorizationHeader = "Bearer "+authorizationHeader.toUtf8();
 }
 
-void ImageUploader::setUserAgent(const QString &userAgent) {
-    m_userAgent = userAgent.toUtf8();
+void ImageUploader::setUploadUrl(const QString &UrlString) {
+    qDebug() << "Set Upload URL " + UrlString;
+    m_uploadUrl = UrlString.toUtf8();
 }
 
 void ImageUploader::upload() {
@@ -60,45 +64,62 @@ void ImageUploader::upload() {
         m_reply = 0;
     }
 
-    QFileInfo fileInfo(QUrl(m_fileName).toLocalFile());
+    /*QFileInfo fileInfo(QUrl(m_fileName).toLocalFile());
     qDebug("fileName: %s", qPrintable(m_fileName));
-
     if (!fileInfo.exists()) {
         emit failure(-1, tr("The file %1 does not exists").arg(m_fileName));
         postdata.clear();
         return;
-    }
+    }*/
 
-    QFile file(fileInfo.absoluteFilePath());
-    bool opened = file.open(QIODevice::ReadOnly);
+    QHttpMultiPart* multiPart = new QHttpMultiPart(QHttpMultiPart::FormDataType);
+    QHttpPart imagePart;
+
+
+    //QFile file(fileInfo.absoluteFilePath());
+    QFileInfo fileInfo(QUrl(m_fileName).toLocalFile());
+    QFile* file = new QFile(QUrl(m_fileName).toLocalFile());
+    if (!file->open(QIODevice::ReadWrite)) {
+        emit failure(-1, tr("The file %1 does not exists").arg(m_fileName));
+        return;
+    }
+    /*bool opened = file.open(QIODevice::ReadOnly);
 
     if (!opened) {
         qDebug("can't read file: %s", qPrintable(m_fileName));
         emit failure(-1, tr("Unable to open the file %1").arg(file.fileName()));
         postdata.clear();
         return;
-    }
+    }*/
 
-    QByteArray fileData = file.readAll().toBase64();
-    file.close();
+    //QByteArray fileData = file.readAll().toBase64();
+    imagePart.setHeader(QNetworkRequest::ContentTypeHeader, QVariant("image/jpeg"));
+    imagePart.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant(QString("form-data; name=\"media\"; filename=\"%1\"").arg(fileInfo.fileName()).toLatin1()));
+    imagePart.setBodyDevice(file);
+    file->setParent(multiPart);
+    multiPart->append(imagePart);
+
+
+
+    //imagePart.setHeader(QNetworkRequest::ContentTypeHeader, QVariant(fileInfo));
+
+
 
     //POST data
-    postdata.append(QString("&name=").toUtf8());
-    postdata.append(QUrl::toPercentEncoding(fileInfo.fileName()));
-    postdata.append(QString("&image=").toUtf8());
-    postdata.append(QUrl::toPercentEncoding(fileData));
-    //END POST data
 
-    QNetworkRequest request;
-    request.setUrl(IMGUR_UPLOAD_URL);
+
+
+    QNetworkRequest request(m_uploadUrl);
     request.setRawHeader("Authorization", m_authorizationHeader);
-    request.setRawHeader("Content-Type", "application/x-www-form-urlencoded");
-    request.setRawHeader("User-Agent", m_userAgent);
-
-    m_reply = m_networkAccessManager->post(request, postdata);
-
+    m_reply = m_networkAccessManager->post(request, multiPart);
+    multiPart->setParent(m_reply);
     connect(m_reply, SIGNAL(uploadProgress(qint64,qint64)), this, SLOT(uploadProgress(qint64,qint64)));
     connect(m_reply, SIGNAL(finished()), this, SLOT(replyFinished()));
+
+
+
+    //connect(m_reply, SIGNAL(uploadProgress(qint64,qint64)), this, SLOT(uploadProgress(qint64,qint64)));
+    //connect(m_reply, SIGNAL(finished()), this, SLOT(replyFinished()));*/
 }
 
 qreal ImageUploader::progress() const {

@@ -11,7 +11,7 @@ Page {
     property bool loadStarted: false
 
     function pullData(){
-        var msg = {
+        /*var msg = {
             'action': 'statuses_homeTimeline',
             'model' : Logic.modelTL,
             'mode'  : "append",
@@ -24,8 +24,15 @@ Page {
             'model' : Logic.modelMN,
             'mode'  : "append",
             'conf'  : Logic.getConfTW()
-        };
-        worker.sendMessage(msg2);
+        };*/
+        worker.sendMessage({
+                               'bgUpdate': true,
+                               'modelTL' : Logic.modelTL,
+                               'modelME' : Logic.modelME,
+                               'modelRawDM' : Logic.modelRawDM,
+                               'modelDM' : Logic.modelDM,
+                               'conf'  : Logic.getConfTW()
+                           });
     }
     Timer {
         interval: 5*60*1000; running: true; repeat: true
@@ -48,7 +55,7 @@ Page {
 
 
             if(Logic.getConfTW().OAUTH_TOKEN){
-                pageStack.replace(Qt.resolvedUrl("FirstPage.qml"), {})
+                pageStack.replace(Qt.resolvedUrl("MainPage.qml"), {})
             } else {
                 pageStack.replace(Qt.resolvedUrl("AccountAdd.qml"), {})
             }
@@ -62,19 +69,31 @@ Page {
     WorkerScript {
         id: worker
         source: "../lib/Worker.js"
-        onMessage: myText.text = messageObject.reply
+        onMessage: {
+            if (messageObject.key === "account_verifyCredentials"){
+                if (messageObject.reply.screen_name){
+                    Logic.conf['USER_ID'] = messageObject.reply.id;
+                    Logic.conf['SCREEN_NAME'] = messageObject.reply.screen_name;
+                    Logic.conf['USER'] = messageObject.reply.name;
+                    console.log(JSON.stringify(messageObject.reply))
+                    pageStack.replace(Qt.resolvedUrl("MainPage.qml"), {})
+                    //pullData();
+                } else {
+                    pageStack.replace(Qt.resolvedUrl("AccountAdd.qml"), {})
+                }
+            }
+        }
     }
 
     Component.onCompleted: {
         console.log("Splash Conf!")
-        Logic.setThemeLinkColor(Theme.highlightColor+"");
 
         var obj = {};
         Logic.mediator.installTo(obj);
         obj.subscribe('confLoaded', function(){
             console.log(typeof arguments)
             console.log('confLoaded');
-            //console.log(JSON.stringify(Logic.conf))
+            console.log(JSON.stringify(Logic.conf))
             //console.log(JSON.stringify(Logic.getConfTW()))
 
             //pullData()
@@ -88,8 +107,16 @@ Page {
             Logic.modelTL.append(Logic.parseTweet(Logic.tweet7))*/
 
 
-            splashTimer.running = true
+            //splashTimer.running = true
             logo.opacity = 1;
+            console.log("https://api.twitter.com/1.1/account/verify_credentials.json")
+
+            // request verify credentials
+            var verify = {
+                'headlessAction': 'account_verifyCredentials',
+                'conf'  : Logic.getConfTW()
+            };
+            worker.sendMessage(verify);
 
         });
 

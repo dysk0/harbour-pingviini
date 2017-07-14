@@ -2,7 +2,6 @@ import QtQuick 2.0
 import Sailfish.Silica 1.0
 import "../lib/Logic.js" as Logic
 import "./cmp/"
-import QtGraphicalEffects 1.0
 
 Page {
     property ListModel tweets;
@@ -18,13 +17,16 @@ Page {
     property string profile_background : "";
     property string location : "";
     property bool following : false;
+    property bool muting: false;
+    property bool detailsLoaded: false;
+
 
     WorkerScript {
         id: worker
         source: "../lib/Worker.js"
         onMessage: {
             console.log(JSON.stringify(messageObject))
-            if(messageObject.action === "users_show" || messageObject.action === "friendships_destroy" || messageObject.action ===  "friendships_create"){
+            if(messageObject.key === "users_show" || messageObject.action === "friendships_destroy" || messageObject.action ===  "friendships_create"){
                 name = messageObject.reply.name
                 username = messageObject.reply.screen_name
                 if (profileImage ==="")
@@ -36,25 +38,26 @@ Page {
                 profile_background = messageObject.reply.profile_background_image_url_https
                 location = messageObject.reply.location
                 following= messageObject.reply.following
+                muting = (messageObject.reply && messageObject.reply.muting ? messageObject.reply.muting : false )
                 user_id = messageObject.reply.id
 
             }
         }
     }
-    // The effective value will be restricted by ApplicationWindow.allowedOrientations
+
     allowedOrientations: Orientation.All
     Component.onCompleted: {
         var msg = {
-            'action': 'users_show',
-            'screen_name': username,
+            'headlessAction': 'users_show',
+            'params': {'screen_name': username},
             'conf'  : Logic.getConfTW()
         };
         worker.sendMessage(msg);
     }
 
 
-
     MyList {
+
         header: ProfileHeader {
             id: header
             bg: profile_background
@@ -62,7 +65,11 @@ Page {
             description: '@'+username
             image: profileImage
         }
-
+        model: ListModel {}
+        action: "statuses_userTimeline"
+        vars: { 'screen_name': '@'+username, "count":200}
+        conf: Logic.getConfTW()
+        width: parent.width
         anchors {
             top: parent.top
             bottom: expander.top
@@ -70,13 +77,8 @@ Page {
             right: parent.right
         }
         clip: true
-
-           model: ListModel {}
-        action: "statuses_userTimeline"
-        vars: { 'screen_name': '@'+username}
-        conf: Logic.getConfTW()
+        delegate: Tweet {}
     }
-
 
     ExpandingSectionGroup {
         id: expander
@@ -87,49 +89,66 @@ Page {
             right: parent.right
         }
         ExpandingSection {
-            title: "Summary"
+            title: qsTr("Summary")
             content.sourceComponent: Column {
                 spacing: Theme.paddingMedium
                 anchors.bottomMargin: Theme.paddingLarge
                 DetailItem {
                     visible: location != "" ? true : false
-                    label: "Location"
+                    label: qsTr("Location")
                     value: location
                 }
                 DetailItem {
                     visible: followers_count ? true : false
-                    label: "Followers"
+                    label: qsTr("Followers")
                     value: followers_count
                 }
                 DetailItem {
                     visible: friends_count ? true : false
-                    label: "Following"
+                    label: qsTr("Following")
                     value: (friends_count)
                 }
                 DetailItem {
                     visible: statuses_count ? true : false
-                    label: "Tweets"
+                    label: qsTr("Tweets")
                     value: (statuses_count)
                 }
                 DetailItem {
                     visible: favourites_count ? true : false
-                    label: "Favourites"
+                    label: qsTr("Favourites")
                     value: (favourites_count)
                 }
                 Row {
                     anchors.horizontalCenter:     parent.horizontalCenter
                     Button {
                         id: btnFollow
-                        text: (following ? "Unfollow" : "Follow")
+                        text: (following ? qsTr("Unfollow") : qsTr("Follow"))
                         onClicked: {
 
                             var msg = {
-                                'action': following ? "friendships_destroy" : "friendships_create",
-                                                      'screen_name': username,
-                                                      'conf'  : Logic.getConfTW()
+                                'headlessAction': following ? "friendships_destroy" : "friendships_create",
+                                                              'params': {'screen_name': username},
+                                'conf'  : Logic.getConfTW()
                             };
                             worker.sendMessage(msg);
                             following = !following
+                        }
+                    }
+                }
+                Row {
+                    anchors.horizontalCenter:     parent.horizontalCenter
+                    Button {
+                        id: btnBlock
+                        text: muting  ?  qsTr("Unmute") : qsTr("Mute")
+                        onClicked: {
+
+                            var msg = {
+                                'headlessAction': muting ? "mutes_users_destroy" : "mutes_users_create",
+                                                              'params': {'screen_name': username},
+                                'conf'  : Logic.getConfTW()
+                            };
+                            worker.sendMessage(msg);
+                            muting = !muting
                         }
                     }
                 }

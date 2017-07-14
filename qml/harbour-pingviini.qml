@@ -39,18 +39,8 @@ ApplicationWindow
     initialPage: Component { Splash { } }
     cover: Qt.resolvedUrl("cover/CoverPage.qml")
     allowedOrientations: defaultAllowedOrientations
-    ListModel {
-        id: modelTL
-    }
-    ListModel {
-        id: modelMN
-    }
-    ListModel {
-        id: modelDM
-    }
 
     Component.onCompleted: {
-        Logic.setThemeLinkColor(Theme.highlightColor+"");
         Logic.initialize();
     }
     Component.onDestruction: {
@@ -63,6 +53,9 @@ ApplicationWindow
     }
     function showHttpError(status, statusText){
         console.log(JSON.stringify([status, statusText]))
+    }
+    ListModel {
+        onCountChanged: { console.log(count) }
     }
 
 

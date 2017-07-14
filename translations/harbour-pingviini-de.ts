@@ -50,17 +50,16 @@
     </message>
 </context>
 <context>
-    <name>FirstPage</name>
+    <name>ImageUploader</name>
     <message>
-        <source>Settings</source>
+        <source>The file %1 does not exists</source>
         <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>MainPage</name>
     <message>
-        <source>Load more</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Timeline</source>
+        <source>Messages</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -68,65 +67,15 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Timeline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Mentions</source>
         <translation type="unfinished"></translation>
     </message>
-</context>
-<context>
-    <name>ImageChooser</name>
     <message>
-        <source>Android storage</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>SD Card</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Home</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Sort ascending</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Sort descending</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Sort by name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Sort by date</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Select images</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Back</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Send image</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>ImageUploader</name>
-    <message>
-        <source>The file %1 does not exists</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to open the file %1</source>
+        <source>Search</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -142,9 +91,45 @@
     </message>
 </context>
 <context>
-    <name>SearchView</name>
+    <name>Profile</name>
     <message>
-        <source>Load more</source>
+        <source>Summary</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Location</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Followers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Following</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tweets</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Favourites</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unfollow</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Follow</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mute</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unmute</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -168,6 +153,21 @@
     </message>
     <message>
         <source>Authorize this app to use your Twitter account in your behalf.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Tweet</name>
+    <message>
+        <source>Unfavorite</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Favorite</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Retweet</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

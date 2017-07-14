@@ -31,14 +31,73 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 import "../pages/cmp/"
+import "../lib/Logic.js" as Logic
 
 
 CoverBackground {
-    property string status: "Pingviini"
+    property int updateWindow: 0
+    onStatusChanged: {
+        switch (status ){
+        case PageStatus.Activating:
+            console.log("PageStatus.Activating")
+            break;
+        case PageStatus.Inactive:
+            console.log("PageStatus.Inactive")
+            break;
+        }
+        var timestamp = Math.floor(new Date().getTime()/1000);
+        if (updateWindow < timestamp - 60){
+            console.log("DO update!")
+            updateWindow  = timestamp;
+            worker.sendMessage({
+                                   'bgUpdate': true,
+                                   'modelTL' : Logic.modelTL,
+                                   'modelME' : Logic.modelME,
+                                   'modelRawDM' : Logic.modelRawDM,
+                                   'modelDM' : Logic.modelDM,
+                                   'conf'  : Logic.getConfTW()
+                               });
+        } else {
+            console.log("Skip update!")
+            label.text = timestamp - updateWindow
+        }
+    }
+    WorkerScript {
+        id: worker
+        source: "../lib/Worker.js"
+        onMessage: {
+            if(messageObject.directMessagesRaw){
+                //console.log(JSON.stringify(messageObject.reply))
+                Logic.parseDM.setUserId(Logic.getConfTW().USER_ID)
+                Logic.parseDM.append(messageObject.reply)
+            }
+        }
+    }
     Label {
         id: label
         anchors.centerIn: parent
-        text: status
+        text: "status"
+    }
+    SilicaGridView {
+        id: grid
+        anchors.fill: parent
+        header: PageHeader {
+            title: Logic.modelUsers.count + " Users"
+        }
+        model: Logic.modelUsers
+        cellWidth: width / 4
+        cellHeight: cellWidth
+
+        delegate: BackgroundItem {
+            width: grid.cellWidth
+            height: grid.cellWidth
+            Image {
+                id: avatarImg
+                anchors.fill: parent
+                source: model.avatar
+            }
+
+        }
     }
     /*PingviiniiLogo {
         id: logo

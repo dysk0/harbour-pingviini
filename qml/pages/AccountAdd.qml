@@ -14,22 +14,34 @@ Page {
         source: "../lib/Worker.js"
         onMessage: {
             console.log(JSON.stringify(messageObject))
-            if (messageObject.token) {
-                Logic.OAUTH_TOKEN = messageObject.token
-                Logic.OAUTH_TOKEN_SECRET = messageObject.token_secret
+            if (messageObject.key === "oauth_accessToken") {
+                Logic.OAUTH_TOKEN = messageObject.reply.oauth_token
+                Logic.OAUTH_TOKEN_SECRET = messageObject.reply.oauth_token_secret
+                Logic.USER_ID = messageObject.reply.user_id
+                Logic.SCREEN_NAME = messageObject.reply.screen_name
                 Logic.conf = Logic.getConfTW()
                 console.log(JSON.stringify(Logic.conf))
                 console.log("User added")
                 console.log(JSON.stringify(Logic.getConfTW()))
                 Logic.saveData();
-                if (messageObject.oauth_accessToken)
-                    pageStack.replace(Qt.resolvedUrl("FirstPage.qml"), {})
+                if (messageObject.reply.oauth_token)
+                    pageStack.replace(Qt.resolvedUrl("MainPage.qml"), {})
                 //Logic.initialize()
-            }
 
-            if (messageObject.url) {
-                console.log(messageObject.url)
-                Qt.openUrlExternally(messageObject.url);
+            } else if (messageObject.key === "oauth_authorize") {
+                console.log("Open url: " + messageObject.reply)
+                Qt.openUrlExternally(messageObject.reply);
+
+            } else if (messageObject.key === "oauth_requestToken") {
+                var conf = Logic.getConfTW();
+                conf.OAUTH_TOKEN = tokenTempo = messageObject.reply.oauth_token
+                conf.OAUTH_TOKEN_SECRET = tokenSecretTempo = messageObject.reply.oauth_token_secret
+                var msg = {
+                    'headlessAction': 'oauth_authorize',
+                    'params': {oauth_callback: "oob"},
+                    'conf'  : conf
+                };
+                worker.sendMessage(msg);
             }
         }
     }
@@ -77,7 +89,8 @@ Page {
                                 step1.expanded = false
                                 step2.expanded = true
                                 var msg = {
-                                    'action': 'oauth_requestToken',
+                                    'headlessAction': 'oauth_requestToken',
+                                    'params': {oauth_callback: "oob"},
                                     'conf'  : Logic.getConfTW()
                                 };
                                 worker.sendMessage(msg);
@@ -144,10 +157,13 @@ Page {
                             enabled = !enabled
                             step1.expanded = false
                             step2.expanded = true
+                            var conf = Logic.getConfTW();
+                            conf.OAUTH_TOKEN = tokenTempo
+                            conf.OAUTH_TOKEN_SECRET = tokenSecretTempo
                             var msg = {
-                                'action': 'oauth_accessToken',
-                                'oauth_verifier': oauthVerifier.text,
-                                'conf'  : Logic.getConfTW()
+                                'headlessAction': 'oauth_accessToken',
+                                'params': { 'oauth_verifier': oauthVerifier.text},
+                                'conf'  : conf
                             };
                             worker.sendMessage(msg);
                         }

@@ -25,269 +25,49 @@ function findRelated(model, id){
 
 
 WorkerScript.onMessage = function(msg) {
+    console.log('///////////////////////////////////////////////////////////')
+    console.log(JSON.stringify(msg))
+    console.log('///////////////////////////////////////////////////////////')
     var cb = new Fcodebird;
     cb.setUseProxy(false);
-    if (msg.conf.THEME_LINK_COLOR){
-        highlightColor = msg.conf.THEME_LINK_COLOR;
-        console.log(JSON.stringify(msg.conf.THEME_LINK_COLOR))
-        console.log(highlightColor)
-    }
 
     if (msg.conf.OAUTH_CONSUMER_KEY && msg.conf.OAUTH_CONSUMER_SECRET ){
         cb.setConsumerKey(msg.conf.OAUTH_CONSUMER_KEY, msg.conf.OAUTH_CONSUMER_SECRET);
     }
-
-
     if (msg.conf.OAUTH_TOKEN && msg.conf.OAUTH_TOKEN_SECRET){
         cb.setToken(msg.conf.OAUTH_TOKEN, msg.conf.OAUTH_TOKEN_SECRET);
     }
+
+
 
     var sinceId;
     var maxId;
     var params;
 
-    if (msg.action === 'statuses_update') {
+    if (msg.headlessAction) {
         cb.__call(
-                    msg.action,
+                    msg.headlessAction,
                     msg.params,
                     function (reply, rate, err) {
                         if (reply){
-                            //tweet = parseTweet(reply)
-                            WorkerScript.sendMessage({ 'success': true,  "reply": reply})
+                            WorkerScript.sendMessage({ 'success': true, 'key': msg.headlessAction,  "reply": reply})
                         }
-
-                        //console.log(JSON.stringify(reply));
+                        console.log("$$$$$$$$$$$$$$$$$$$ headlessAction $$$$$$$$$$$$$$");
+                        console.log(JSON.stringify(reply));
                         console.log(JSON.stringify(err));
+                        console.log("$$$$$$$$$$$$$$$$$$$ headlessAction $$$$$$$$$$$$$$");
                     }
                     );
-    }
-
-
-
-
-    if (msg.action === 'search_tweets') {
-        var resetSearch = false;
-        if (msg.mode === "resetSearch") {
-            resetSearch = true;
-            msg.mode = "append"
-
-            msg.model.clear();
-            msg.model.sync();
-
-        }
-
-        params = { "include_entities" : true, "result_type": "recent", count : 50, 'tweet_mode': "extended"}
-        if (msg.params.q) {
-            params['q'] = msg.params.q + " AND -filter:retweets "
-        }
-        if (msg.model.count && !resetSearch) {
-            if (msg.mode === "append") {
-                params['max_id'] = msg.model.get(msg.model.count-1).id
-            }
-            if (msg.mode === "prepend" && msg.model.count) {
-                params['since_id'] = msg.model.get(0).id
-            }
-        } else {
-            msg.mode = "append";
-        }
-
-        console.log('search_tweets '+JSON.stringify(params))
-
-        cb.__call(
-                    'search_tweets',
-                    params,
-                    function (reply) {
-                        console.log('search_tweets '+JSON.stringify(reply.search_metadata))
-                        if (!reply || !reply.statuses || !reply.statuses.length) {
-                            return;
-                        }
-
-                        var i = 0;
-                        var length = reply.statuses.length
-                        console.log(length)
-                        if (msg.mode === "prepend") {
-                            length--;
-                        } else if (msg.mode === "append"){
-                            i = 1;
-                        }
-
-                        if (resetSearch) {
-                            i = 0;
-                            while (msg.model.count){
-                                msg.model.remove(0)
-                            }
-                            msg.model.sync();
-                        }
-
-                        for (i; i < length; i++) {
-                            var tweet;
-
-                            if (msg.mode === "append") {
-                                tweet = parseTweet(reply.statuses[i])
-                                msg.model.append(tweet)
-                            }
-                            if (msg.mode === "prepend") {
-                                console.log(length-i-1)
-                                tweet = parseTweet(reply.statuses[length-i-1])
-                                msg.model.insert(0, tweet)
-                            }
-
-                        }
-                        msg.model.sync();
-                        console.log(msg.model.count)
-                        WorkerScript.sendMessage({
-                                                     'success': true,
-                                                     'action': "search",
-                                                 })
-                    });
-
-
-    }
-
-    if (msg.action === 'directMessages_events_list') {
-        console.log('directMessages_events_list '+JSON.stringify(msg))
-        params = { count: 50}
-        if (msg.cursor !== ""){
-            params['cursor'] = msg.cursor
-        } else {
-            msg.model.clear();
-            msg.viewModel.clear();
-        }
-
-        var shownDMs = []
-        console.log('directMessages_events_list '+JSON.stringify(params))
-        cb.__call(
-                    msg.action,
-                    params,
-                    function (reply, rate, err) {
-                        console.log(JSON.stringify([rate.limit, rate.remaining, new Date(rate.reset*1000)]));
-                        if ('errors' in reply) {
-                            reply.errors.forEach(function(entry) {
-                                WorkerScript.sendMessage({ 'error': true,  "message": entry.message})
-                            });
-                            console.log(JSON.stringify(reply.errors))
-                        }
-
-                        WorkerScript.sendMessage({ 'next_cursor': reply.next_cursor ? reply.next_cursor : "" } )
-
-
-                        console.log(JSON.stringify(reply))
-                        if (!reply.events)
-                            return;
-                        var length = reply.events.length
-                        console.log(length)
-                        var i = 0;
-
-                        var uniqueUsers = [];
-                        for (var msgs = 0;  msg.model.count >msgs; msgs++){
-                            var  m = msg.model.get(msg)
-                            uniqueUsers.push( m.sender_id +"-" + m.recipient_id)
-                        }
-                        console.log("PREV> " +JSON.stringify(uniqueUsers))
-
-
-                        for (i; i < length; i++) {
-                            var tweet = {};
-                            //console.log(JSON.stringify(reply.events[i]))
-                            tweet = parseDM(reply.events[i], false)
-                            msg.model.append(tweet)
-                            if(msg.viewModel){
-                                if( uniqueUsers.indexOf(tweet.sender_id +"-"+tweet.recipient_id) > -1 || uniqueUsers.indexOf(tweet.recipient_id +"-"+tweet.sender_id) > -1 ) {
-                                    console.log("IMA > "+tweet.sender_id +"-"+tweet.recipient_id)
-                                } else {
-                                    console.log("NEMA > "+tweet.sender_id +"-"+tweet.recipient_id)
-                                    msg.viewModel.append(tweet);
-                                    uniqueUsers.push(tweet.sender_id +"-"+tweet.recipient_id)
-                                }
-                            }
-                        }
-                        console.log("ALL> " +JSON.stringify(uniqueUsers))
-                        msg.model.sync();
-
-                        if(msg.viewModel)
-                            msg.viewModel.sync();
-                        console.log(msg.model.count);
-                    }
-                    );
-
-
-    }
-
-    if (msg.action === 'postTweet') {
-        console.log('postTweet '+JSON.stringify(msg))
-    }
-
-    if (msg.action === 'oauth_requestToken') {
-        cb.__call(
-                    "oauth_requestToken",
-                    {oauth_callback: "oob"},
-                    function (reply,rate,err) {
-                        if (err) {
-                            WorkerScript.sendMessage({ 'success': false,  "msg": "error response or timeout exceeded" + err.error})
-                        }
-                        if (reply) {
-                            // stores it
-                            //WorkerScript.sendMessage({ 'success': true,  "token": reply.oauth_token, "token_secret":reply.oauth_token_secret})
-                            cb.setToken(reply.oauth_token, reply.oauth_token_secret);
-                            WorkerScript.sendMessage({ 'success': true,  "token": reply.oauth_token, "token_secret":reply.oauth_token_secret})
-
-                            // gets the authorize screen URL
-                            cb.__call(
-                                        "oauth_authorize",
-                                        {},
-                                        function (auth_url) {
-                                            WorkerScript.sendMessage({ 'success': true,  "url":auth_url})
-                                            //window.codebird_auth = window.open(auth_url);
-                                        }
-                                        );
-                        }
-                    }
-                    );
-    }
-    if (msg.action === 'oauth_accessToken') {
-        cb.__call(
-                    "oauth_accessToken",
-                    {oauth_verifier: msg.oauth_verifier},
-                    function (reply) {
-                        cb.setToken(reply.oauth_token, reply.oauth_token_secret);
-                        WorkerScript.sendMessage({ 'success': true,  "oauth_accessToken": true, "token": reply.oauth_token, "token_secret":reply.oauth_token_secret})
-                    }
-                    );
-    }
-
-    if (msg.action === 'users_show') {
-        cb.__call(
-                    "users_show",
-                    {screen_name: msg.screen_name},
-                    function (reply) {
-                        WorkerScript.sendMessage({ 'success': true,  "reply": reply, "action": msg.action})
-                    }
-                    );
-    }
-
-    if (msg.action === "friendships_destroy" || msg.action ===  "friendships_create") {
-        cb.__call(
-                    msg.action,
-                    {screen_name: msg.screen_name},
-                    function (reply) {
-                        WorkerScript.sendMessage({ 'success': true,  "reply": reply})
-                    }
-                    );
-    }
-
-    if (msg.action === "createConversation") {
-        console.log("OPAAA " + msg.selectedId)
-        var tl = findRelated(msg.mentions, [msg.selectedId]);
-        msg.model.append(tl)
-        msg.model.sync()
     }
 
     if (msg.bgAction){
         console.log("BG ACTION >" + msg.bgAction)
         console.log("BG MODE >" + msg.mode)
         console.log("CONF >" + JSON.stringify(msg.conf))
+        if (!msg.params)
+            msg.params = {}
         msg.params['tweet_mode'] = "extended";
-        msg.params['count'] = 200;
+        //msg.params['count'] = 200;
         if (msg.model.count) {
             if (msg.mode === "append") {
                 msg.params['max_id'] = msg.model.get(msg.model.count-1).id
@@ -307,63 +87,116 @@ WorkerScript.onMessage = function(msg) {
                 });
                 console.log(JSON.stringify(reply.errors))
             }
-
-
-
+            //console.log(JSON.stringify(reply))
             if (msg.model){
-                var tweets = [];
-                if (msg.bgAction === "search_tweets" && reply.statuses){
-                    tweets = reply.statuses;
-                } else {
-                    tweets = reply;
+                var items = [];
+                var parser = false;
+                switch(msg.bgAction){
+                case "search_tweets":
+                    if ('statuses' in reply)
+                        items = reply.statuses;
+                    parser = parseTweet
+                    break;
+                case "statuses_homeTimeline":
+                case "statuses_mentionsTimeline":
+                case "statuses_userTimeline":
+                    items = reply;
+                    parser = parseTweet
+                    break;
+                case "directMessages":
+                case "directMessages_sent":
+                    items = reply;
+                    parser = parseDM
+                    break;
+                default:
+                    break;
                 }
-                var length = tweets.length
 
+                var length = items.length
                 var i = 0
-                if (msg.bgAction !== "search_tweets"){
+
+                if (msg.mode === "prepend") {
+                    if (msg.model.count > 0){
+                        length--;
+                    }
+                } else if (msg.mode === "append"){
+                    if (msg.model.count > 0 ){
+                        i = 1;
+                    }
+                }
+
+                // conversation fixup
+                if (msg.bgAction === "search_tweets" && msg.params.f === "tweets"){
+                    if (msg.mode === "prepend")
+                        length++;
+                    if (msg.mode === "append")
+                        i = 0;
+                }
+                // conversation fixup end
+
+                console.log("i: " +i + " length: " + length)
+
+                if (parser) {
+                    console.log("Parsing!")
+                    for(var k = i; k < length; k++){
+                        items[k] = parser(items[k])
+                        //console.log(JSON.stringify(items[i]))
+                        if (items[k].userId && msg.modelUsers) {
+                            msg.modelUsers.append({
+                                                      "id": items[k].userId,
+                                                      "id_str": items[k].userIdStr,
+                                                      "name": items[k].name,
+                                                      "screen_name": items[k].screenName,
+                                                      "avatar": items[k].profileImageUrl+""
+                                                  })
+                        }
+                    }
+                    console.log("parsed!")
+                }
+
+
+
+
+                for(k = i; k < length; k++){
+                    if (msg.mode === "append") {
+                        msg.model.append(items[k])
+                    }
                     if (msg.mode === "prepend") {
-                        if (msg.model.count > 0)
-                            length--;
-                    } else if (msg.mode === "append"){
-                        if (msg.model.count > 0)
-                            i = 1;
+                        msg.model.insert(0, items[length-k-1])
                     }
                 }
-                WorkerScript.sendMessage({ 'notifyNewItems': length - i })
 
 
-                for(i; i < length; i++){
-                    var tweet;
-                    if (msg.bgAction === "search_tweets"){
-                        tweet = parseTweet(tweets[i]);
-                        if (msg.params.since_id === tweet.inReplyToStatusId || msg.params.since_id === tweet.id)
-                            msg.model.append(tweet)
-                    } else if (msg.bgAction === "directMessages_events_list"){
-                        tweet = parseDM(tweets[i]);
-                        msg.model.append(tweet)
-                    } else {
-                        if (msg.mode === "append") {
-                            tweet = parseTweet(tweets[i]);
-                            msg.model.append(tweet)
-                        }
-                        if (msg.mode === "prepend") {
-                            tweet = parseTweet(tweets[length-i-1]);
-                            console.log(length-i)
-                            msg.model.insert(0, tweet)
-                        }
-                    }
-
-
-                }
-                console.log(msg.model.count)
-                msg.model.sync();
             }
 
+            msg.model.sync();
 
-            //WorkerScript.sendMessage({ 'success': true,  "reply": reply})
+            if (msg.modelUsers){
+                var userIDs = [];
+                var indexesToRemove = [];
+                if (msg.modelUsers && msg.modelUsers.count) {
+                    for (i = msg.modelUsers.count-1; i >= 0; i--) {
+                        var id = msg.modelUsers.get(i).id_str;
+                        //console.log("USERS " + i + " " + id)
+                        if (userIDs.indexOf(id) === -1){
+                            // user is unique keep
+                            userIDs.push(id)
+                        } else {
+                            // user is duplicate
+                            indexesToRemove.push(i)
+                        }
+                    }
+                    indexesToRemove.forEach(function(item) {
+                        msg.modelUsers.remove(item)
+                    });
+                }
+                //console.log("USERS " + JSON.stringify(indexesToRemove))
+                msg.modelUsers.sync();
+            }
+
+            WorkerScript.sendMessage({ 'success': true,  "action": msg.bgAction})
         });
     }
-
 }
 
 

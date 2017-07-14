@@ -5,26 +5,42 @@ import "./cmp/"
 import QtGraphicalEffects 1.0
 
 Page {
-    property ListModel tweets;
+
     property var locale: Qt.locale()
-    property string name : "";
-    property string username : "";
-    property string profileImage: "";
+    property string recipient_id : "";
+    property string user_id : "";
+    property string user_name : "";
+    property string user_screen_name : "";
+    property string user_avatar: "";
+    property bool listloaded: false;
+
+
+    Component.onCompleted: {
+        var msg = {
+            parser_action : "create_conversation",
+            sender_id: user_id,
+            recipient_id: recipient_id,
+            modelSent: Logic.modelDMsent,
+            modelReceived: Logic.modelDMreceived,
+            modelConversation: tweets
+        }
+
+        parser.sendMessage(msg)
+    }
+
     ProfileHeader {
         id: header
-        title: name
-        description: '@'+username
-        image: profileImage
+        title: user_name
+        description: '@'+user_screen_name
+        image: user_avatar
     }
 
 
-
-    // The effective value will be restricted by ApplicationWindow.allowedOrientations
     allowedOrientations: Orientation.All
 
     NewTweet {
         type: "DM"
-        screenName: username
+        screenName: user_screen_name
         id: tweetPanel
         anchors {
             bottom: parent.bottom
@@ -34,9 +50,16 @@ Page {
     }
 
     SilicaListView {
-
-        Component.onCompleted: { positionViewAtIndex(count - 1, ListView.End)}
-        model: tweets
+        id: list
+        model: ListModel {
+            id: tweets
+            onCountChanged: {
+                if (!listloaded){
+                    list.positionViewAtIndex(count - 1, ListView.End)
+                    listloaded = !listloaded
+                }
+            }
+        }
         anchors {
             top: header.bottom
             bottom: tweetPanel.top
@@ -47,56 +70,44 @@ Page {
         property var locale: Qt.locale()
         section {
             property: 'section'
-            criteria: ViewSection.FullString
             delegate: SectionHeader  {
-                text: {
-                    var dat = Date.fromLocaleDateString(locale, section);
-                    dat = Format.formatDate(dat, Formatter.TimepointRelativeCurrentDay)
-                    if (dat === "00:00:00" || dat === "00:00") {
-                        visible = false;
-                        height = 0;
-                        return  " ";
-                    }else {
-                        return dat;
-                    }
-
-                }
-
+                height: Theme.itemSizeExtraSmall
+                text: Format.formatDate(section, Formatter.DateMedium)
             }
         }
 
         delegate: BackgroundItem {
-            height: lblText.paintedHeight + lblDate.paintedHeight + Theme.paddingSmall
+            height: lblText.paintedHeight + lblDate.paintedHeight + Theme.paddingMedium
             Label {
                 id: lblText
                 anchors {
                     left: parent.left
                     right: parent.right
-                    topMargin: Theme.paddingSmall
+                    topMargin: Theme.paddingMedium
                     leftMargin: Theme.paddingLarge
                     rightMargin: Theme.paddingLarge
                 }
                 onLinkActivated: page.onLinkActivated(link)
-                text: richText
+                text: model.text
                 textFormat:Text.RichText
                 linkColor : Theme.highlightColor
                 wrapMode: Text.Wrap
                 font.pixelSize: Theme.fontSizeSmall
-                horizontalAlignment: isReceiveDM ? Text.AlignLeft :Text.AlignRight
-                color: (pressed ? Theme.highlightColor : (isReceiveDM ? Theme.highlightColor : Theme.primaryColor))
+                horizontalAlignment: !model.sent ? Text.AlignLeft :Text.AlignRight
+                color: (pressed ? Theme.highlightColor : (!model.sent ? Theme.highlightColor : Theme.primaryColor))
             }
 
             Label {
                 function timestamp() {
-                    var txt = Format.formatDate(createdAt, Formatter.Timepoint)
-                    var elapsed = Format.formatDate(createdAt, Formatter.DurationElapsedShort)
+                    var txt = Format.formatDate(created_at, Formatter.Timepoint)
+                    var elapsed = Format.formatDate(created_at, Formatter.DurationElapsedShort)
                     return (elapsed ? elapsed  : txt )
                 }
                 id: lblDate
                 color: (pressed ? Theme.highlightColor : Theme.secondaryColor)
-                text: Format.formatDate(createdAt, new Date() - createdAt < 60*60*1000 ? Formatter.DurationElapsedShort : Formatter.TimepointRelativeCurrentDayDetailed)
+                text: Format.formatDate(created_at, new Date() - created_at < 60*60*1000 ? Formatter.DurationElapsedShort : Formatter.TimepointRelativeCurrentDayDetailed)
                 font.pixelSize: Theme.fontSizeExtraSmall
-                horizontalAlignment: isReceiveDM ? Text.AlignLeft :Text.AlignRight
+                horizontalAlignment: !model.sent ? Text.AlignLeft :Text.AlignRight
                 width: lblText.width
                 anchors {
                     top: lblText.bottom
@@ -107,6 +118,17 @@ Page {
                     bottomMargin: Theme.paddingSmall
                 }
             }
+            onClicked: {
+                console.log(JSON.stringify(sent))
+            }
+        }
+    }
+
+    WorkerScript {
+        id: parser
+        source: "../lib/Parser.js"
+        onMessage: {
+
         }
     }
 }
