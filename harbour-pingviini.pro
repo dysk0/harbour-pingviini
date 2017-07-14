@@ -30,7 +30,6 @@ OTHER_FILES += qml/harbour-pingviini.qml \
     qml/lib/Worker.js \
     qml/lib/codebird.js \
     qml/lib/Logic.js \
-    rpm/harbour-pingviini.changes.in \
     rpm/harbour-pingviini.spec \
     rpm/harbour-pingviini.yaml \
     translations/*.ts \
@@ -80,7 +79,8 @@ DISTFILES += \
     qml/notification.svg \
     qml/pages/MainPage.qml \
     qml/pages/UsersDebug.qml \
-    qml/lib/Parser.js
+    qml/lib/Parser.js \
+    rpm/harbour-pingviini.changes
 
 HEADERS += \
     src/selector/imageuploader.h \
