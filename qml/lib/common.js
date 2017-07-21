@@ -10,26 +10,54 @@ function getDate(ts){
 }
 
 
-function parseEntities(text, entities){
+function parseEntities(tweet, entities){
+    tweet.richText = tweet.text
+    tweet.media = [] //Qt.createQmlObject('import QtQuick 2.0; ListModel {   }', Qt.application, 'InternalQmlObject');
     if (entities.user_mentions){
         entities.user_mentions.forEach(function(item) {
             //console.info(JSON.stringify(item))
-            text = text.replace(new RegExp( '@'+item.screen_name, "gi" ), '<a href="@'+item.screen_name+'">@'+item.screen_name+'</a>');
+            tweet.richText = tweet.richText.replace(new RegExp( '@'+item.screen_name, "gi" ), '<a href="@'+item.screen_name+'">@'+item.screen_name+'</a>');
         });
     }
     if (entities.hashtags){
         entities.hashtags.forEach(function(item) {
             //console.info(JSON.stringify(item))
-            text = text.replace('#'+item.text, '<a href="#'+item.text+'">#'+item.text+'</a>');
+            tweet.richText = tweet.richText.replace('#'+item.text, '<a href="#'+item.text+'">#'+item.text+'</a>');
         });
     }
     if (entities.urls){
         entities.urls.forEach(function(item) {
-            //console.info(JSON.stringify(item))
-            text = text.replaceAll(item.url, '<a href="'+item.url+'">'+item.display_url+"</a>")
+            if(item.url.indexOf("/i/stickers/") === -1)
+            tweet.richText = tweet.richText.replaceAll(item.url, '<a href="'+item.url+'">'+item.display_url+"</a>")
         });
     }
-    return text;
+    if (entities.media){
+        entities.media.forEach(function(item) {
+            var media;
+            if (item.type ==="photo"){
+                media = {
+                    id:         item.id,
+                    id_str:     item.id_str,
+                    type:       item.type,
+                    cover:      item.media_url_https+":small",
+                    media:      item.media_url_https+":large"
+                }
+                //console.info(JSON.stringify(item))
+            } else {
+                media = {
+                    id:         item.id,
+                    id_str:     item.id_str,
+                    type:       item.type,
+                    cover:      item.media_url_https+":medium",
+                    media:      item.video_info.variants.length ? item.video_info.variants[item.video_info.variants.length-1].url : false
+                }
+            }
+            tweet.media.push(media)
+            tweet.richText = tweet.text.replaceAll(item.url, '')
+        });
+    }
+
+    return tweet;
 }
 
 function addUsersToModel(modelUsers, data) {
@@ -48,6 +76,11 @@ function addUsersToModel(modelUsers, data) {
     }
 }
 
+function parseTrends(json) {
+    console.log(JSON.stringify(json))
+    return {name: json.name, tweets: json.tweet_volume};
+}
+
 function parseDM(json) {
     var tweet = {
         id: json.id,
@@ -61,8 +94,11 @@ function parseDM(json) {
         recipient_id: json.recipient_id_str,
         recipient_name: json.recipient.name,
         recipient_screen_name: json.recipient_screen_name,
-        recipient_avatar: json.recipient.profile_image_url_https
+        recipient_avatar: json.recipient.profile_image_url_https,
+        media: []
     }
+    tweet = parseEntities(tweet, json.entities);
+    console.log(JSON.stringify(json.entities))
     tweet.section = getDate(tweet.created_at)
     return tweet;
 }
@@ -113,40 +149,11 @@ function parseTweet(tweetJson) {
     }
 
 
-    var text = originalTweetJson.full_text ? originalTweetJson.full_text : originalTweetJson.text
+    tweet.text = originalTweetJson.full_text ? originalTweetJson.full_text : originalTweetJson.text
 
-    tweet.media = [];
+    if (originalTweetJson.entities)
+        tweet = parseEntities(tweet, originalTweetJson.entities);
 
-    if (originalTweetJson.entities){
-        text = parseEntities(text, originalTweetJson.entities);
-        if (originalTweetJson.extended_entities && originalTweetJson.extended_entities.media){
-            originalTweetJson.extended_entities.media.forEach(function(item) {
-                var media;
-                if (item.type ==="photo"){
-                    media = {
-                        id:         item.id,
-                        id_str:     item.id_str,
-                        type:       item.type,
-                        cover:      item.media_url_https+":small",
-                        media:      item.media_url_https+":large"
-                    }
-                    //console.info(JSON.stringify(item))
-                } else {
-                    media = {
-                        id:         item.id,
-                        id_str:     item.id_str,
-                        type:       item.type,
-                        cover:      item.media_url_https+":medium",
-                        media:      item.video_info.variants.length ? item.video_info.variants[item.video_info.variants.length-1].url : false
-                    }
-                }
-                tweet.media.push(media)
-                text = text.replaceAll(item.url, '')
-            });
-        }
-    }
-
-    tweet.richText = text;
 
     //if(tweet.screenName === "dysko"){
     //console.log(JSON.stringify(originalTweetJson))

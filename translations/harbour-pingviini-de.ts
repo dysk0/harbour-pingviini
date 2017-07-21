@@ -59,11 +59,15 @@
 <context>
     <name>MainPage</name>
     <message>
+        <source>Pingviini</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Messages</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Pingviini</source>
+        <source>Search</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -72,10 +76,6 @@
     </message>
     <message>
         <source>Mentions</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Search</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

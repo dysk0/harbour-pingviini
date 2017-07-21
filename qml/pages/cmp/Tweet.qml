@@ -177,7 +177,7 @@ BackgroundItem {
             topMargin: Theme.paddingSmall
             rightMargin: Theme.paddingLarge
         }
-        model: (media ? media : '')
+        model: (media ? media : [])
         width: lblDate.x - lblName.x- Theme.paddingLarge
         height: 100
     }

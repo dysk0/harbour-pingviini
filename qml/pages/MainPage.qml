@@ -59,7 +59,7 @@ Page {
             height: parent.height
             onOpenDrawer:  infoPanel.open = setDrawer
             delegate: Tweet {}
-        }
+        } // */
         MyList {
             id: dmList
             property int loaded_page: 0
@@ -168,6 +168,54 @@ Page {
         }
 
         MyList{
+
+            ListView {
+                visible: tlSearch.mdl.count === 0
+                model: ListModel {id: modelTrends}
+                width: parent.width
+                height: parent.height
+                clip: true
+                anchors {
+                    top: parent.top
+                    topMargin: Theme.itemSizeLarge
+                    left: parent.left
+                    right: parent.right
+                    bottom: parent.bottom
+                }
+                delegate: BackgroundItem {
+                    width: parent.width
+                    height: Theme.itemSizeSmall
+                    Label {
+                        anchors.left: parent.left
+                        anchors.leftMargin: Theme.horizontalPageMargin
+                        anchors.verticalCenter: parent.verticalCenter
+                        text: model.name
+                        color: (pressed ? Theme.highlightColor : Theme.primaryColor)
+                        font.pixelSize: Theme.fontSizeSmall
+                    }
+                    Label {
+                        visible: model.tweets > 0
+                        anchors.right: parent.right
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.rightMargin: Theme.horizontalPageMargin
+                        text: model.tweets.toLocaleString()
+                        color: (pressed ? Theme.secondaryHighlightColor : Theme.secondaryColor)
+                        font.pixelSize: Theme.fontSizeExtraSmall
+                    }
+                    onClicked: {
+                        searchField.text = tlSearch.search = modelTrends.get(index).name
+                    }
+                }
+                Component.onCompleted: {
+                    worker.sendMessage({
+                                           'bgAction'  : 'trends_place',
+                                           'params'    : { id: 1 },
+                                           'model'     : modelTrends,
+                                           'mode'      : "append",
+                                           'conf'      : Logic.getConfTW()
+                                       });
+                }
+            }
             id: tlSearch;
             property string search;
             onSearchChanged: {
@@ -191,22 +239,35 @@ Page {
             onOpenDrawer:  infoPanel.open = setDrawer
             action: ""
             delegate: Tweet {}
-            header: SearchField {
-                width: parent.width
-                text: tlSearch.search
-                placeholderText: "Search"
-                labelVisible: false
-                EnterKey.iconSource: "image://theme/icon-m-enter-close"
-                EnterKey.onClicked: {
-                    tlSearch.search = text
-                    focus = false
+            header: Item {
+                id: header
+                width: tlSearchheaderContainer.width
+                height: tlSearchheaderContainer.height
+                Component.onCompleted: tlSearchheaderContainer.parent = header
+            }
+            Column {
+                id: tlSearchheaderContainer
+
+                width: tlSearch.width
+
+                SearchField {
+                    width: parent.width
+                    id: searchField
+                    placeholderText: qsTr("Search")
+                    labelVisible: false
+                    EnterKey.iconSource: "image://theme/icon-m-enter-close"
+                    EnterKey.onClicked: {
+                        tlSearch.search = text
+                        focus = false
+                    }
+                    onTextChanged: {
+                        if (text === "")
+                            tlSearch.mdl.clear();
+                    }
                 }
             }
-            ViewPlaceholder {
-                enabled: tlSearch.mdl === 0
-                text: "Only #hastag search works"
-            }
         }
+
     }
 
     SlideshowView {

@@ -28,6 +28,37 @@ WorkerScript.onMessage = function(msg) {
     console.log('///////////////////////////////////////////////////////////')
     console.log(JSON.stringify(msg))
     console.log('///////////////////////////////////////////////////////////')
+
+    if (msg.parser_action === "create_conversation"){
+        var data = [];
+        var i;
+        var item;
+        for (i = 0; i < msg.modelSent.count; i++){
+            if (msg.modelSent.get(i).recipient_id === msg.sender_id && msg.modelSent.get(i).sender_id === msg.recipient_id){
+                //item = JSON.parse(JSON.stringify(msg.modelSent.get(i)))
+                item = msg.modelSent.get(i)
+                console.log(JSON.stringify(item.media))
+                item['section'] = getDate(item['created_at']);
+                data.push(item)
+            }
+        }
+        for (i = 0; i < msg.modelReceived.count; i++){
+
+            if ((msg.modelReceived.get(i).sender_id === msg.sender_id)){
+                //item = JSON.parse(JSON.stringify(msg.modelReceived.get(i)))
+                item = msg.modelReceived.get(i)
+                console.log(JSON.stringify(item.media))
+                item['section'] = getDate(item['created_at']);
+                data.push(item)
+            }
+        }
+        msg.modelConversation.clear();
+        data = data.sort(function(a,b){ return a.created_at - b.created_at; })
+        msg.modelConversation.append(data);
+        msg.modelConversation.sync();
+        return;
+    }
+
     var cb = new Fcodebird;
     cb.setUseProxy(false);
 
@@ -61,7 +92,7 @@ WorkerScript.onMessage = function(msg) {
                     );
     }
 
-    if (msg.bgAction){
+    if (msg.bgAction !== ""){
         console.log("BG ACTION >" + msg.bgAction)
         console.log("BG MODE >" + msg.mode)
         console.log("CONF >" + JSON.stringify(msg.conf))
@@ -70,8 +101,8 @@ WorkerScript.onMessage = function(msg) {
         msg.params['tweet_mode'] = "extended";
         console.log(JSON.stringify(msg.params))
         //msg.params['count'] = 200;
-        console.log(JSON.stringify(typeof msg.page))
-        console.log(JSON.stringify(typeof msg.cursor))
+        console.log("Page: " + JSON.stringify(typeof msg.page))
+        console.log("Cursor: " + JSON.stringify(typeof msg.cursor))
         if (typeof msg.params.page === "undefined" && typeof msg.params.cursor === "undefined" ){
             if (msg.model.count) {
                 if (msg.mode === "append") {
@@ -100,6 +131,11 @@ WorkerScript.onMessage = function(msg) {
                 var items = [];
                 var parser = false;
                 switch(msg.bgAction){
+                case "trends_place":
+                    if (reply[0] && 'trends' in reply[0])
+                        items = reply[0].trends;
+                    parser = parseTrends
+                    break;
                 case "search_tweets":
                     if ('statuses' in reply)
                         items = reply.statuses;

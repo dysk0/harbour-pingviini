@@ -76,57 +76,96 @@ Page {
             }
         }
 
-        delegate: BackgroundItem {
-            height: lblText.paintedHeight + lblDate.paintedHeight + Theme.paddingMedium
-            Label {
-                id: lblText
-                anchors {
-                    left: parent.left
-                    right: parent.right
-                    topMargin: Theme.paddingMedium
-                    leftMargin: Theme.paddingLarge
-                    rightMargin: Theme.paddingLarge
+        delegate: Item {
+            width: parent.width
+            height: col.height
+            Column {
+                id: col
+                width: parent.width
+                Label {
+                    id: lblText
+                    anchors {
+                        left: parent.left
+                        right: parent.right
+                        topMargin: Theme.paddingMedium
+                        leftMargin: Theme.paddingLarge
+                        rightMargin: Theme.paddingLarge
+                    }
+                    onLinkActivated: page.onLinkActivated(link)
+                    text: richText
+                    textFormat:Text.RichText
+                    linkColor : Theme.highlightColor
+                    wrapMode: Text.Wrap
+                    font.pixelSize: Theme.fontSizeSmall
+                    horizontalAlignment: !model.sent ? Text.AlignLeft :Text.AlignRight
+                    color: (pressed ? Theme.highlightColor : (!model.sent ? Theme.highlightColor : Theme.primaryColor))
                 }
-                onLinkActivated: page.onLinkActivated(link)
-                text: model.text
-                textFormat:Text.RichText
-                linkColor : Theme.highlightColor
-                wrapMode: Text.Wrap
-                font.pixelSize: Theme.fontSizeSmall
-                horizontalAlignment: !model.sent ? Text.AlignLeft :Text.AlignRight
-                color: (pressed ? Theme.highlightColor : (!model.sent ? Theme.highlightColor : Theme.primaryColor))
-            }
+                MediaBlock {
+                    id: mediaImg
+                    anchors {
+                        left: parent.left
+                        right: parent.right
+                        topMargin: Theme.paddingSmall
+                        rightMargin: Theme.paddingLarge
+                    }
+                    model: media ? media : ({})
+                    width: parent.width
+                    height: 100
+                }
 
-            Label {
-                function timestamp() {
-                    var txt = Format.formatDate(created_at, Formatter.Timepoint)
-                    var elapsed = Format.formatDate(created_at, Formatter.DurationElapsedShort)
-                    return (elapsed ? elapsed  : txt )
-                }
-                id: lblDate
-                color: (pressed ? Theme.highlightColor : Theme.secondaryColor)
-                text: Format.formatDate(created_at, new Date() - created_at < 60*60*1000 ? Formatter.DurationElapsedShort : Formatter.TimepointRelativeCurrentDayDetailed)
-                font.pixelSize: Theme.fontSizeExtraSmall
-                horizontalAlignment: !model.sent ? Text.AlignLeft :Text.AlignRight
-                width: lblText.width
+
+                /*SilicaGridView {
+                id: gridMedia
                 anchors {
-                    top: lblText.bottom
                     left: parent.left
                     right: parent.right
-                    leftMargin: Theme.paddingLarge
-                    rightMargin: Theme.paddingLarge
-                    bottomMargin: Theme.paddingSmall
+                    top: lblText.bottom
+                    topMargin: Theme.paddingSmall
                 }
-            }
-            onClicked: {
-                console.log(JSON.stringify(sent))
-            }
-        }
+                model: media ? media : Qt.createQmlObject('import QtQuick 2.0; ListModel {   }', Qt.application, 'InternalQmlObject')
+                width: parent.width
+                height: gridMedia.model.count > 0 ? Theme.itemSizeLarge : 0
+                cellWidth: gridMedia.model.count > 0 ? Theme.itemSizeLarge : 1
+                cellHeight: gridMedia.height
+                delegate: Rectangle {
+                    width: gridMedia.cellWidth
+                    height: gridMedia.cellHeight
+                    Label {
+                        anchors.centerIn: parent
+                        text: index
+                    }
+                }
+                Rectangle {
+                    anchors.fill: parent
+                    color: "#f00"
+                }
+            }*/
+                Label {
+                    function timestamp() {
+                        var txt = Format.formatDate(created_at, Formatter.Timepoint)
+                        var elapsed = Format.formatDate(created_at, Formatter.DurationElapsedShort)
+                        return (elapsed ? elapsed  : txt )
+                    }
+                    id: lblDate
+                    color: (pressed ? Theme.highlightColor : Theme.secondaryColor)
+                    text: Format.formatDate(created_at, new Date() - created_at < 60*60*1000 ? Formatter.DurationElapsedShort : Formatter.TimepointRelativeCurrentDayDetailed)
+                    font.pixelSize: Theme.fontSizeExtraSmall
+                    horizontalAlignment: !model.sent ? Text.AlignLeft :Text.AlignRight
+                    width: lblText.width
+                    anchors {
+                        left: parent.left
+                        right: parent.right
+                        leftMargin: Theme.paddingLarge
+                        rightMargin: Theme.paddingLarge
+                        bottomMargin: Theme.paddingSmall
+                    }
+                }
+            }}
     }
 
     WorkerScript {
         id: parser
-        source: "../lib/Parser.js"
+        source: "../lib/Worker.js"
         onMessage: {
 
         }
