@@ -39,7 +39,7 @@ function parseEntities(tweet, entities){
                     id:         item.id,
                     id_str:     item.id_str,
                     type:       item.type,
-                    cover:      item.media_url_https+":small",
+                    cover:      item.media_url_https+"",
                     media:      item.media_url_https+":large"
                 }
                 //console.info(JSON.stringify(item))
@@ -85,6 +85,7 @@ function parseDM(json) {
     var tweet = {
         id: json.id,
         id_str: json.id_str,
+        sent: false,
         created_at: getValidDate(json.created_at),
         text: json.text.trim(),
         sender_id: json.sender_id_str,

@@ -29,6 +29,7 @@ Page {
 
     VisualItemModel {
         id: visualModel
+        //*
         MyList {
             id: timelineViewComponent
             header: PageHeader {

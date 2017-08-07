@@ -2,6 +2,7 @@ import QtQuick 2.0
 import Sailfish.Silica 1.0
 import "./cmp/"
 import "../lib/Logic.js" as Logic
+import "../lib/codebird.js" as CB
 
 
 
@@ -9,6 +10,9 @@ Page {
     id: page
     property var locale: Qt.locale()
     property bool loadStarted: false
+    Image {
+        id: test
+    }
 
     function pullData(){
         /*var msg = {
@@ -37,7 +41,7 @@ Page {
     Timer {
         interval: 5*60*1000; running: true; repeat: true
         onTriggered: {
-           // pullData()
+            // pullData()
 
 
             /*Logic.modelTL.append(Logic.parseTweet(Logic.tweet1))
@@ -80,6 +84,47 @@ Page {
                     pageStack.replace(Qt.resolvedUrl("MainPage.qml"), {})
                     //pageStack.replace(Qt.resolvedUrl("TweetDetails.qml"), {tweet:{}})
                     //pullData();
+
+                    var xhr = new XMLHttpRequest();
+
+                    var conf = Logic.getConfTW();
+                    var cb = new CB.Fcodebird;
+                    cb.setConsumerKey(conf.OAUTH_CONSUMER_KEY, conf.OAUTH_CONSUMER_SECRET);
+                    cb.setToken(conf.OAUTH_TOKEN, conf.OAUTH_TOKEN_SECRET);
+                    cb.setUseProxy(false);
+
+                    var url = "https://ton.twitter.com/i/ton/data/dm/888372972796469251/888372963925532672/8l54wuIc.jpg:large";
+                    var sign = cb._sign('GET', url);
+                    console.log(sign)
+                    //xhr.responseType    = "arraybuffer";
+                    xhr.open("GET", url);
+
+                    xhr.onreadystatechange = function () {
+                        if(xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+
+                            var base64     = Logic.customBase64Encode (xhr.responseText);
+
+                            /*var uInt8Array = new Uint8Array(xhr.response);
+                                var i = uInt8Array.length;
+                                var binaryString = new Array(i);
+                                while (i--)
+                                {
+                                  binaryString[i] = String.fromCharCode(uInt8Array[i]);
+                                }
+                                var data = binaryString.join('');
+
+                                var base64 = Qt.btoa(data);
+
+                            //test.source = byteArray*/
+                            console.log('data:image/jpeg;base64,' + base64);
+                        } else {
+                            console.log(xhr.statusText)
+                        }
+                    };
+
+                    xhr.setRequestHeader("Authorization", sign)
+                    xhr.send();
+
                 } else {
                     pageStack.replace(Qt.resolvedUrl("AccountAdd.qml"), {})
                 }

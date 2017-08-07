@@ -1,6 +1,7 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 import "../lib/Logic.js" as Logic
+
 import "./cmp/"
 import QtGraphicalEffects 1.0
 
@@ -25,7 +26,35 @@ Page {
             modelConversation: tweets
         }
 
-        parser.sendMessage(msg)
+
+
+
+        var data = [];
+        var i;
+        var item;
+        for (i = 0; i < Logic.modelDMsent.count; i++){
+            if (Logic.modelDMsent.get(i).recipient_id === user_id && Logic.modelDMsent.get(i).sender_id === recipient_id){
+                //item = JSON.parse(JSON.stringify(msg.modelSent.get(i)))
+                item = Logic.modelDMsent.get(i)
+                item['sent'] = true;
+                console.log(JSON.stringify(item.media))
+                //item['section'] = getDate(item['created_at']);
+                data.push(item)
+            }
+        }
+        for (i = 0; i < Logic.modelDMreceived.count; i++){
+            if ((Logic.modelDMreceived.get(i).sender_id === user_id)){
+                //item = JSON.parse(JSON.stringify(msg.modelReceived.get(i)))
+                item = Logic.modelDMreceived.get(i)
+                item['sent'] = false;
+                //item['section'] = getDate(item['created_at']);
+                data.push(item)
+            }
+        }
+        tweets.clear();
+        data = data.sort(function(a,b){ return a.created_at - b.created_at; })
+        tweets.append(data);
+        //parser.sendMessage(msg)
     }
 
     ProfileHeader {
@@ -38,18 +67,24 @@ Page {
 
     allowedOrientations: Orientation.All
 
-    NewTweet {
-        type: "DM"
-        screenName: user_screen_name
-        id: tweetPanel
-        anchors {
-            bottom: parent.bottom
-            left: parent.left
-            right: parent.right
+    DockedPanel {
+        id: panel
+        open: true
+        height: tweetPanel.height
+        width: parent.width
+        onExpandedChanged: {
+            if (!expanded) {
+                show()
+            }
+        }
+        NewTweet {
+            type: "DM"
+            screenName: user_screen_name
+            id: tweetPanel
         }
     }
-
     SilicaListView {
+
         id: list
         model: ListModel {
             id: tweets
@@ -62,7 +97,7 @@ Page {
         }
         anchors {
             top: header.bottom
-            bottom: tweetPanel.top
+            bottom: panel.top
             left: parent.left
             right: parent.right
         }
@@ -100,46 +135,34 @@ Page {
                     horizontalAlignment: !model.sent ? Text.AlignLeft :Text.AlignRight
                     color: (pressed ? Theme.highlightColor : (!model.sent ? Theme.highlightColor : Theme.primaryColor))
                 }
-                MediaBlock {
+                Image {
                     id: mediaImg
                     anchors {
-                        left: parent.left
-                        right: parent.right
                         topMargin: Theme.paddingSmall
                         rightMargin: Theme.paddingLarge
                     }
-                    model: media ? media : ({})
-                    width: parent.width
+                    width: parent.width*0.8
                     height: 100
-                }
+                    onStatusChanged: {
+                        if (status == Image.Error) {
+                            console.log("source: " + source + ": failed to load");
+                            source = "image://theme/icon-l-play";
+                        }
+                    }
+                    Component.onCompleted: {
+                        if (!model.sent)
+                            anchors.left = parent.left
+                        else
+                            anchors.right = parent.right
 
-
-                /*SilicaGridView {
-                id: gridMedia
-                anchors {
-                    left: parent.left
-                    right: parent.right
-                    top: lblText.bottom
-                    topMargin: Theme.paddingSmall
-                }
-                model: media ? media : Qt.createQmlObject('import QtQuick 2.0; ListModel {   }', Qt.application, 'InternalQmlObject')
-                width: parent.width
-                height: gridMedia.model.count > 0 ? Theme.itemSizeLarge : 0
-                cellWidth: gridMedia.model.count > 0 ? Theme.itemSizeLarge : 1
-                cellHeight: gridMedia.height
-                delegate: Rectangle {
-                    width: gridMedia.cellWidth
-                    height: gridMedia.cellHeight
-                    Label {
-                        anchors.centerIn: parent
-                        text: index
+                        if (model && model.count){
+                            mediaURL = model.get(0).cover
+                        }
                     }
                 }
-                Rectangle {
-                    anchors.fill: parent
-                    color: "#f00"
-                }
-            }*/
+
+
+
                 Label {
                     function timestamp() {
                         var txt = Format.formatDate(created_at, Formatter.Timepoint)
