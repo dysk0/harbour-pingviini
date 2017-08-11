@@ -39,6 +39,7 @@ Page {
     property alias title: header.title;
     property alias avatar: header.image;
     property string tweet_id;
+    property string user_id;
 
     property alias screenName: tweetPanel.screenName;
     property string tweetType: "Reply";
@@ -55,10 +56,12 @@ Page {
     allowedOrientations: Orientation.All
     Component.onCompleted: {
         if (typeof tweet.id !== "undefined"){
+
             title =  tweet.name
             screenName =  tweet.screenName
             header.image = tweet.profileImageUrl
             tweetPanel.tweetId = tweet.id_str;
+            tweetPanel.userId = tweet.userIdStr;
             isFavourited = tweet.favorited;
             modelCO.append(tweet)
 
@@ -66,8 +69,8 @@ Page {
             var until = new Date(new Date().setDate(new Date(since).getDate() + 7));
             console.log(since)
             console.log(until)
-            console.log(since.toISOString().substr(0, 10))
-            console.log(until.toISOString().substr(0, 10))
+            //console.log(since.toISOString().substr(0, 10))
+            //console.log(until.toISOString().substr(0, 10))
             var user = '@'+tweet.screenName + (tweet.inReplyToStatusId ? ' OR @'+tweet.inReplyToScreenName : '')
             var msg = {
                 'bgAction'    : 'search_tweets',
@@ -118,6 +121,7 @@ Page {
             width: parent.width
             id: tweetPanel
             type: tweetType
+            tweetId: tweet_id
             screenName: screenName ? screenName : ""
         }
     }

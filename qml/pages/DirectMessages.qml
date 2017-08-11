@@ -128,7 +128,7 @@ SilicaListView {
             visible: true
         }
 
-        OpacityMask {
+        /*OpacityMask {
             id: maskedProfilePicture
             source: avatar
             maskSource: avatarMask
@@ -142,7 +142,7 @@ SilicaListView {
                     // pageStack.push( avatar );
                 }
             }
-        }
+        }*/
         Label {
             id: lblName
             anchors {

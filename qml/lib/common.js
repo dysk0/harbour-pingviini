@@ -27,8 +27,19 @@ function parseEntities(tweet, entities){
     }
     if (entities.urls){
         entities.urls.forEach(function(item) {
-            if(item.url.indexOf("/i/stickers/") === -1)
-            tweet.richText = tweet.richText.replaceAll(item.url, '<a href="'+item.url+'">'+item.display_url+"</a>")
+            if(item.expanded_url.indexOf("/i/stickers/") === -1) {
+                tweet.richText = tweet.richText.replaceAll(item.url, '<a href="'+item.url+'">'+item.display_url+"</a>")
+            } else {
+                var media;
+                    media = {
+                        type:       'sticker',
+                        cover:      item.expanded_url+"",
+                        media:      item.expanded_url+":large"
+                    }
+
+                tweet.media.push(media)
+                tweet.richText = tweet.text.replaceAll(item.url, '')
+            }
         });
     }
     if (entities.media){

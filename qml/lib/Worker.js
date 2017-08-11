@@ -87,12 +87,16 @@ WorkerScript.onMessage = function(msg) {
                         console.log(JSON.stringify(reply));
                         console.log(JSON.stringify(err));
                         console.log("$$$$$$$$$$$$$$$$$$$ headlessAction $$$$$$$$$$$$$$");
+
+
+                        //Logic.modelDMsent
                     },
                     msg.forth ? true : false
                     );
+        return;
     }
 
-    if (msg.bgAction !== ""){
+    if (msg.bgAction !== "" && msg.bgAction !== "undefined"){
         console.log("BG ACTION >" + msg.bgAction)
         console.log("BG MODE >" + msg.mode)
         console.log("CONF >" + JSON.stringify(msg.conf))
@@ -104,7 +108,7 @@ WorkerScript.onMessage = function(msg) {
         console.log("Page: " + JSON.stringify(typeof msg.page))
         console.log("Cursor: " + JSON.stringify(typeof msg.cursor))
         if (typeof msg.params.page === "undefined" && typeof msg.params.cursor === "undefined" ){
-            if (msg.model.count) {
+            if (msg.model && msg.model.count) {
                 if (msg.mode === "append") {
                     msg.params['max_id'] = msg.model.get(msg.model.count-1).id
                 }
@@ -114,7 +118,7 @@ WorkerScript.onMessage = function(msg) {
             }
         }
 
-        if (msg.model.count === 0) {
+        if (msg.model && msg.model.count === 0) {
             msg.mode = "append";
         }
         console.log(JSON.stringify(msg.params))

@@ -292,3 +292,10 @@ var parseDM = (function(){
 })();
 
 
+var getUserName = function(name) {
+    for(var i = 0; i < modelUsers.count; i++){
+        if (modelUsers.get(i).screen_name === name)
+            return modelUsers.get(i).name
+    }
+    return "@"+name
+}

@@ -110,6 +110,7 @@ Item {
         }
 
         if (type === "DM") {
+            msg.model = Logic.modelDMsent
             msg.params.status = "D @" + screenName + " " + newTweet.text
         }
         if (type === "Reply") {
@@ -224,7 +225,7 @@ Item {
     }
 
     IconButton {
-
+        visible: type !== "DM"
         id: btnLocation
         anchors {
             top: newTweet.bottom
@@ -232,14 +233,21 @@ Item {
             left: newTweet.left
             //leftMargin: Theme.paddingMedium
         }
-        icon.source: "image://theme/icon-s-high-importance?" + (pressed
-                                                                ? Theme.highlightColor
-                                                                : (attachGeo ? Theme.secondaryHighlightColor : Theme.primaryColor))
+        width: Theme.itemSizeExtraSmall
+        height: width
+        icon.source: "image://theme/icon-cover-location?" + (pressed
+                                                                ? Theme.secondaryHighlightColor
+                                                                : (attachGeo ? Theme.primaryColor : Theme.highlightColor))
         onClicked: attachGeo = !attachGeo
     }
     IconButton {
+        visible: type !== "DM"
         id: attachBtn
-        icon.source: "image://theme/icon-s-attach"
+        icon.source: "image://theme/icon-s-attach?" + (pressed
+                                                       ? Theme.primaryColor
+                                                       : Theme.highlightColor)
+        width: Theme.itemSizeExtraSmall
+        height: width
         anchors {
             left: btnLocation.right
             top: btnLocation.top

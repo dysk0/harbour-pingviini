@@ -119,7 +119,7 @@ Page {
                         topMargin: Theme.paddingLarge
                         right: lblDate.left
                     }
-                    text: model.sender_name
+                    text: Logic.getUserName(model.sender_name)
                     color: (pressed ? Theme.highlightColor : Theme.primaryColor)
                     wrapMode: Text.NoWrap
                 }
@@ -384,7 +384,7 @@ Page {
         for(i = 0; i < unique.length; i++){
             for(var j = 0; j < Logic.modelDMsent.count; j++){
                 msg = Logic.modelDMsent.get(j);
-                if (unique[i] === msg.recipient_id) {
+                if (unique[i] === msg.recipient_id && Logic.modelDM.count > 0) {
                     if (Logic.modelDM.get(i).created_at < msg.created_at) {
                         Logic.modelDM.set(i, {
                                               created_at: msg.created_at,

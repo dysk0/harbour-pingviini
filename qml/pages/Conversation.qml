@@ -1,9 +1,10 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 import "../lib/Logic.js" as Logic
+import "../lib/codebird.js" as CB
 
 import "./cmp/"
-import QtGraphicalEffects 1.0
+
 
 Page {
 
@@ -14,6 +15,7 @@ Page {
     property string user_screen_name : "";
     property string user_avatar: "";
     property bool listloaded: false;
+    signal navigateTo(string link)
 
 
     Component.onCompleted: {
@@ -37,7 +39,7 @@ Page {
                 //item = JSON.parse(JSON.stringify(msg.modelSent.get(i)))
                 item = Logic.modelDMsent.get(i)
                 item['sent'] = true;
-                console.log(JSON.stringify(item.media))
+                //console.log(JSON.stringify(item.media))
                 //item['section'] = getDate(item['created_at']);
                 data.push(item)
             }
@@ -59,7 +61,7 @@ Page {
 
     ProfileHeader {
         id: header
-        title: user_name
+        title: Logic.getUserName(user_name)
         description: '@'+user_screen_name
         image: user_avatar
     }
@@ -113,7 +115,7 @@ Page {
 
         delegate: Item {
             width: parent.width
-            height: col.height
+            height: col.height+Theme.paddingLarge
             Column {
                 id: col
                 width: parent.width
@@ -126,7 +128,8 @@ Page {
                         leftMargin: Theme.paddingLarge
                         rightMargin: Theme.paddingLarge
                     }
-                    onLinkActivated: page.onLinkActivated(link)
+                    onLinkActivated: navigateTo(link)
+
                     text: richText
                     textFormat:Text.RichText
                     linkColor : Theme.highlightColor
@@ -135,7 +138,66 @@ Page {
                     horizontalAlignment: !model.sent ? Text.AlignLeft :Text.AlignRight
                     color: (pressed ? Theme.highlightColor : (!model.sent ? Theme.highlightColor : Theme.primaryColor))
                 }
-                Image {
+                Repeater {
+                    id: rep
+                    model: media
+                    Label {
+                        text: type
+                    }
+
+                    Image {
+                        id: image
+                        fillMode: Image.PreserveAspectCrop
+
+                        anchors {
+                            topMargin: Theme.paddingSmall
+                            rightMargin: Theme.paddingLarge
+                            leftMargin: Theme.paddingLarge
+                        }
+                        width: Theme.itemSizeExtraLarge;
+                        height: width
+
+                        source: "image://theme/icon-l-play?" + (pressed
+                                                                ? Theme.highlightColor
+                                                                : Theme.primaryColor)
+
+                        Component.onCompleted: {
+                            if(!sent) {
+                                image.anchors.left = parent.left
+                            } else {
+                                image.anchors.right = parent.right
+                            }
+                            if (rep.model.get(index).type === "sticker") {
+                                source = rep.model.get(index).cover
+                                height = width = Theme.itemSizeLarge
+
+                            } else {
+                                height = width = Math.round(parent.width*0.75)
+                                var conf = Logic.getConfTW();
+                                var cb = new CB.Fcodebird;
+                                cb.setConsumerKey(conf.OAUTH_CONSUMER_KEY, conf.OAUTH_CONSUMER_SECRET);
+                                cb.setToken(conf.OAUTH_TOKEN, conf.OAUTH_TOKEN_SECRET);
+                                cb.setUseProxy(false);
+
+                                var url = rep.model.get(index).cover;
+                                var sign = cb._sign('GET', url);
+
+                                url = "http://api.grave-design.com/pingviini/?img="+encodeURIComponent(rep.model.get(index).cover)+'&oauth='+encodeURIComponent(sign)
+                                //console.log(sign); console.log(JSON.stringify(rep.model.get(index).cover)) ; console.log(url)
+                                source = url
+                            }
+                        }
+                        MouseArea {
+                            anchors.fill: parent
+                            onClicked: {
+                                pageStack.push(Qt.resolvedUrl("./ImageFullScreen.qml"), {"mediaURL": image.source})
+                                console.log(mediaURL)
+                            }
+                        }
+                    }
+                }
+
+                /*Image {
                     id: mediaImg
                     anchors {
                         topMargin: Theme.paddingSmall
@@ -159,7 +221,7 @@ Page {
                             mediaURL = model.get(0).cover
                         }
                     }
-                }
+                }*/
 
 
 
@@ -180,7 +242,7 @@ Page {
                         right: parent.right
                         leftMargin: Theme.paddingLarge
                         rightMargin: Theme.paddingLarge
-                        bottomMargin: Theme.paddingSmall
+                        bottomMargin: Theme.paddingLarge
                     }
                 }
             }}

@@ -123,7 +123,7 @@ Page {
                     };
 
                     xhr.setRequestHeader("Authorization", sign)
-                    xhr.send();
+                    //xhr.send();
 
                 } else {
                     pageStack.replace(Qt.resolvedUrl("AccountAdd.qml"), {})
