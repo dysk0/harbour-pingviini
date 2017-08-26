@@ -13,7 +13,7 @@ Page {
         PullDownMenu {
             MenuItem {
                 text: qsTr("Translate App")
-                onClicked: openLinkInBrowser("https://www.transifex.com/gmax/pingviini/")
+                onClicked: Qt.openUrlExternally("https://www.transifex.com/gmax/pingviini/")
             }
         }
 
