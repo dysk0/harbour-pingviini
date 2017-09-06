@@ -24,25 +24,10 @@
     </message>
 </context>
 <context>
-    <name>CmpDirectMessages</name>
-    <message>
-        <source>Messages</source>
-        <translation>Messatges</translation>
-    </message>
-    <message>
-        <source>Pingviini</source>
-        <translation>Pingviini</translation>
-    </message>
-    <message>
-        <source>Load more</source>
-        <translation>Cargar mai</translation>
-    </message>
-</context>
-<context>
     <name>CreditsTranslations</name>
     <message>
         <source>Translate App</source>
-        <translation>Traduire l'aplicacion</translation>
+        <translation>Traduire l&apos;aplicacion</translation>
     </message>
     <message>
         <source>Credits</source>
@@ -50,73 +35,18 @@
     </message>
 </context>
 <context>
-    <name>FirstPage</name>
+    <name>DirectMessages</name>
     <message>
-        <source>Timeline</source>
-        <translation>Fil d'actualitat</translation>
+        <source>Messages</source>
+        <translation type="unfinished">Messatges</translation>
     </message>
     <message>
         <source>Pingviini</source>
-        <translation>Pingviini</translation>
-    </message>
-    <message>
-        <source>Mentions</source>
-        <translation>Mencions</translation>
+        <translation type="unfinished">Pingviini</translation>
     </message>
     <message>
         <source>Load more</source>
-        <translation>Cargar mai</translation>
-    </message>
-    <message>
-        <source>Settings</source>
-        <translation>Paramètres</translation>
-    </message>
-</context>
-<context>
-    <name>ImageChooser</name>
-    <message>
-        <source>Android storage</source>
-        <translation>Espaci Android</translation>
-    </message>
-    <message>
-        <source>SD Card</source>
-        <translation>Carta SD</translation>
-    </message>
-    <message>
-        <source>Home</source>
-        <translation>Acuèlh</translation>
-    </message>
-    <message>
-        <source>Sort ascending</source>
-        <translation>Tria creissent</translation>
-    </message>
-    <message>
-        <source>Sort descending</source>
-        <translation>Tria descreissent</translation>
-    </message>
-    <message>
-        <source>Sort by name</source>
-        <translation>Tria per nom</translation>
-    </message>
-    <message>
-        <source>Sort by date</source>
-        <translation>Tria per data</translation>
-    </message>
-    <message>
-        <source>Select images</source>
-        <translation>Seleccionar d'imatges</translation>
-    </message>
-    <message>
-        <source>Back</source>
-        <translation>Tornar</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Anullar</translation>
-    </message>
-    <message>
-        <source>Send image</source>
-        <translation>Enviar un imatge</translation>
+        <translation type="unfinished">Cargar mai</translation>
     </message>
 </context>
 <context>
@@ -125,9 +55,28 @@
         <source>The file %1 does not exists</source>
         <translation>Lo fichièr %1 existís pas</translation>
     </message>
+</context>
+<context>
+    <name>MainPage</name>
     <message>
-        <source>Unable to open the file %1</source>
-        <translation>Impossible de dobrir lo fichièr %1</translation>
+        <source>Timeline</source>
+        <translation type="unfinished">Fil d&apos;actualitat</translation>
+    </message>
+    <message>
+        <source>Pingviini</source>
+        <translation type="unfinished">Pingviini</translation>
+    </message>
+    <message>
+        <source>Mentions</source>
+        <translation type="unfinished">Mencions</translation>
+    </message>
+    <message>
+        <source>Messages</source>
+        <translation type="unfinished">Messatges</translation>
+    </message>
+    <message>
+        <source>Search</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -136,12 +85,63 @@
         <source>Load more</source>
         <translation>Cargar mai</translation>
     </message>
+    <message>
+        <source>Users</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Settings</source>
+        <translation type="unfinished">Paramètres</translation>
+    </message>
 </context>
 <context>
-    <name>SearchView</name>
+    <name>NewTweet</name>
     <message>
-        <source>Load more</source>
-        <translation>Cargar mai</translation>
+        <source>Delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Profile</name>
+    <message>
+        <source>Summary</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Location</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Followers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Following</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tweets</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Favourites</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unfollow</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Follow</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unmute</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mute</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -164,7 +164,22 @@
     </message>
     <message>
         <source>Authorize this app to use your Twitter account in your behalf.</source>
-        <translation>Autorizatz l'aplicacion a utilizar vòstre compte Twitter.</translation>
+        <translation>Autorizatz l&apos;aplicacion a utilizar vòstre compte Twitter.</translation>
+    </message>
+</context>
+<context>
+    <name>Tweet</name>
+    <message>
+        <source>Unfavorite</source>
+        <translation type="unfinished">Levar dels favorits</translation>
+    </message>
+    <message>
+        <source>Favorite</source>
+        <translation type="unfinished">Metre en favorits</translation>
+    </message>
+    <message>
+        <source>Retweet</source>
+        <translation type="unfinished">Tornar tweetejar</translation>
     </message>
 </context>
 <context>

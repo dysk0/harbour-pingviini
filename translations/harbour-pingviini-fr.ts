@@ -24,25 +24,10 @@
     </message>
 </context>
 <context>
-    <name>CmpDirectMessages</name>
-    <message>
-        <source>Messages</source>
-        <translation>Messages</translation>
-    </message>
-    <message>
-        <source>Pingviini</source>
-        <translation>Pingviini</translation>
-    </message>
-    <message>
-        <source>Load more</source>
-        <translation>Charger davantage</translation>
-    </message>
-</context>
-<context>
     <name>CreditsTranslations</name>
     <message>
         <source>Translate App</source>
-        <translation>Traduire l'application</translation>
+        <translation>Traduire l&apos;application</translation>
     </message>
     <message>
         <source>Credits</source>
@@ -50,84 +35,48 @@
     </message>
 </context>
 <context>
-    <name>FirstPage</name>
+    <name>DirectMessages</name>
     <message>
-        <source>Timeline</source>
-        <translation>Fil d'actualité</translation>
+        <source>Messages</source>
+        <translation type="unfinished">Messages</translation>
     </message>
     <message>
         <source>Pingviini</source>
-        <translation>Pingviini</translation>
-    </message>
-    <message>
-        <source>Mentions</source>
-        <translation>Mentions</translation>
+        <translation type="unfinished">Pingviini</translation>
     </message>
     <message>
         <source>Load more</source>
-        <translation>Charger davantage</translation>
-    </message>
-    <message>
-        <source>Settings</source>
-        <translation>Paramètres</translation>
-    </message>
-</context>
-<context>
-    <name>ImageChooser</name>
-    <message>
-        <source>Android storage</source>
-        <translation>Stokage Android</translation>
-    </message>
-    <message>
-        <source>SD Card</source>
-        <translation>Carte SD</translation>
-    </message>
-    <message>
-        <source>Home</source>
-        <translation>Accueil</translation>
-    </message>
-    <message>
-        <source>Sort ascending</source>
-        <translation>Ordre croissant</translation>
-    </message>
-    <message>
-        <source>Sort descending</source>
-        <translation>Ordre décroissant</translation>
-    </message>
-    <message>
-        <source>Sort by name</source>
-        <translation>Trier par nom</translation>
-    </message>
-    <message>
-        <source>Sort by date</source>
-        <translation>Trier par date</translation>
-    </message>
-    <message>
-        <source>Select images</source>
-        <translation>Sélectionner les images</translation>
-    </message>
-    <message>
-        <source>Back</source>
-        <translation>Retour</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Annuler</translation>
-    </message>
-    <message>
-        <source>Send image</source>
-        <translation>Envoyer une image</translation>
+        <translation type="unfinished">Charger davantage</translation>
     </message>
 </context>
 <context>
     <name>ImageUploader</name>
     <message>
         <source>The file %1 does not exists</source>
-        <translation>Le fichier %1 n'existe pas</translation>
+        <translation>Le fichier %1 n&apos;existe pas</translation>
+    </message>
+</context>
+<context>
+    <name>MainPage</name>
+    <message>
+        <source>Timeline</source>
+        <translation type="unfinished">Fil d&apos;actualité</translation>
     </message>
     <message>
-        <source>Unable to open the file %1</source>
-        <translation>Impossible d'ouvrir le fichier %1</translation>
+        <source>Pingviini</source>
+        <translation type="unfinished">Pingviini</translation>
+    </message>
+    <message>
+        <source>Mentions</source>
+        <translation type="unfinished">Mentions</translation>
+    </message>
+    <message>
+        <source>Messages</source>
+        <translation type="unfinished">Messages</translation>
+    </message>
+    <message>
+        <source>Search</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -136,12 +85,63 @@
         <source>Load more</source>
         <translation>Charger davantage</translation>
     </message>
+    <message>
+        <source>Users</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Settings</source>
+        <translation type="unfinished">Paramètres</translation>
+    </message>
 </context>
 <context>
-    <name>SearchView</name>
+    <name>NewTweet</name>
     <message>
-        <source>Load more</source>
-        <translation>Charger davantage</translation>
+        <source>Delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Profile</name>
+    <message>
+        <source>Summary</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Location</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Followers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Following</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tweets</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Favourites</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unfollow</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Follow</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unmute</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mute</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -164,7 +164,22 @@
     </message>
     <message>
         <source>Authorize this app to use your Twitter account in your behalf.</source>
-        <translation>Autorisez l'application à utiliser votre compte en votre nom.</translation>
+        <translation>Autorisez l&apos;application à utiliser votre compte en votre nom.</translation>
+    </message>
+</context>
+<context>
+    <name>Tweet</name>
+    <message>
+        <source>Unfavorite</source>
+        <translation type="unfinished">Retirer des favoris</translation>
+    </message>
+    <message>
+        <source>Favorite</source>
+        <translation type="unfinished">Mettre en favoris</translation>
+    </message>
+    <message>
+        <source>Retweet</source>
+        <translation type="unfinished">Retweeter</translation>
     </message>
 </context>
 <context>

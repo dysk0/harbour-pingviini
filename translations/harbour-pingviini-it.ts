@@ -24,21 +24,6 @@
     </message>
 </context>
 <context>
-    <name>CmpDirectMessages</name>
-    <message>
-        <source>Messages</source>
-        <translation>Messaggi</translation>
-    </message>
-    <message>
-        <source>Pingviini</source>
-        <translation>Pingviini</translation>
-    </message>
-    <message>
-        <source>Load more</source>
-        <translation>Carica altro</translation>
-    </message>
-</context>
-<context>
     <name>CreditsTranslations</name>
     <message>
         <source>Translate App</source>
@@ -50,76 +35,18 @@
     </message>
 </context>
 <context>
-    <name>FirstPage</name>
+    <name>DirectMessages</name>
     <message>
-        <source>Timeline</source>
-        <translation>Timeline</translation>
+        <source>Messages</source>
+        <translation type="unfinished">Messaggi</translation>
     </message>
     <message>
         <source>Pingviini</source>
-        <translation>Pingviini</translation>
-    </message>
-    <message>
-        <source>Mentions</source>
-        <translation>Menzioni</translation>
+        <translation type="unfinished">Pingviini</translation>
     </message>
     <message>
         <source>Load more</source>
-        <translation>Carica altro</translation>
-    </message>
-    <message>
-        <source>Settings</source>
-        <translation>Impostazioni</translation>
-    </message>
-</context>
-<context>
-    <name>ImageChooser</name>
-    <message>
-        <source>Android storage</source>
-        <translation>Memoria Android</translation>
-    </message>
-    <message>
-        <source>SD Card</source>
-        <translation>Scheda SD</translation>
-    </message>
-    <message>
-        <source>Home</source>
-        <translation>Home</translation>
-    </message>
-    <message>
-        <source>Sort ascending</source>
-        <translation>Ordine ascendente</translation>
-    </message>
-    <message>
-        <source>Sort descending</source>
-        <translation>Ordine discendente</translation>
-    </message>
-    <message>
-        <source>Sort by name</source>
-        <translation>Ordina per nome</translation>
-    </message>
-    <message>
-        <source>Sort by date</source>
-        <translation>Ordina per data</translation>
-    </message>
-    <message numerus="yes">
-        <source>Send %n image(s)</source>
-        <translation>
-            <numerusform>Invia %n immagine</numerusform>
-            <numerusform>Invia %n immagini</numerusform>
-        </translation>
-    </message>
-    <message>
-        <source>Select images</source>
-        <translation>Seleziona immagini</translation>
-    </message>
-    <message>
-        <source>Back</source>
-        <translation>Indietro</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Annulla</translation>
+        <translation type="unfinished">Carica altro</translation>
     </message>
 </context>
 <context>
@@ -128,9 +55,28 @@
         <source>The file %1 does not exists</source>
         <translation>Il file %1 non esiste</translation>
     </message>
+</context>
+<context>
+    <name>MainPage</name>
     <message>
-        <source>Unable to open the file %1</source>
-        <translation>Impossibile aprire il file %1</translation>
+        <source>Timeline</source>
+        <translation type="unfinished">Timeline</translation>
+    </message>
+    <message>
+        <source>Pingviini</source>
+        <translation type="unfinished">Pingviini</translation>
+    </message>
+    <message>
+        <source>Mentions</source>
+        <translation type="unfinished">Menzioni</translation>
+    </message>
+    <message>
+        <source>Messages</source>
+        <translation type="unfinished">Messaggi</translation>
+    </message>
+    <message>
+        <source>Search</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -139,12 +85,63 @@
         <source>Load more</source>
         <translation>Carica altro</translation>
     </message>
+    <message>
+        <source>Users</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Settings</source>
+        <translation type="unfinished">Impostazioni</translation>
+    </message>
 </context>
 <context>
-    <name>SearchView</name>
+    <name>NewTweet</name>
     <message>
-        <source>Load more</source>
-        <translation>Carica altro</translation>
+        <source>Delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Profile</name>
+    <message>
+        <source>Summary</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Location</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Followers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Following</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tweets</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Favourites</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unfollow</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Follow</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unmute</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mute</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -171,6 +168,21 @@
     </message>
 </context>
 <context>
+    <name>Tweet</name>
+    <message>
+        <source>Unfavorite</source>
+        <translation type="unfinished">Non mi piace più</translation>
+    </message>
+    <message>
+        <source>Favorite</source>
+        <translation type="unfinished">Mi piace</translation>
+    </message>
+    <message>
+        <source>Retweet</source>
+        <translation type="unfinished">Ritwitta</translation>
+    </message>
+</context>
+<context>
     <name>TweetDetails</name>
     <message>
         <source>Retweet</source>
@@ -187,35 +199,6 @@
     <message>
         <source>Report as spam</source>
         <translation>Segnala come spam</translation>
-    </message>
-</context>
-<context>
-    <name>common</name>
-    <message>
-        <source>Now</source>
-        <translation>Ora</translation>
-    </message>
-    <message>
-        <source>Just now</source>
-        <translation>Adesso</translation>
-    </message>
-    <message numerus="yes">
-        <source>%n min(s)</source>
-        <translation>
-            <numerusform>%n min</numerusform>
-            <numerusform>%n min</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n hr(s)</source>
-        <translation>
-            <numerusform>%n ora</numerusform>
-            <numerusform>%n ore</numerusform>
-        </translation>
-    </message>
-    <message>
-        <source>Yesterday %1</source>
-        <translation>Ieri %1</translation>
     </message>
 </context>
 </TS>
