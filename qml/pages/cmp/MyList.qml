@@ -52,7 +52,7 @@ SilicaListView {
 
     PullDownMenu {
         MenuItem {
-            text: "Users"
+            text: qsTr("Users")
             onClicked: pageStack.push(Qt.resolvedUrl("../UsersDebug.qml"))
         }
         MenuItem {
