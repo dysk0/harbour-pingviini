@@ -18,9 +18,24 @@
         <source>Reading mode</source>
         <translation>Leesmodus</translation>
     </message>
+    <message>
+        <source>Open in Browser</source>
+        <translation>Open in Browser</translation>
+    </message>
 </context>
 <context>
-    <name>CmpDirectMessages</name>
+    <name>CreditsTranslations</name>
+    <message>
+        <source>Translate App</source>
+        <translation>Vertaal App</translation>
+    </message>
+    <message>
+        <source>Credits</source>
+        <translation>Credits</translation>
+    </message>
+</context>
+<context>
+    <name>DirectMessages</name>
     <message>
         <source>Messages</source>
         <translation>Berichten</translation>
@@ -35,109 +50,136 @@
     </message>
 </context>
 <context>
-    <name>ImageChooser</name>
-    <message>
-        <source>Android storage</source>
-        <translation>Android-opslag</translation>
-    </message>
-    <message>
-        <source>SD Card</source>
-        <translation>SD-kaart</translation>
-    </message>
-    <message>
-        <source>Home</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>Sort ascending</source>
-        <translation>Oplopend sorteren</translation>
-    </message>
-    <message>
-        <source>Sort descending</source>
-        <translation>Aflopend sorteren</translation>
-    </message>
-    <message>
-        <source>Sort by name</source>
-        <translation>Sorteren op naam</translation>
-    </message>
-    <message>
-        <source>Sort by date</source>
-        <translation>Sorteren op datum</translation>
-    </message>
-    <message numerus="yes">
-        <source>Send %n image(s)</source>
-        <translation>
-            <numerusform>%n afbeelding verzenden</numerusform>
-            <numerusform>%n afbeeldingen verzenden</numerusform>
-        </translation>
-    </message>
-    <message>
-        <source>Select images</source>
-        <translation>Kies afbeeldingen</translation>
-    </message>
-    <message>
-        <source>Back</source>
-        <translation>Terug</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Annuleren</translation>
-    </message>
-</context>
-<context>
     <name>ImageUploader</name>
     <message>
         <source>The file %1 does not exists</source>
         <translation>Het bestand %1 bestaat niet</translation>
     </message>
-    <message>
-        <source>Unable to open the file %1</source>
-        <translation>Kan het bestand %1 niet openen</translation>
-    </message>
 </context>
 <context>
-    <name>Mentions</name>
+    <name>MainPage</name>
+    <message>
+        <source>Timeline</source>
+        <translation>Tijdlijn</translation>
+    </message>
+    <message>
+        <source>Pingviini</source>
+        <translation>Pingviini</translation>
+    </message>
     <message>
         <source>Mentions</source>
         <translation>Vermeldingen</translation>
     </message>
     <message>
-        <source>Pingviini</source>
-        <translation>Pingviini</translation>
+        <source>Messages</source>
+        <translation>Berichten</translation>
     </message>
     <message>
-        <source>Load more</source>
-        <translation>Meer laden</translation>
-    </message>
-</context>
-<context>
-    <name>SearchView</name>
-    <message>
-        <source>Load more</source>
-        <translation>Meer laden</translation>
+        <source>Search</source>
+        <translation>Zoeken</translation>
     </message>
 </context>
 <context>
-    <name>Timeline</name>
+    <name>MyList</name>
     <message>
-        <source>Show navigation</source>
-        <translation>Toon navigatiebalk</translation>
-    </message>
-    <message>
-        <source>Pingviini</source>
-        <translation>Pingviini</translation>
-    </message>
-    <message>
-        <source>Add account</source>
-        <translation>Account toevoegen</translation>
+        <source>Settings</source>
+        <translation>Instellingen</translation>
     </message>
     <message>
         <source>Load more</source>
         <translation>Meer laden</translation>
     </message>
     <message>
-        <source>Timeline</source>
-        <translation>Tijdlijn</translation>
+        <source>Users</source>
+        <translation>Gebruikers</translation>
+    </message>
+</context>
+<context>
+    <name>NewTweet</name>
+    <message>
+        <source>Delete</source>
+        <translation>Verwijderen</translation>
+    </message>
+</context>
+<context>
+    <name>Profile</name>
+    <message>
+        <source>Summary</source>
+        <translation>Overzicht</translation>
+    </message>
+    <message>
+        <source>Location</source>
+        <translation>Locatie</translation>
+    </message>
+    <message>
+        <source>Followers</source>
+        <translation>Volgers</translation>
+    </message>
+    <message>
+        <source>Following</source>
+        <translation>Volgen</translation>
+    </message>
+    <message>
+        <source>Tweets</source>
+        <translation>Tweets</translation>
+    </message>
+    <message>
+        <source>Favourites</source>
+        <translation>Favorieten</translation>
+    </message>
+    <message>
+        <source>Unfollow</source>
+        <translation>Ontvolgen</translation>
+    </message>
+    <message>
+        <source>Follow</source>
+        <translation>Volgen</translation>
+    </message>
+    <message>
+        <source>Unmute</source>
+        <translation>Dempen uitschakelen</translation>
+    </message>
+    <message>
+        <source>Mute</source>
+        <translation>Dempen inschakelen</translation>
+    </message>
+</context>
+<context>
+    <name>Settings</name>
+    <message>
+        <source>Settings</source>
+        <translation>Instellingen</translation>
+    </message>
+    <message>
+        <source>Add / Replace Account</source>
+        <translation>Account toevoegen / vervangen</translation>
+    </message>
+    <message>
+        <source>Authorize this app to use your Twitter account in your behalf.</source>
+        <translation>Autoriseer deze app om uw Twitter account namens u te gebruiken.</translation>
+    </message>
+    <message>
+        <source>Load images in tweets</source>
+        <translation>Laad afbeeldingen in tweets</translation>
+    </message>
+    <message>
+        <source>Disable this option if you want to preserve your data connection.</source>
+        <translation>Schakel deze optie uit als u uw gegevensverbinding wilt behouden.</translation>
+    </message>
+</context>
+<context>
+    <name>Tweet</name>
+    <message>
+        <source>Unfavorite</source>
+        <translation>Vind ik niet meer leuk</translation>
+    </message>
+    <message>
+        <source>Favorite</source>
+        <translation>Vind ik leuk</translation>
+    </message>
+    <message>
+        <source>Retweet</source>
+        <translation>Retweeten</translation>
     </message>
 </context>
 <context>
@@ -157,35 +199,6 @@
     <message>
         <source>Report as spam</source>
         <translation>Melden als spam</translation>
-    </message>
-</context>
-<context>
-    <name>common</name>
-    <message>
-        <source>Now</source>
-        <translation>Nu</translation>
-    </message>
-    <message>
-        <source>Just now</source>
-        <translation>Zojuist</translation>
-    </message>
-    <message numerus="yes">
-        <source>%n min(s)</source>
-        <translation type="unfinished">
-            <numerusform>%n min</numerusform>
-            <numerusform>%n min</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n hr(s)</source>
-        <translation type="unfinished">
-            <numerusform>%n u</numerusform>
-            <numerusform>%n u</numerusform>
-        </translation>
-    </message>
-    <message>
-        <source>Yesterday %1</source>
-        <translation>Gisteren, %1</translation>
     </message>
 </context>
 </TS>
