@@ -38,15 +38,15 @@
     <name>DirectMessages</name>
     <message>
         <source>Messages</source>
-        <translation type="unfinished">Messages</translation>
+        <translation>Messages</translation>
     </message>
     <message>
         <source>Pingviini</source>
-        <translation type="unfinished">Pingviini</translation>
+        <translation>Pingviini</translation>
     </message>
     <message>
         <source>Load more</source>
-        <translation type="unfinished">Charger davantage</translation>
+        <translation>Charger davantage</translation>
     </message>
 </context>
 <context>
@@ -60,23 +60,23 @@
     <name>MainPage</name>
     <message>
         <source>Timeline</source>
-        <translation type="unfinished">Fil d&apos;actualité</translation>
+        <translation>Fil d&apos;actualité</translation>
     </message>
     <message>
         <source>Pingviini</source>
-        <translation type="unfinished">Pingviini</translation>
+        <translation>Pingviini</translation>
     </message>
     <message>
         <source>Mentions</source>
-        <translation type="unfinished">Mentions</translation>
+        <translation>Mentions</translation>
     </message>
     <message>
         <source>Messages</source>
-        <translation type="unfinished">Messages</translation>
+        <translation>Messages</translation>
     </message>
     <message>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>Recherche</translation>
     </message>
 </context>
 <context>
@@ -87,61 +87,61 @@
     </message>
     <message>
         <source>Users</source>
-        <translation type="unfinished"></translation>
+        <translation>Utilisateurs</translation>
     </message>
     <message>
         <source>Settings</source>
-        <translation type="unfinished">Paramètres</translation>
+        <translation>Paramètres</translation>
     </message>
 </context>
 <context>
     <name>NewTweet</name>
     <message>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>Effacer</translation>
     </message>
 </context>
 <context>
     <name>Profile</name>
     <message>
         <source>Summary</source>
-        <translation type="unfinished"></translation>
+        <translation>Biographie</translation>
     </message>
     <message>
         <source>Location</source>
-        <translation type="unfinished"></translation>
+        <translation>Emplacement</translation>
     </message>
     <message>
         <source>Followers</source>
-        <translation type="unfinished"></translation>
+        <translation>Abonnés</translation>
     </message>
     <message>
         <source>Following</source>
-        <translation type="unfinished"></translation>
+        <translation>Abonnements</translation>
     </message>
     <message>
         <source>Tweets</source>
-        <translation type="unfinished"></translation>
+        <translation>Tweets</translation>
     </message>
     <message>
         <source>Favourites</source>
-        <translation type="unfinished"></translation>
+        <translation>Favoris</translation>
     </message>
     <message>
         <source>Unfollow</source>
-        <translation type="unfinished"></translation>
+        <translation>Ne plus suivre</translation>
     </message>
     <message>
         <source>Follow</source>
-        <translation type="unfinished"></translation>
+        <translation>Suivre</translation>
     </message>
     <message>
         <source>Unmute</source>
-        <translation type="unfinished"></translation>
+        <translation>Démasquer</translation>
     </message>
     <message>
         <source>Mute</source>
-        <translation type="unfinished"></translation>
+        <translation>Masquer</translation>
     </message>
 </context>
 <context>
@@ -171,15 +171,15 @@
     <name>Tweet</name>
     <message>
         <source>Unfavorite</source>
-        <translation type="unfinished">Retirer des favoris</translation>
+        <translation>Retirer des favoris</translation>
     </message>
     <message>
         <source>Favorite</source>
-        <translation type="unfinished">Mettre en favoris</translation>
+        <translation>Mettre en favoris</translation>
     </message>
     <message>
         <source>Retweet</source>
-        <translation type="unfinished">Retweeter</translation>
+        <translation>Retweeter</translation>
     </message>
 </context>
 <context>
