@@ -46,7 +46,7 @@
     </message>
     <message>
         <source>Home</source>
-        <translation></translation>
+        <translation>Thuis</translation>
     </message>
     <message>
         <source>Sort ascending</source>
