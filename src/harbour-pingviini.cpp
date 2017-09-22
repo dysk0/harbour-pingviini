@@ -33,6 +33,9 @@
 #endif
 
 #include <sailfishapp.h>
+#include <QQuickView>
+#include <QtQml>
+#include <QtGui/QGuiApplication>
 #include "selector/imageuploader.h"
 #include "selector/thumbnailprovider.h"
 #include "selector/filesmodel.h"
