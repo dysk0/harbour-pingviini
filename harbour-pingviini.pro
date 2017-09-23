@@ -12,6 +12,11 @@
 # The name of your application
 TARGET = harbour-pingviini
 
+i18n_files.files = translations
+i18n_files.path = /usr/share/$$TARGET
+
+INSTALLS += i18n_files
+
 CONFIG += sailfishapp
 
 SOURCES += src/harbour-pingviini.cpp \
@@ -41,11 +46,12 @@ SAILFISHAPP_ICONS = 86x86 108x108 128x128 256x256
 # following CONFIG line
 CONFIG += sailfishapp_i18n
 
-# German translation is enabled as an example. If you aren't
-# planning to localize your app, remember to comment out the
-# following TRANSLATIONS line. And also do not forget to
-# modify the localized app name in the the .desktop file.
-TRANSLATIONS += translations/harbour-pingviini-de.ts
+TRANSLATIONS += \
+    translations/harbour-pingviini-de.ts \
+    translations/harbour-pingviini-fr.ts \
+    translations/harbour-pingviini-it.ts \
+    translations/harbour-pingviini-nl.ts \   
+    translations/harbour-pingviini-oc.ts      
 
 DISTFILES += \
     Logic.js \
