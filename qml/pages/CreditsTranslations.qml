@@ -10,13 +10,6 @@ Page {
         id: listview
         anchors.fill: parent
 
-        PullDownMenu {
-            MenuItem {
-                text: qsTr("Translate App")
-                onClicked: openLinkInBrowser("https://www.transifex.com/gmax/pingviini/")
-            }
-        }
-
         header: PageHeader {
             title: qsTr("Credits")
         }
