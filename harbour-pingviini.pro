@@ -50,8 +50,8 @@ TRANSLATIONS += \
     translations/harbour-pingviini-de.ts \
     translations/harbour-pingviini-fr.ts \
     translations/harbour-pingviini-it.ts \
-    translations/harbour-pingviini-nl.ts \   
-    translations/harbour-pingviini-oc.ts      
+    translations/harbour-pingviini-nl.ts \
+    translations/harbour-pingviini-oc.ts
 
 DISTFILES += \
     Logic.js \
@@ -73,16 +73,12 @@ DISTFILES += \
     qml/pages/cmp/MediaBlock.qml \
     qml/pages/cmp/MyImage.qml \
     qml/pages/ImageFullScreen.qml \
-    qml/home.svg \
-    qml/mesagess.svg \
-    qml/search.svg \
     qml/verified.svg \
     qml/pages/cmp/MyList.qml \
     qml/pages/cmp/TweetVideo.qml \
     qml/pages/Settings.qml \
     qml/pages/CreditsTranslations.qml \
     qml/pages/DirectMessages.qml \
-    qml/notification.svg \
     qml/pages/MainPage.qml \
     qml/pages/UsersDebug.qml \
     qml/lib/Parser.js \

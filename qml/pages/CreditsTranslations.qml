@@ -48,6 +48,12 @@ Page {
                 url: "http://grave-design.com/"
             }
             ListElement {
+                section: "Development"
+                name: "rudi.timmer@gmx.us"
+                author: "Rudi Timmermans"
+                url: "http://grave-design.com/"
+            }
+            ListElement {
                 section: "Credits"
                 name: "codebird.js"
                 author: "jublonet"
