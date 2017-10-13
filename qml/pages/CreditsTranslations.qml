@@ -51,7 +51,7 @@ Page {
                 section: "Development"
                 name: "rudi.timmer@gmx.us"
                 author: "Rudi Timmermans"
-                url: "http://grave-design.com/"
+                url: "https://github.com/Sailbook"
             }
             ListElement {
                 section: "Credits"
