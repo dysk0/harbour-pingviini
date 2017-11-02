@@ -82,7 +82,8 @@ DISTFILES += \
     qml/pages/MainPage.qml \
     qml/pages/UsersDebug.qml \
     qml/lib/Parser.js \
-    rpm/harbour-pingviini.changes
+    rpm/harbour-pingviini.changes \
+    qml/lib/twitter-text.js
 
 HEADERS += \
     src/selector/imageuploader.h \

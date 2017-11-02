@@ -1,211 +1,202 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="en" version="2.1">
 <context>
     <name>AccountAdd</name>
     <message>
         <source>Add Account</source>
-        <translation type="unfinished"></translation>
+        <translation>Add Account</translation>
     </message>
 </context>
 <context>
     <name>Browser</name>
     <message>
         <source>Web mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Web mode</translation>
     </message>
     <message>
         <source>Reading mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Reading mode</translation>
     </message>
     <message>
         <source>Open in Browser</source>
-        <translation type="unfinished"></translation>
+        <translation>Open in Browser</translation>
     </message>
 </context>
 <context>
     <name>CreditsTranslations</name>
     <message>
         <source>Translate App</source>
-        <translation type="unfinished"></translation>
+        <translation>Translate App</translation>
     </message>
     <message>
         <source>Credits</source>
-        <translation type="unfinished"></translation>
+        <translation>Credits</translation>
     </message>
 </context>
 <context>
     <name>DirectMessages</name>
     <message>
         <source>Messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Messages</translation>
     </message>
     <message>
         <source>Pingviini</source>
-        <translation type="unfinished"></translation>
+        <translation>Pingviini</translation>
     </message>
     <message>
         <source>Load more</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>ImageFullScreen</name>
-    <message>
-        <source>Error loading</source>
-        <translation type="unfinished"></translation>
+        <translation>Load more</translation>
     </message>
 </context>
 <context>
     <name>ImageUploader</name>
     <message>
         <source>The file %1 does not exists</source>
-        <translation type="unfinished"></translation>
+        <translation>The file %1 does not exists</translation>
     </message>
 </context>
 <context>
     <name>MainPage</name>
     <message>
         <source>Pingviini</source>
-        <translation type="unfinished"></translation>
+        <translation>Pingviini</translation>
     </message>
     <message>
         <source>Messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Messages</translation>
     </message>
     <message>
         <source>Timeline</source>
-        <translation type="unfinished"></translation>
+        <translation>Timeline</translation>
     </message>
     <message>
         <source>Mentions</source>
-        <translation type="unfinished"></translation>
+        <translation>Mentions</translation>
     </message>
     <message>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>Search</translation>
     </message>
 </context>
 <context>
     <name>MyList</name>
     <message>
         <source>Load more</source>
-        <translation type="unfinished"></translation>
+        <translation>Load more</translation>
     </message>
     <message>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Settings</translation>
     </message>
     <message>
         <source>Users</source>
-        <translation type="unfinished"></translation>
+        <translation>Users</translation>
     </message>
 </context>
 <context>
     <name>NewTweet</name>
     <message>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>Delete</translation>
     </message>
 </context>
 <context>
     <name>Profile</name>
     <message>
         <source>Summary</source>
-        <translation type="unfinished"></translation>
+        <translation>Summary</translation>
     </message>
     <message>
         <source>Location</source>
-        <translation type="unfinished"></translation>
+        <translation>Location</translation>
     </message>
     <message>
         <source>Followers</source>
-        <translation type="unfinished"></translation>
+        <translation>Followers</translation>
     </message>
     <message>
         <source>Following</source>
-        <translation type="unfinished"></translation>
+        <translation>Following</translation>
     </message>
     <message>
         <source>Tweets</source>
-        <translation type="unfinished"></translation>
+        <translation>Tweets</translation>
     </message>
     <message>
         <source>Favourites</source>
-        <translation type="unfinished"></translation>
+        <translation>Favourites</translation>
     </message>
     <message>
         <source>Unfollow</source>
-        <translation type="unfinished"></translation>
+        <translation>Unfollow</translation>
     </message>
     <message>
         <source>Follow</source>
-        <translation type="unfinished"></translation>
+        <translation>Follow</translation>
     </message>
     <message>
         <source>Mute</source>
-        <translation type="unfinished"></translation>
+        <translation>Mute</translation>
     </message>
     <message>
         <source>Unmute</source>
-        <translation type="unfinished"></translation>
+        <translation>Unmute</translation>
     </message>
 </context>
 <context>
     <name>Settings</name>
     <message>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Settings</translation>
     </message>
     <message>
         <source>Add / Replace Account</source>
-        <translation type="unfinished"></translation>
+        <translation>Add / Replace Account</translation>
     </message>
     <message>
         <source>Load images in tweets</source>
-        <translation type="unfinished"></translation>
+        <translation>Load images in tweets</translation>
     </message>
     <message>
         <source>Disable this option if you want to preserve your data connection.</source>
-        <translation type="unfinished"></translation>
+        <translation>Disable this option if you want to preserve your data connection.</translation>
     </message>
     <message>
         <source>Authorize this app to use your Twitter account in your behalf.</source>
-        <translation type="unfinished"></translation>
+        <translation>Authorize this app to use your Twitter account in your behalf.</translation>
     </message>
 </context>
 <context>
     <name>Tweet</name>
     <message>
         <source>Unfavorite</source>
-        <translation type="unfinished"></translation>
+        <translation>Unfavorite</translation>
     </message>
     <message>
         <source>Favorite</source>
-        <translation type="unfinished"></translation>
+        <translation>Favorite</translation>
     </message>
     <message>
         <source>Retweet</source>
-        <translation type="unfinished"></translation>
+        <translation>Retweet</translation>
     </message>
 </context>
 <context>
     <name>TweetDetails</name>
     <message>
         <source>Retweet</source>
-        <translation type="unfinished"></translation>
+        <translation>Retweet</translation>
     </message>
     <message>
         <source>Unfavorite</source>
-        <translation type="unfinished"></translation>
+        <translation>Unfavorite</translation>
     </message>
     <message>
         <source>Favorite</source>
-        <translation type="unfinished"></translation>
+        <translation>Favorite</translation>
     </message>
     <message>
         <source>Report as spam</source>
-        <translation type="unfinished"></translation>
+        <translation>Report as spam</translation>
     </message>
 </context>
 </TS>

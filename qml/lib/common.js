@@ -1,3 +1,4 @@
+Qt.include("twitter-text.js")
 String.prototype.replaceAll = function(search, replacement) {
     var target = this;
     return target.replace(new RegExp(search, 'g'), replacement);
@@ -67,7 +68,6 @@ function parseEntities(tweet, entities){
             tweet.richText = tweet.text.replaceAll(item.url, '')
         });
     }
-
     return tweet;
 }
 
@@ -162,9 +162,11 @@ function parseTweet(tweetJson) {
 
 
     tweet.text = originalTweetJson.full_text ? originalTweetJson.full_text : originalTweetJson.text
-
     if (originalTweetJson.entities)
         tweet = parseEntities(tweet, originalTweetJson.entities);
+    tweet.richText = twttr.txt.autoLink(tweet.text, originalTweetJson.entities.urls);
+
+
 
 
     //if(tweet.screenName === "dysko"){

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1">
+<TS version="2.1" language="fr">
 <context>
     <name>AccountAdd</name>
     <message>
@@ -12,7 +12,7 @@
     <name>Browser</name>
     <message>
         <source>Web mode</source>
-        <translation>Mode web</translation>
+        <translation>Mode internet</translation>
     </message>
     <message>
         <source>Reading mode</source>
@@ -46,7 +46,14 @@
     </message>
     <message>
         <source>Load more</source>
-        <translation>Charger davantage</translation>
+        <translation>Charger plus</translation>
+    </message>
+</context>
+<context>
+    <name>ImageFullScreen</name>
+    <message>
+        <source>Error loading</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -59,20 +66,20 @@
 <context>
     <name>MainPage</name>
     <message>
-        <source>Timeline</source>
-        <translation>Fil d&apos;actualité</translation>
-    </message>
-    <message>
         <source>Pingviini</source>
         <translation>Pingviini</translation>
     </message>
     <message>
-        <source>Mentions</source>
-        <translation>Mentions</translation>
-    </message>
-    <message>
         <source>Messages</source>
         <translation>Messages</translation>
+    </message>
+    <message>
+        <source>Timeline</source>
+        <translation>Chronologie</translation>
+    </message>
+    <message>
+        <source>Mentions</source>
+        <translation>Mentions</translation>
     </message>
     <message>
         <source>Search</source>
@@ -83,33 +90,33 @@
     <name>MyList</name>
     <message>
         <source>Load more</source>
-        <translation>Charger davantage</translation>
-    </message>
-    <message>
-        <source>Users</source>
-        <translation>Utilisateurs</translation>
+        <translation>Charger plus</translation>
     </message>
     <message>
         <source>Settings</source>
         <translation>Paramètres</translation>
+    </message>
+    <message>
+        <source>Users</source>
+        <translation>Utilisateurs</translation>
     </message>
 </context>
 <context>
     <name>NewTweet</name>
     <message>
         <source>Delete</source>
-        <translation>Effacer</translation>
+        <translation>Supprimer</translation>
     </message>
 </context>
 <context>
     <name>Profile</name>
     <message>
         <source>Summary</source>
-        <translation>Biographie</translation>
+        <translation>Résumé</translation>
     </message>
     <message>
         <source>Location</source>
-        <translation>Emplacement</translation>
+        <translation>Location</translation>
     </message>
     <message>
         <source>Followers</source>
@@ -136,23 +143,23 @@
         <translation>Suivre</translation>
     </message>
     <message>
-        <source>Unmute</source>
-        <translation>Démasquer</translation>
-    </message>
-    <message>
         <source>Mute</source>
         <translation>Masquer</translation>
+    </message>
+    <message>
+        <source>Unmute</source>
+        <translation>Ne plus masquer</translation>
     </message>
 </context>
 <context>
     <name>Settings</name>
     <message>
         <source>Settings</source>
-        <translation>Paramètres</translation>
+        <translation>Préférences</translation>
     </message>
     <message>
         <source>Add / Replace Account</source>
-        <translation>Ajouter / Remplacer un compte</translation>
+        <translation>Ajouter / Changer de compte</translation>
     </message>
     <message>
         <source>Load images in tweets</source>
@@ -160,22 +167,22 @@
     </message>
     <message>
         <source>Disable this option if you want to preserve your data connection.</source>
-        <translation>Désactivez cette option si vous souhaitez économiser votre connexion Internet.</translation>
+        <translation>Désactivez cette option si vous souhaitez économiser de vos données</translation>
     </message>
     <message>
         <source>Authorize this app to use your Twitter account in your behalf.</source>
-        <translation>Autorisez l&apos;application à utiliser votre compte en votre nom.</translation>
+        <translation>Autorisez cette application à utiliser Twitter en votre nom</translation>
     </message>
 </context>
 <context>
     <name>Tweet</name>
     <message>
         <source>Unfavorite</source>
-        <translation>Retirer des favoris</translation>
+        <translation>Supprimer des favoris</translation>
     </message>
     <message>
         <source>Favorite</source>
-        <translation>Mettre en favoris</translation>
+        <translation>Ajouter à ses favoris</translation>
     </message>
     <message>
         <source>Retweet</source>
@@ -190,11 +197,11 @@
     </message>
     <message>
         <source>Unfavorite</source>
-        <translation>Retirer des favoris</translation>
+        <translation>Supprimer des favoris</translation>
     </message>
     <message>
         <source>Favorite</source>
-        <translation>Mettre en favoris</translation>
+        <translation>Ajouter à ses favoris</translation>
     </message>
     <message>
         <source>Report as spam</source>

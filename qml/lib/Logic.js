@@ -19,6 +19,7 @@
 .pragma library
 .import QtQuick.LocalStorage 2.0 as LS
 Qt.include("common.js")
+Qt.include("twitter-text.js")
 
 var UNIQUE_MSGIDS = [];
 var OAUTH_CONSUMER_KEY = "BsVdhEDHrLgE8SUfAUEoVdnwD"

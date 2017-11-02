@@ -50,6 +50,13 @@
     </message>
 </context>
 <context>
+    <name>ImageFullScreen</name>
+    <message>
+        <source>Error loading</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>ImageUploader</name>
     <message>
         <source>The file %1 does not exists</source>

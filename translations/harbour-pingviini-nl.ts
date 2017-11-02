@@ -20,18 +20,18 @@
     </message>
     <message>
         <source>Open in Browser</source>
-        <translation>Open in Browser</translation>
+        <translation>Openen in browser</translation>
     </message>
 </context>
 <context>
     <name>CreditsTranslations</name>
     <message>
         <source>Translate App</source>
-        <translation>Vertaal App</translation>
+        <translation>App vertalen</translation>
     </message>
     <message>
         <source>Credits</source>
-        <translation>Credits</translation>
+        <translation>Met dank aan</translation>
     </message>
 </context>
 <context>
@@ -50,6 +50,13 @@
     </message>
 </context>
 <context>
+    <name>ImageFullScreen</name>
+    <message>
+        <source>Error loading</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>ImageUploader</name>
     <message>
         <source>The file %1 does not exists</source>
@@ -59,20 +66,20 @@
 <context>
     <name>MainPage</name>
     <message>
-        <source>Timeline</source>
-        <translation>Tijdlijn</translation>
-    </message>
-    <message>
         <source>Pingviini</source>
         <translation>Pingviini</translation>
     </message>
     <message>
-        <source>Mentions</source>
-        <translation>Vermeldingen</translation>
-    </message>
-    <message>
         <source>Messages</source>
         <translation>Berichten</translation>
+    </message>
+    <message>
+        <source>Timeline</source>
+        <translation>Tijdlijn</translation>
+    </message>
+    <message>
+        <source>Mentions</source>
+        <translation>Vermeldingen</translation>
     </message>
     <message>
         <source>Search</source>
@@ -82,12 +89,12 @@
 <context>
     <name>MyList</name>
     <message>
-        <source>Settings</source>
-        <translation>Instellingen</translation>
-    </message>
-    <message>
         <source>Load more</source>
         <translation>Meer laden</translation>
+    </message>
+    <message>
+        <source>Settings</source>
+        <translation>Instellingen</translation>
     </message>
     <message>
         <source>Users</source>
@@ -117,7 +124,7 @@
     </message>
     <message>
         <source>Following</source>
-        <translation>Volgen</translation>
+        <translation>Volgend</translation>
     </message>
     <message>
         <source>Tweets</source>
@@ -125,7 +132,7 @@
     </message>
     <message>
         <source>Favourites</source>
-        <translation>Favorieten</translation>
+        <translation>Vind-ik-leuks</translation>
     </message>
     <message>
         <source>Unfollow</source>
@@ -136,12 +143,12 @@
         <translation>Volgen</translation>
     </message>
     <message>
-        <source>Unmute</source>
-        <translation>Dempen uitschakelen</translation>
+        <source>Mute</source>
+        <translation>Dempen</translation>
     </message>
     <message>
-        <source>Mute</source>
-        <translation>Dempen inschakelen</translation>
+        <source>Unmute</source>
+        <translation>Ontdempen</translation>
     </message>
 </context>
 <context>
@@ -152,19 +159,19 @@
     </message>
     <message>
         <source>Add / Replace Account</source>
-        <translation>Account toevoegen / vervangen</translation>
-    </message>
-    <message>
-        <source>Authorize this app to use your Twitter account in your behalf.</source>
-        <translation>Autoriseer deze app om uw Twitter account namens u te gebruiken.</translation>
+        <translation>Account toevoegen/vervangen</translation>
     </message>
     <message>
         <source>Load images in tweets</source>
-        <translation>Laad afbeeldingen in tweets</translation>
+        <translation>Afbeeldingen in tweets laden</translation>
     </message>
     <message>
         <source>Disable this option if you want to preserve your data connection.</source>
-        <translation>Schakel deze optie uit als u uw gegevensverbinding wilt behouden.</translation>
+        <translation>Schakel deze optie uit als je je gegevensverbruik wil beperken.</translation>
+    </message>
+    <message>
+        <source>Authorize this app to use your Twitter account in your behalf.</source>
+        <translation>Geef deze app toegang tot je Twitter-account.</translation>
     </message>
 </context>
 <context>
