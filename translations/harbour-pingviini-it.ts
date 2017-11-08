@@ -24,6 +24,21 @@
     </message>
 </context>
 <context>
+    <name>CmpTweet</name>
+    <message>
+        <source>Unfavorite</source>
+        <translation type="unfinished">Non mi piace più</translation>
+    </message>
+    <message>
+        <source>Favorite</source>
+        <translation type="unfinished">Mi piace</translation>
+    </message>
+    <message>
+        <source>Retweet</source>
+        <translation type="unfinished">Ritwitta</translation>
+    </message>
+</context>
+<context>
     <name>CreditsTranslations</name>
     <message>
         <source>Translate App</source>

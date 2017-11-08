@@ -43,7 +43,7 @@ Page {
             width: parent.width
             height: parent.height
             onOpenDrawer:  infoPanel.open = setDrawer
-            delegate: Tweet {}
+            delegate: CmpTweet { tweet: model}
         }
 
         MyList {
@@ -59,7 +59,7 @@ Page {
             width: parent.width
             height: parent.height
             onOpenDrawer:  infoPanel.open = setDrawer
-            delegate: Tweet {}
+            delegate: CmpTweet { tweet: model}
         } // */
         MyList {
             id: dmList

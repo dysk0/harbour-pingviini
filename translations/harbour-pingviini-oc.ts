@@ -24,6 +24,21 @@
     </message>
 </context>
 <context>
+    <name>CmpTweet</name>
+    <message>
+        <source>Unfavorite</source>
+        <translation type="unfinished">Levar dels favorits</translation>
+    </message>
+    <message>
+        <source>Favorite</source>
+        <translation type="unfinished">Metre en favorits</translation>
+    </message>
+    <message>
+        <source>Retweet</source>
+        <translation type="unfinished">Tornar tweetejar</translation>
+    </message>
+</context>
+<context>
     <name>CreditsTranslations</name>
     <message>
         <source>Translate App</source>

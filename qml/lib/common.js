@@ -32,11 +32,11 @@ function parseEntities(tweet, entities){
                 tweet.richText = tweet.richText.replaceAll(item.url, '<a href="'+item.url+'">'+item.display_url+"</a>")
             } else {
                 var media;
-                    media = {
-                        type:       'sticker',
-                        cover:      item.expanded_url+"",
-                        media:      item.expanded_url+":large"
-                    }
+                media = {
+                    type:       'sticker',
+                    cover:      item.expanded_url+"",
+                    media:      item.expanded_url+":large"
+                }
 
                 tweet.media.push(media)
                 tweet.richText = tweet.text.replaceAll(item.url, '')
@@ -109,8 +109,8 @@ function parseDM(json) {
         recipient_avatar: json.recipient.profile_image_url_https,
         media: []
     }
-    tweet = parseEntities(tweet, json.entities);
-    console.log(JSON.stringify(json.entities))
+    //tweet = parseEntities(tweet, json.entities);
+    //console.log(JSON.stringify(json.entities))
     tweet.section = getDate(tweet.created_at)
     return tweet;
 }
@@ -120,7 +120,6 @@ function parseTweet(tweetJson) {
 
     var tweet = {
         id: tweetJson.id,
-        visualStyle: 0,
         id_str: tweetJson.id_str,
         source: tweetJson.source.replace(/<[^>]+>/ig, ""),
         created_at: getValidDate(tweetJson.created_at),
@@ -134,7 +133,6 @@ function parseTweet(tweetJson) {
         retweetScreenName: tweetJson.user.screen_name
     }
     tweet.section = getDate(tweet.created_at)
-
     var originalTweetJson = {};
     if (tweetJson.retweeted_status) {
         tweet.isRetweet = true;
@@ -142,6 +140,9 @@ function parseTweet(tweetJson) {
     } else {
         originalTweetJson = tweetJson;
     }
+
+
+
 
 
     tweet.isVerified = originalTweetJson.user.verified;
@@ -158,12 +159,31 @@ function parseTweet(tweetJson) {
     tweet.is_quote_status = originalTweetJson.is_quote_status ? true : false;
     if (tweet.is_quote_status) {
         tweet.quote_status_id = originalTweetJson.quoted_status_id
+        tweet.quoted_status = {
+            id: originalTweetJson.quoted_status.id,
+            id_str: originalTweetJson.quoted_status.id_str,
+            created_at: getValidDate(originalTweetJson.quoted_status.created_at),
+            favorited: originalTweetJson.quoted_status.favorited,
+            favoriteCount: originalTweetJson.quoted_status.favorite_count,
+            retweeted: originalTweetJson.quoted_status.retweeted,
+            retweetCount: originalTweetJson.quoted_status.retweet_count,
+            isVerified: originalTweetJson.quoted_status.user.verified,
+            userId: originalTweetJson.quoted_status.user.id,
+            userIdStr: originalTweetJson.quoted_status.user.id_str,
+            name: originalTweetJson.quoted_status.user.name,
+            screenName: originalTweetJson.quoted_status.user.screen_name,
+            profileImageUrl: originalTweetJson.quoted_status.user.profile_image_url,
+            text: originalTweetJson.quoted_status.full_text
+        }
+        tweet.quoted_status = parseEntities(tweet.quoted_status, originalTweetJson.quoted_status.entities);
+        tweet.quoted_status.richText = twttr.txt.autoLink(tweet.quoted_status.text, originalTweetJson.quoted_status.entities.urls)
     }
 
 
     tweet.text = originalTweetJson.full_text ? originalTweetJson.full_text : originalTweetJson.text
     if (originalTweetJson.entities)
         tweet = parseEntities(tweet, originalTweetJson.entities);
+    tweet.richText = tweet.text;
     tweet.richText = twttr.txt.autoLink(tweet.text, originalTweetJson.entities.urls);
 
 

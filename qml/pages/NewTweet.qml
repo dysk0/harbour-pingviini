@@ -10,6 +10,7 @@ import "../lib/codebird.js" as CB
 
 Item {
     id: newTweetPanel
+    property int tweetMaxChar: 280
     property string type: "New" //"New","Reply", "RT" or "DM"
     property string tweetId
     property string screenName //for "DM"
@@ -138,7 +139,7 @@ Item {
     }
     Rectangle {
         id: progressBar
-        width: newTweet.text.length ? newTweetPanel.width*(newTweet.text.length/140) : 0;
+        width: newTweet.text.length ? newTweetPanel.width*(newTweet.text.length/tweetMaxChar) : 0;
 
         height: Theme.itemSizeSmall * 0.05
         color: Theme.highlightBackgroundColor
@@ -169,7 +170,7 @@ Item {
 
         }
         autoScrollEnabled: true
-        //label: (140 - shortenText.length) + ' chars left for your ' + (type == "New" ? "tweet" : "reply")
+        //label: (tweetMaxChar - shortenText.length) + ' chars left for your ' + (type == "New" ? "tweet" : "reply")
         placeholderText: "Enter your tweet"
         text: placedText
         labelVisible: false
@@ -178,8 +179,8 @@ Item {
         horizontalAlignment: Text.AlignLeft
         // EnterKey.onClicked: { tweet() }
         onTextChanged: {
-            sendBtn.enabled = text.length > 140 ? false : true
-            newTweet.color = (text.length > 140 ? "red": Theme.primaryColor)
+            sendBtn.enabled = text.length > tweetMaxChar ? false : true
+            newTweet.color = (text.length > tweetMaxChar ? "red": Theme.primaryColor)
         }
 
     }

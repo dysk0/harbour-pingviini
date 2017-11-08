@@ -77,7 +77,7 @@ Page {
             right: parent.right
         }
         clip: true
-        delegate: Tweet {}
+        delegate: CmpTweet {tweet: model; miniDisplayMode: true}
     }
 
     ExpandingSectionGroup {
