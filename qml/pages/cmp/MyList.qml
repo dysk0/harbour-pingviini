@@ -59,16 +59,6 @@ SilicaListView {
             text: qsTr("Settings")
             onClicked: pageStack.push(Qt.resolvedUrl("../Settings.qml"))
         }
-        /*MenuItem {
-            visible: action === 'statuses_userTimeline'
-            text: (following ? "Unfollow" : "Follow")
-            onClicked: {
-                var msg = { 'action': following ? "friendships_destroy" : "friendships_create", 'screen_name': username, 'conf'  : conf
-                };
-                worker.sendMessage(msg);
-                following = !following
-            }
-        }*/
         MenuItem {
             text: qsTr("Load more")
             onClicked: {
