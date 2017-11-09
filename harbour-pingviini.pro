@@ -75,6 +75,7 @@ DISTFILES += \
     qml/pages/ImageFullScreen.qml \
     qml/verified.svg \
     qml/pages/cmp/MyList.qml \
+    qml/pages/Lists.qml \
     qml/pages/cmp/TweetVideo.qml \
     qml/pages/Settings.qml \
     qml/pages/CreditsTranslations.qml \

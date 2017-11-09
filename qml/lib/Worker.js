@@ -145,6 +145,11 @@ WorkerScript.onMessage = function(msg) {
                         items = reply.statuses;
                     parser = parseTweet
                     break;
+                case "followers_list":
+                    if ('users' in reply)
+                        items = reply.users;
+                    parser = parseUser
+                    break;
                 case "statuses_homeTimeline":
                 case "statuses_mentionsTimeline":
                 case "statuses_userTimeline":

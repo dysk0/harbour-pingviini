@@ -9,7 +9,26 @@ function getValidDate(twitterDate) {
 function getDate(ts){
     return new Date(ts.getFullYear(), ts.getMonth(), ts.getDate(), 0, 0, 0)
 }
-
+function parseUser(data){
+    var usr = {
+        id: data.id,
+        id_str: data.id_str,
+        name: data.name,
+        screen_name: data.screen_name,
+        location: data.location,
+        description: data.description.trim(),
+        avatar: data.profile_image_url_https,
+        favourites_count: data.favourites_count,
+        followers_count: data.followers_count,
+        friends_count: data.friends_count,
+        listed_count: data.listed_count,
+        statuses_count: data.statuses_count,
+        created_at: getValidDate(data.created_at),
+        verified: data.verified
+    }
+    console.log(JSON.stringify(usr))
+    return usr;
+}
 
 function parseEntities(tweet, entities){
     tweet.richText = tweet.text
