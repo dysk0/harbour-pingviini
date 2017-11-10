@@ -11,7 +11,14 @@ BackgroundItem {
     property variant tweet;
     property bool miniDisplayMode: false;
     width: parent.width
-    height: 2*Theme.paddingLarge + (lblText.height + lblName.height > avatar.height ? lblText.height + lblName.height : avatar.height)+ media.height + (tweet.is_quote_status ? loader.height : 0) + mnu.height
+    height: 2*Theme.paddingLarge + (lblText.height + lblName.height > avatar.height ? lblText.height + lblName.height : avatar.height)+ mmedia.height + (tweet.is_quote_status ? loader.height : 0) + mnu.height
+    GlassItem {
+        anchors.horizontalCenter: parent.left
+        visible: false //tweet.retweet
+        color: Theme.highlightColor
+        cache: false
+    }
+
     Image {
         anchors.top: parent.top
         anchors.left: parent.left
@@ -22,8 +29,8 @@ BackgroundItem {
         width: miniDisplayMode ? Theme.iconSizeSmall : Theme.iconSizeMedium
         height: width
         smooth: true
-        source: tweet.profileImageUrl
-        opacity: status === Image.Ready ? 1.0 : 0.0
+        source: tweet.avatar
+        opacity: status === Image.Ready ? (tweet.retweet ? 0.2 : 1.0) : 0.0
         Behavior on opacity { FadeAnimator {} }
         onStatusChanged: {
             if (status === Image.Error)
@@ -36,13 +43,33 @@ BackgroundItem {
             onClicked: {
                 pageStack.push(Qt.resolvedUrl("../Profile.qml"), {
                                    "name": tweet.name,
-                                   "username": tweet.screenName,
-                                   "profileImage": tweet.profileImageUrl
+                                   "username": tweet.screen_name,
+                                   "avatar": tweet.avatar
                                })
             }
 
         }
-
+    }
+    Image {
+        anchors.centerIn: avatar
+        visible: tweet.retweet
+        width: Theme.iconSizeExtraSmall
+        height: width
+        source: "image://theme/icon-s-retweet?" + Theme.highlightColor
+    }
+    Image {
+        visible: tweet.retweet
+        anchors.bottom: avatar.bottom
+        anchors.bottomMargin: -Theme.paddingSmall
+        anchors.left: avatar.left
+        anchors.leftMargin: -Theme.paddingSmall
+        asynchronous: true
+        width: Theme.iconSizeSmall
+        height: width
+        smooth: true
+        source: tweet.retweet_avatar
+        opacity: status === Image.Ready ? 1.0 : 0.0
+        Behavior on opacity { FadeAnimator {} }
     }
 
 
@@ -53,9 +80,9 @@ BackgroundItem {
             left: avatar.right
             leftMargin: Theme.paddingMedium
         }
-        text: tweet.hasOwnProperty("name") ? tweet.name: false
+        text: tweet.name
         font.weight: Font.Bold
-        font.pixelSize: miniDisplayMode ? Theme.fontSizeExtraSmall : Theme.fontSizeSmall
+        font.pixelSize: Theme.fontSizeSmall
         color: (pressed ? Theme.highlightColor : Theme.primaryColor)
     }
     Image {
@@ -63,9 +90,9 @@ BackgroundItem {
         anchors {
             left: lblName.right
             verticalCenter: lblName.verticalCenter
-            leftMargin: tweet.isVerified ? Theme.paddingMedium : 0
+            leftMargin: tweet.verified ? Theme.paddingMedium : 0
         }
-        width: tweet.hasOwnProperty("isVerified") && tweet.isVerified ? Theme.iconSizeExtraSmall*0.8 : 0
+        width: tweet.verified ? Theme.iconSizeExtraSmall*0.8 : 0
         opacity: 0.8
         height: width
         source: "../../verified.svg"
@@ -85,7 +112,7 @@ BackgroundItem {
             leftMargin: Theme.paddingMedium
         }
         truncationMode: TruncationMode.Fade
-        text: '@'+tweet.screenName
+        text: '@'+tweet.screen_name + " " + tweet.media.count
         font.pixelSize: Theme.fontSizeExtraSmall
         color: (pressed ? Theme.secondaryHighlightColor : Theme.secondaryColor)
     }
@@ -111,7 +138,7 @@ BackgroundItem {
             topMargin: Theme.paddingSmall
             rightMargin: Theme.paddingLarge
         }
-        height: richText.length ? paintedHeight : 0
+        height: rich_text.length ? paintedHeight : 0
         onLinkActivated: {
             console.log(link)
             if (link[0] === "@") {
@@ -136,7 +163,7 @@ BackgroundItem {
 
 
         }
-        text: tweet.richText
+        text: tweet.rich_text
         textFormat:Text.StyledText
         linkColor : (pressed ? Theme.primaryColor : Theme.highlightColor)
         wrapMode: Text.Wrap
@@ -144,7 +171,7 @@ BackgroundItem {
         color: (pressed ? Theme.highlightColor : Theme.primaryColor)
     }
     MediaBlock {
-        id: media
+        id: mmedia
         anchors {
             left: lblText.left
             right: parent.right
@@ -152,9 +179,9 @@ BackgroundItem {
             topMargin: Theme.paddingSmall
             rightMargin: Theme.paddingLarge
         }
-        model: (tweet.media ? tweet.media : [])
+        mdl: (tweet.media ? tweet.media : [])
         width: lblText.width
-        height: model.count ? 100 : 0
+        height: mdl && mdl.count ? 100 : 0
     }
     Rectangle {
         visible: tweet.is_quote_status
@@ -169,11 +196,11 @@ BackgroundItem {
         width: parent.width
         height: childrenRect.height
         anchors {
-            left: media.left
+            left: mmedia.left
             leftMargin: Theme.paddingSmall
-            right: media.right
+            right: mmedia.right
             rightMargin: Theme.paddingSmall
-            top: media.bottom
+            top: mmedia.bottom
             topMargin: Theme.paddingSmall
         }
     }
@@ -223,7 +250,7 @@ BackgroundItem {
                     leftMargin: Theme.paddingMedium
                     verticalCenter: parent.verticalCenter
                 }
-                text: tweet.favoriteCount
+                text: tweet.favorite_count
                 font.pixelSize: Theme.fontSizeExtraSmall
                 color: !tweet.favorited ? Theme.highlightColor : Theme.primaryColor
             }
@@ -256,7 +283,7 @@ BackgroundItem {
                     leftMargin: Theme.paddingMedium
                     verticalCenter: parent.verticalCenter
                 }
-                text: tweet.retweetCount
+                text: tweet.retweet_count
                 font.pixelSize: Theme.fontSizeExtraSmall
                 color: !tweet.retweeted ? Theme.highlightColor : Theme.primaryColor
             }

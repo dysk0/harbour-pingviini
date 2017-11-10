@@ -239,7 +239,7 @@ Page {
             height: parent.height
             onOpenDrawer:  infoPanel.open = setDrawer
             action: ""
-            delegate: Tweet {}
+            delegate: CmpTweet { tweet: model}
             header: Item {
                 id: header
                 width: tlSearchheaderContainer.width

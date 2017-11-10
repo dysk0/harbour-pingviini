@@ -30,7 +30,7 @@ Item {
         id: icon
         anchors {
             left: parent.left
-            leftMargin: Theme.paddingLarge
+            leftMargin: Theme.horizontalPageMargin
             top: parent.top
             topMargin: Theme.paddingLarge
         }
@@ -44,7 +44,7 @@ Item {
             left: icon.left
             leftMargin: Theme.paddingLarge
             right: parent.right
-            rightMargin: Theme.paddingLarge
+            rightMargin: Theme.horizontalPageMargin
             verticalCenter: parent.verticalCenter
         }
         Label {

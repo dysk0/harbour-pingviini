@@ -91,34 +91,57 @@ Page {
         ExpandingSection {
             title: qsTr("Summary")
             content.sourceComponent: Column {
-                spacing: Theme.paddingMedium
                 anchors.bottomMargin: Theme.paddingLarge
-                DetailItem {
+                CmpListItem {
                     visible: location != "" ? true : false
                     label: qsTr("Location")
                     value: location
+                    onClicked: Qt.openUrlExternally("maps:0,0?q=google");
+
                 }
-                DetailItem {
+                CmpListItem {
                     visible: followers_count ? true : false
-                    label: qsTr("Followers")
+                    label: qsTrId("Followers")
                     value: followers_count
+                    onClicked: pageStack.push(Qt.resolvedUrl("Lists.qml"), {
+                                                  action: "followers_list",
+                                                  name: name,
+                                                  username: username,
+                                                  avatar: profileImage,
+                                                  profileBg: profile_background,
+                                                  description: '@'+username +' ' + qsTrId("followers")
+                                              })
                 }
-                DetailItem {
+                CmpListItem {
                     visible: friends_count ? true : false
-                    label: qsTr("Following")
-                    value: (friends_count)
+                    label: qsTrId("Following")
+                    value: friends_count
+                    onClicked: pageStack.push(Qt.resolvedUrl("Lists.qml"), {
+                                                  action: "friends_list",
+                                                  name: name,
+                                                  username: username,
+                                                  avatar: profileImage,
+                                                  profileBg: profile_background,
+                                                  description: '@'+username +' ' + qsTrId("friends")
+                                              })
                 }
-                DetailItem {
+                CmpListItem {
                     visible: statuses_count ? true : false
-                    label: qsTr("Tweets")
-                    value: (statuses_count)
+                    enabled: false
+                    label: qsTrId("Tweets")
+                    value: statuses_count
                 }
-                DetailItem {
+                CmpListItem {
                     visible: favourites_count ? true : false
-                    label: qsTr("Favourites")
-                    value: (favourites_count)
+                    enabled: false
+                    label: qsTrId("Favourites")
+                    value: favourites_count
                 }
-                Row {
+                Label {
+                    text: " "
+                }
+                Column {
+                    spacing: Theme.paddingMedium
                     anchors.horizontalCenter:     parent.horizontalCenter
                     Button {
                         id: btnFollow
@@ -134,9 +157,6 @@ Page {
                             following = !following
                         }
                     }
-                }
-                Row {
-                    anchors.horizontalCenter:     parent.horizontalCenter
                     Button {
                         id: btnBlock
                         text: muting  ?  qsTr("Unmute") : qsTr("Mute")
@@ -144,13 +164,16 @@ Page {
 
                             var msg = {
                                 'headlessAction': muting ? "mutes_users_destroy" : "mutes_users_create",
-                                                              'params': {'screen_name': username},
+                                                           'params': {'screen_name': username},
                                 'conf'  : Logic.getConfTW()
                             };
                             worker.sendMessage(msg);
                             muting = !muting
                         }
                     }
+
+
+
                 }
                 Label {
                     text: " "

@@ -103,11 +103,13 @@ WorkerScript.onMessage = function(msg) {
         if (!msg.params)
             msg.params = {}
         msg.params['tweet_mode'] = "extended";
-        console.log(JSON.stringify(msg.params))
-        //msg.params['count'] = 200;
-        console.log("Page: " + JSON.stringify(typeof msg.page))
-        console.log("Cursor: " + JSON.stringify(typeof msg.cursor))
-        if (typeof msg.params.page === "undefined" && typeof msg.params.cursor === "undefined" ){
+        msg.params['extended_entities'] = true;
+
+
+        if (msg.model && msg.model.count === 0) {
+            msg.mode = "append";
+        }
+        if (msg.next_cursor === ""){
             if (msg.model && msg.model.count) {
                 if (msg.mode === "append") {
                     msg.params['max_id'] = msg.model.get(msg.model.count-1).id
@@ -116,14 +118,31 @@ WorkerScript.onMessage = function(msg) {
                     msg.params['since_id'] = msg.model.get(0).id
                 }
             }
+        } else {
+            if (msg.mode === "prepend" )
+                msg.params['cursor'] = msg.previous_cursor
+            else
+                msg.params['cursor'] = msg.next_cursor
         }
 
-        if (msg.model && msg.model.count === 0) {
-            msg.mode = "append";
-        }
+
         console.log(JSON.stringify(msg.params))
         cb.__call(msg.bgAction, msg.params, function (reply, rate, err) {
             console.log(JSON.stringify(rate));
+            if ('next_cursor' in reply && 'previous_cursor' in reply) {
+
+                console.log("--------------------/////////////////////////////")
+                console.log(JSON.stringify(reply.next_cursor))
+                console.log(JSON.stringify(reply.previous_cursor))
+                console.log("--------------------/////////////////////////////")
+                // send cursor to the list for the next navigations
+                WorkerScript.sendMessage({
+                                             "cursor": true,
+                                             "action": msg.bgAction,
+                                             "next_cursor": reply.next_cursor_str,
+                                             "previous_cursor": reply.previous_cursor_str
+                                         })
+            }
             if ('errors' in reply) {
                 reply.errors.forEach(function(entry) {
                     WorkerScript.sendMessage({ 'error': true,  "message": entry.message})
@@ -146,6 +165,7 @@ WorkerScript.onMessage = function(msg) {
                     parser = parseTweet
                     break;
                 case "followers_list":
+                case "friends_list":
                     if ('users' in reply)
                         items = reply.users;
                     parser = parseUser

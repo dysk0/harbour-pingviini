@@ -2,6 +2,33 @@
 <!DOCTYPE TS>
 <TS version="2.1">
 <context>
+    <name></name>
+    <message id="followers">
+        <source></source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="friends">
+        <source></source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="Followers">
+        <source></source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="Following">
+        <source></source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="Tweets">
+        <source></source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="Favourites">
+        <source></source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>AccountAdd</name>
     <message>
         <source>Add Account</source>
@@ -131,22 +158,6 @@
     </message>
     <message>
         <source>Location</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Followers</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Following</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Tweets</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Favourites</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

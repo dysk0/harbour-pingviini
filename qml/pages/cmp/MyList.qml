@@ -18,6 +18,8 @@ SilicaListView {
     property variant vars: { }
     property variant conf
     property bool notifier : false;
+    property string next_cursor: ""
+    property string previous_cursor: ""
     model:  mdl
     signal notify (string what, int num)
     onNotify: {
@@ -137,18 +139,28 @@ SilicaListView {
             if (messageObject.fireNotification && notifier){
                 Logic.notifier(messageObject.data)
             }
+            if (messageObject.cursor && messageObject.action === action){
+                next_cursor = messageObject.next_cursor
+                previous_cursor = messageObject.previous_cursor
+                console.log("############# Cursors updated #############")
+                console.log(next_cursor)
+                console.log(previous_cursor)
+                console.log("############# ############### #############")
+            }
 
         }
     }
 
     function loadData(mode){
         var msg = {
-            'bgAction'  : action,
-            'params'    : vars,
-            'model'     : model,
-            'modelUsers': Logic.modelUsers,
-            'mode'      : mode,
-            'conf'      : conf
+            'bgAction'              : action,
+            'params'                : vars,
+            'model'                 : model,
+            'modelUsers'            : Logic.modelUsers,
+            'next_cursor'           : next_cursor,
+            'previous_cursor'       : previous_cursor,
+            'mode'                  : mode,
+            'conf'                  : conf
         };
         worker.sendMessage(msg);
     }

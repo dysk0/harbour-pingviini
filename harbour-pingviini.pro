@@ -85,7 +85,8 @@ DISTFILES += \
     qml/lib/Parser.js \
     rpm/harbour-pingviini.changes \
     qml/lib/twitter-text.js \
-    qml/pages/cmp/CmpTweet.qml
+    qml/pages/cmp/CmpTweet.qml \
+    qml/pages/cmp/CmpListItem.qml
 
 HEADERS += \
     src/selector/imageuploader.h \

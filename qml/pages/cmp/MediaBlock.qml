@@ -4,22 +4,21 @@ import QtMultimedia 5.0
 
 
 Item {
-    property ListModel model: ({})
-    property int count: model.count
+    property ListModel mdl: ListModel {}
     property double wRatio : 16/9
     property double hRatio : 9/16
     id: holder
     width: width
     height: height
     Component.onCompleted: {
-        if (model && model.count && model.get(0).type === "video") {
-            while (model.count>1){
-                model.remove(model.count-1)
+        if (mdl && mdl.count && mdl.get(0).type === "video") {
+            while (mdl.count>1){
+                mdl.remove(mdl.count-1)
             }
-            //console.log(JSON.stringify(model.get(0)))
+            //console.log(JSON.stringify(mdl.get(0)))
         }
 
-        switch(count){
+        switch(mdl.count){
         case 1:
             placeholder1.width = holder.width
             placeholder1.height = placeholder1.width*hRatio
@@ -72,10 +71,10 @@ Item {
         height: 1
         opacity: pressed ? 0.6 : 1
         visible: {
-            if (model && model.count){
-                mediaURL = model.get(0).cover
-                if(model.get(0).type === "video" || model.get(0).type === "animated_gif"){
-                    videoURL = model.get(0).media
+            if (mdl && mdl.count){
+                mediaURL = mdl.get(0).cover
+                if(mdl.get(0).type === "video" || mdl.get(0).type === "animated_gif"){
+                    videoURL = mdl.get(0).media
                 }
                 height = 200
                 return true
@@ -85,7 +84,7 @@ Item {
             }
         }
         Image {
-            visible: count && (model.get(0).type === "video" || model.get(0).type === "animated_gif")
+            visible: mdl && mdl.count && (mdl.get(0).type === "video" || mdl.get(0).type === "animated_gif")
             anchors.centerIn: parent
             source: "image://theme/icon-l-play"
         }
@@ -96,8 +95,8 @@ Item {
         height: 1
         opacity: pressed ? 0.6 : 1
         visible: {
-            if (model && model.count && model.get(1) && model.get(1).type === "photo"){
-                mediaURL = model.get(1).cover
+            if (mdl && mdl.count && mdl.get(1) && mdl.get(1).type === "photo"){
+                mediaURL = mdl.get(1).cover
                 height = 200
                 return true
             } else {
@@ -112,8 +111,8 @@ Item {
         height: 1
         opacity: pressed ? 0.6 : 1
         visible: {
-            if (model && model.count && model.get(2) && model.get(2).type === "photo"){
-                mediaURL = model.get(2).cover
+            if (mdl && mdl.count && mdl.get(2) && mdl.get(2).type === "photo"){
+                mediaURL = mdl.get(2).cover
                 height = 200
                 return true
             } else {
@@ -128,8 +127,8 @@ Item {
         height: 1
         opacity: pressed ? 0.6 : 1
         visible: {
-            if (model && model.count && model.get(3) && model.get(3).type === "photo"){
-                mediaURL = model.get(3).cover
+            if (mdl && mdl.count && mdl.get(3) && mdl.get(3).type === "photo"){
+                mediaURL = mdl.get(3).cover
                 height = 200
                 return true
             } else {

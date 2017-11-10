@@ -82,6 +82,7 @@ Page {
                     Logic.conf['USER'] = messageObject.reply.name;
                     console.log(JSON.stringify(messageObject.reply))
                     pageStack.replace(Qt.resolvedUrl("MainPage.qml"), {})
+                    //pageStack.replace(Qt.resolvedUrl("Lists.qml"), {})
                     //pageStack.replace(Qt.resolvedUrl("TweetDetails.qml"), {tweet:{}})
                     //pullData();
 

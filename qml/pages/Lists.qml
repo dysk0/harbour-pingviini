@@ -6,46 +6,30 @@ import "./cmp/"
 
 Page {
     id: page
-    property ListModel tweets;
+    property string action: "followers_list"
     property string name : "Ludi Bozo";
     property string description : "Followers";
     property string username : "dysko";
-    property string profileImage : "";
+    property string avatar : "";
+    property string profileBg: "";
     property int user_id;
     allowedOrientations: Orientation.All
 
     SilicaFlickable {
         anchors.fill: parent
-        contentHeight: column.height + Theme.paddingLarge
+        contentHeight: parent.height
         contentWidth: parent.width
-
-
-        WorkerScript {
-            id: worker
-            source: "../lib/Worker.js"
-            onMessage: {
-                console.log(JSON.stringify(messageObject))
-            }
-        }
-
-
-        ListModel {
-            id: listModel
-        }
-
-
-
         MyList {
 
             header: ProfileHeader {
                 id: header
-                bg: profile_background
-                title: name
+                bg: page.profileBg
+                title: page.name
                 description: page.description
-                image: profileImage
+                image: page.avatar
             }
-            model: listModel
-            action: "followers_list"
+            model: ListModel{}
+            action: page.action
             vars: { 'screen_name': username, "count":200, 'skip_status': true}
             conf: Logic.getConfTW()
             width: parent.width
@@ -53,7 +37,7 @@ Page {
             anchors.fill: parent
             anchors {
                 top: parent.top
-                bottom: expander.top
+                bottom: parent.bottom
                 left: parent.left
                 right: parent.right
             }
@@ -141,15 +125,14 @@ Page {
                     font.pixelSize: Theme.fontSizeExtraSmall
                     color: (pressed ? Theme.secondaryHighlightColor : Theme.secondaryColor)
                 }
+                onClicked: {
+                    pageStack.push(Qt.resolvedUrl("../Profile.qml"), {
+                                       "name": model.name,
+                                       "username": model.screen_name,
+                                       "avatar": model.avatar
+                                   })
+                }
             }
         }
-    }
-    Component.onCompleted: {
-        var msg = {
-            'headlessAction': 'followers/list',
-            'params': {'screen_name': username},
-            'conf'  : Logic.getConfTW()
-        };
-        // worker.sendMessage(msg);
     }
 }

@@ -28,7 +28,7 @@ BackgroundItem {
             left: lblName.left
             bottom: iconRT.bottom
         }
-        text: 'retweeted by @' + retweetScreenName
+        text: 'retweeted by @' + retweet_screen_name
         font.pixelSize: Theme.fontSizeExtraSmall
         color: Theme.secondaryColor
     }
