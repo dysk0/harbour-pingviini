@@ -11,57 +11,93 @@ BackgroundItem {
     property variant tweet;
     property bool miniDisplayMode: false;
     width: parent.width
-    height: 2*Theme.paddingLarge + (lblText.height + lblName.height > avatar.height ? lblText.height + lblName.height : avatar.height)+ mmedia.height + (tweet.is_quote_status ? loader.height : 0) + mnu.height
+    height: 2*Theme.paddingLarge + smallHead.height + (lblText.height + lblName.height > avatar.height ? lblText.height + lblName.height : avatar.height)+ mmedia.height + (tweet.is_quote_status ? loader.height : 0) + mnu.height
     GlassItem {
         anchors.horizontalCenter: parent.left
         visible: false //tweet.retweet
         color: Theme.highlightColor
         cache: false
     }
+    Item {
+        id: smallHead
+        width: parent.width
+        anchors.topMargin: Theme.paddingSmall
+        height: tweet.retweet ? Theme.iconSizeExtraSmall : 0
+        visible: tweet.retweet
+        Image {
+            id: miniIco
+            anchors.top:parent.top
+            anchors.topMargin: Theme.paddingSmall
+            anchors.left: parent.left
+            anchors.leftMargin: Theme.horizontalPageMargin +(miniDisplayMode ? Theme.iconSizeSmall : Theme.iconSizeMedium)-width
+            width: Theme.iconSizeExtraSmall
+            height: width
+            source: "image://theme/icon-s-retweet?" + Theme.highlightColor
+        }
+        Label {
+            anchors {
+                left: miniIco.right
+                bottom: miniIco.bottom
+                right: parent.right
+                leftMargin: Theme.paddingMedium
+            }
+            truncationMode: TruncationMode.Fade
+            text: '@'+tweet.retweet_screen_name + " " + qsTrId("retweeted")
+            font.pixelSize: Theme.fontSizeExtraSmall
+            color: (pressed ? Theme.secondaryColor : Theme.secondaryHighlightColor )
+        }
+    }
 
-    Image {
-        anchors.top: parent.top
+    Rectangle {
+        id: holder
+        anchors.top: smallHead.bottom
         anchors.left: parent.left
         anchors.topMargin: Theme.paddingLarge
         anchors.leftMargin: Theme.horizontalPageMargin
-        id: avatar
-        asynchronous: true
+        color: Theme.highlightDimmerColor
         width: miniDisplayMode ? Theme.iconSizeSmall : Theme.iconSizeMedium
         height: width
-        smooth: true
-        source: tweet.avatar
-        opacity: status === Image.Ready ? (tweet.retweet ? 0.2 : 1.0) : 0.0
-        Behavior on opacity { FadeAnimator {} }
-        onStatusChanged: {
-            if (status === Image.Error)
-                source = "image://theme/icon-m-person?" + (pressed
-                                                           ? Theme.highlightColor
-                                                           : Theme.primaryColor)
-        }
-        MouseArea {
-            anchors.fill: parent
-            onClicked: {
-                pageStack.push(Qt.resolvedUrl("../Profile.qml"), {
-                                   "name": tweet.name,
-                                   "username": tweet.screen_name,
-                                   "avatar": tweet.avatar
-                               })
-            }
 
+        Image {
+            anchors.centerIn: parent
+            id: avatar
+            asynchronous: true
+            width: parent.width
+            height: parent.height
+            smooth: true
+            source: tweet.avatar
+            opacity: status === Image.Ready ? (tweet.retweet ? 0.2 : 1.0) : 0.0
+            Behavior on opacity { FadeAnimator {} }
+            onStatusChanged: {
+                if (status === Image.Error)
+                    source = "image://theme/icon-m-person?" + (pressed
+                                                               ? Theme.highlightColor
+                                                               : Theme.primaryColor)
+            }
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    pageStack.push(Qt.resolvedUrl("../Profile.qml"), {
+                                       "name": tweet.name,
+                                       "username": tweet.screen_name,
+                                       "avatar": tweet.avatar
+                                   })
+                }
+
+            }
+        }
+
+        BusyIndicator {
+            anchors.centerIn: parent
+            running: avatar.status !== Image.Ready
+            size: BusyIndicatorSize.ExtraSmall
         }
     }
     Image {
-        anchors.centerIn: avatar
         visible: tweet.retweet
-        width: Theme.iconSizeExtraSmall
-        height: width
-        source: "image://theme/icon-s-retweet?" + Theme.highlightColor
-    }
-    Image {
-        visible: tweet.retweet
-        anchors.bottom: avatar.bottom
+        anchors.bottom: holder.bottom
         anchors.bottomMargin: -Theme.paddingSmall
-        anchors.left: avatar.left
+        anchors.left: holder.left
         anchors.leftMargin: -Theme.paddingSmall
         asynchronous: true
         width: Theme.iconSizeSmall
@@ -76,8 +112,8 @@ BackgroundItem {
     Label {
         id: lblName
         anchors {
-            top: avatar.top
-            left: avatar.right
+            top: holder.top
+            left: holder.right
             leftMargin: Theme.paddingMedium
         }
         text: tweet.name
@@ -132,9 +168,9 @@ BackgroundItem {
     Label {
         id: lblText
         anchors {
-            left: miniDisplayMode ? avatar.left : lblName.left
+            left: miniDisplayMode ? holder.left : lblName.left
             right: parent.right
-            top: miniDisplayMode ? avatar.bottom : lblName.bottom
+            top: miniDisplayMode ? holder.bottom : lblName.bottom
             topMargin: Theme.paddingSmall
             rightMargin: Theme.paddingLarge
         }

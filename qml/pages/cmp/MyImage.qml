@@ -5,11 +5,32 @@ import QtMultimedia 5.0
 Item {
     property string mediaURL: ""
     property string videoURL: ""
+    Rectangle {
+        opacity: 0.2
+        anchors.fill: parent
+        color: Theme.highlightDimmerColor
+    }
+    Rectangle {
+        id: progressRec
+        anchors.bottom: parent.bottom
+        width: 0
+        height: Theme.paddingSmall
+        color: Theme.highlightBackgroundColor
+    }
     Image {
         anchors.fill: parent
+        id:image
         fillMode: Image.PreserveAspectCrop
         asynchronous: true
         source: mediaURL
+        opacity: status === Image.Ready ? 1.0 : 0.0
+        Behavior on opacity { FadeAnimator {} }
+        onStatusChanged: {
+            if (status === Image.Error)
+                source = "image://theme/icon-m-image?" + (pressed ? Theme.highlightColor : Theme.primaryColor)
+        }
+        onProgressChanged: progressRec.width = progress != 1 ? parent.width * progress : 0
+
         MouseArea {
             anchors.fill: parent
             onClicked: {
@@ -21,5 +42,9 @@ Item {
 
 
     }
-
+    BusyIndicator {
+        anchors.centerIn: image
+        running: image.status !== Image.Ready
+        size: BusyIndicatorSize.ExtraSmall
+    }
 }

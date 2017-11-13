@@ -27,6 +27,10 @@
         <source></source>
         <translation type="unfinished"></translation>
     </message>
+    <message id="retweeted">
+        <source></source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AccountAdd</name>
