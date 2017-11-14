@@ -3,8 +3,9 @@ import Sailfish.Silica 1.0
 import QtMultimedia 5.0
 
 Item {
+    property string type: ""
+    property string previewURL: ""
     property string mediaURL: ""
-    property string videoURL: ""
     Rectangle {
         opacity: 0.2
         anchors.fill: parent
@@ -22,7 +23,7 @@ Item {
         id:image
         fillMode: Image.PreserveAspectCrop
         asynchronous: true
-        source: mediaURL
+        source: previewURL
         opacity: status === Image.Ready ? 1.0 : 0.0
         Behavior on opacity { FadeAnimator {} }
         onStatusChanged: {
@@ -34,9 +35,13 @@ Item {
         MouseArea {
             anchors.fill: parent
             onClicked: {
-                pageStack.push(Qt.resolvedUrl("./../ImageFullScreen.qml"), {"mediaURL": mediaURL})
+                pageStack.push(Qt.resolvedUrl("./../ImageFullScreen.qml"), {
+                                   "type": type,
+                                   "previewURL": previewURL,
+                                   "mediaURL": mediaURL
+                               })
                 ///PageStack.push("./ImageFullScreen.qml", {"mediaURL": mediaURL})
-                console.log(mediaURL)
+                console.log(type); console.log(previewURL); console.log(mediaURL);
             }
         }
 

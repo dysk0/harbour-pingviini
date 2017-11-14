@@ -49,19 +49,19 @@ function parseEntities(tweet, entities){
     try {
         tweet.rich_text = tweet.text
         //Qt.createQmlObject('import QtQuick 2.0; ListModel {   }', Qt.application, 'InternalQmlObject');
-        if (entities.user_mentions){
+        if ('user_mentions' in entities){
             entities.user_mentions.forEach(function(item) {
                 //console.info(JSON.stringify(item))
                 tweet.rich_text = tweet.rich_text.replace(new RegExp( '@'+item.screen_name, "gi" ), '<a href="@'+item.screen_name+'">@'+item.screen_name+'</a>');
             });
         }
-        if (entities.hashtags){
+        if ('hashtags' in entities){
             entities.hashtags.forEach(function(item) {
                 //console.info(JSON.stringify(item))
                 tweet.rich_text = tweet.rich_text.replace('#'+item.text, '<a href="#'+item.text+'">#'+item.text+'</a>');
             });
         }
-        if (entities.urls){
+        if ('urls' in entities){
             entities.urls.forEach(function(item) {
                 if(item.expanded_url.indexOf("/i/stickers/") === -1) {
                     if(item.expanded_url.indexOf("https://twitter.com/") !== -1) {
@@ -81,34 +81,28 @@ function parseEntities(tweet, entities){
                 }
             });
         }
-        if (entities.media){
+        if ('media' in entities){
             entities.media.forEach(function(item) {
-                var media;
-                if (item.type ==="photo"){
-                    media = {
-                        id:         item.id,
-                        id_str:     item.id_str,
-                        type:       item.type,
-                        cover:      item.media_url_https+"",
-                        media:      item.media_url_https+":large"
-                    }
-                    //console.info(JSON.stringify(item))
-                } else {
-                    media = {
-                        id:         item.id,
-                        id_str:     item.id_str,
-                        type:       item.type,
-                        cover:      item.media_url_https+":medium",
-                        media:      item.video_info.variants.length ? item.video_info.variants[item.video_info.variants.length-1].url : false
-                    }
-                }
-                tweet.media.push(media)
-                tweet.rich_text = tweet.rich_text.replaceAll(item.url, '')
-            });
-            console.log("-------------------------------------")
-            console.log(JSON.stringify(tweet.media))
-            console.log("-------------------------------------")
 
+                var media = {
+                        'id':         item.id,
+                        'id_str':     item.id_str,
+                        'type':       item.type,
+                        'preview':      item.media_url_https+":medium",
+                        'full':      item.media_url_https+":large"
+                    }
+                if (item.type !=="photo"){
+                    //console.info(JSON.stringify(item))
+                    media.full = item.video_info.variants.length ? item.video_info.variants[item.video_info.variants.length-1].url : false
+                }
+
+
+                if (tweet.media.filter(function (el) { return el.id_str === media.id_str}).length === 0) {
+                    tweet.media.push(media)
+                    tweet.text = tweet.text.replaceAll(item.url, '')
+                    tweet.rich_text = tweet.rich_text.replaceAll(item.url, '')
+                }
+            });
         }
     } catch(err) {
         console.log(err.message);
@@ -162,7 +156,7 @@ function parseDM(json) {
             recipient_avatar: json.recipient.profile_image_url_https,
             media: []
         }
-        //tweet = parseEntities(tweet, json.entities);
+        tweet = parseEntities(tweet, json.entities);
         //console.log(JSON.stringify(json.entities))
         tweet.section = getDate(tweet.created_at)
     } catch(err) {
@@ -222,7 +216,7 @@ function parseTweet(tweetJson) {
             tweet.quote_status_id = originalTweetJson.quoted_status_id
             tweet.quoted_status = {
                 id: originalTweetJson.quoted_status.id,
-                media: [],
+                media: [ ],
                 id_str: originalTweetJson.quoted_status.id_str,
                 created_at: getValidDate(originalTweetJson.quoted_status.created_at),
                 favorited: originalTweetJson.quoted_status.favorited,
@@ -236,17 +230,26 @@ function parseTweet(tweetJson) {
                 name: originalTweetJson.quoted_status.user.name,
                 screen_name: originalTweetJson.quoted_status.user.screen_name,
                 avatar: originalTweetJson.quoted_status.user.profile_image_url,
-                text: originalTweetJson.quoted_status.full_text
+                text: originalTweetJson.quoted_status.full_text,
             }
-            tweet.quoted_status = parseEntities(tweet.quoted_status, originalTweetJson.quoted_status.entities);
-            tweet.quoted_status.richText = twttr.txt.autoLink(tweet.quoted_status.text, originalTweetJson.quoted_status.entities.urls)
+            if ('extended_entities' in originalTweetJson.quoted_status)
+                tweet.quoted_status = parseEntities(tweet.quoted_status, originalTweetJson.quoted_status.extended_entities);
+            if ('entities' in originalTweetJson.quoted_status)
+                tweet.quoted_status = parseEntities(tweet.quoted_status, originalTweetJson.quoted_status.entities);
+
+
         }
 
 
         tweet.text = originalTweetJson.full_text ? originalTweetJson.full_text : originalTweetJson.text
         tweet.rich_text = tweet.text;
-        if (originalTweetJson.entities)
+
+        if ('extended_entities' in originalTweetJson)
+            tweet = parseEntities(tweet, originalTweetJson.extended_entities);
+
+        if ('entities' in originalTweetJson)
             tweet = parseEntities(tweet, originalTweetJson.entities);
+
         //tweet.rich_text = twttr.txt.autoLink(tweet.rich_text, originalTweetJson.entities.urls);
 
 

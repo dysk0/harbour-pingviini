@@ -15,8 +15,8 @@ Item {
             while (mdl.count>1){
                 mdl.remove(mdl.count-1)
             }
-            //console.log(JSON.stringify(mdl.get(0)))
         }
+        console.log(JSON.stringify(mdl.get(0)))
 
         switch(mdl.count){
         case 1:
@@ -72,10 +72,9 @@ Item {
         opacity: pressed ? 0.6 : 1
         visible: {
             if (mdl && mdl.count){
-                mediaURL = mdl.get(0).cover
-                if(mdl.get(0).type === "video" || mdl.get(0).type === "animated_gif"){
-                    videoURL = mdl.get(0).media
-                }
+                type = mdl.get(0).type
+                previewURL = mdl.get(0).preview
+                mediaURL = mdl.get(0).full
                 height = 200
                 return true
             } else {
@@ -95,8 +94,10 @@ Item {
         height: 1
         opacity: pressed ? 0.6 : 1
         visible: {
-            if (mdl && mdl.count && mdl.get(1) && mdl.get(1).type === "photo"){
-                mediaURL = mdl.get(1).cover
+            if (mdl && mdl.count && mdl.get(1)){
+                type = mdl.get(1).type
+                previewURL = mdl.get(1).preview
+                mediaURL = mdl.get(1).full
                 height = 200
                 return true
             } else {
@@ -111,8 +112,10 @@ Item {
         height: 1
         opacity: pressed ? 0.6 : 1
         visible: {
-            if (mdl && mdl.count && mdl.get(2) && mdl.get(2).type === "photo"){
-                mediaURL = mdl.get(2).cover
+            if (mdl && mdl.count && mdl.get(2)){
+                type = mdl.get(2).type
+                previewURL = mdl.get(2).preview
+                mediaURL = mdl.get(2).full
                 height = 200
                 return true
             } else {
@@ -127,8 +130,10 @@ Item {
         height: 1
         opacity: pressed ? 0.6 : 1
         visible: {
-            if (mdl && mdl.count && mdl.get(3) && mdl.get(3).type === "photo"){
-                mediaURL = mdl.get(3).cover
+            if (mdl && mdl.count && mdl.get(3)){
+                type = mdl.get(3).type
+                previewURL = mdl.get(3).preview
+                mediaURL = mdl.get(3).full
                 height = 200
                 return true
             } else {

@@ -130,7 +130,7 @@ Page {
                     }
                     onLinkActivated: navigateTo(link)
 
-                    text: richText
+                    text: model.text
                     textFormat:Text.RichText
                     linkColor : Theme.highlightColor
                     wrapMode: Text.Wrap

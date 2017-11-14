@@ -27,7 +27,7 @@ BackgroundItem {
         Image {
             id: miniIco
             anchors.top:parent.top
-            anchors.topMargin: Theme.paddingSmall
+            anchors.topMargin: Theme.paddingMedium
             anchors.left: parent.left
             anchors.leftMargin: Theme.horizontalPageMargin +(miniDisplayMode ? Theme.iconSizeSmall : Theme.iconSizeMedium)-width
             width: Theme.iconSizeExtraSmall
@@ -66,7 +66,7 @@ BackgroundItem {
             height: parent.height
             smooth: true
             source: tweet.avatar
-            opacity: status === Image.Ready ? (tweet.retweet ? 0.2 : 1.0) : 0.0
+            opacity: status === Image.Ready ? (tweet.retweet ? 0.8 : 1.0) : 0.0
             Behavior on opacity { FadeAnimator {} }
             onStatusChanged: {
                 if (status === Image.Error)
@@ -94,7 +94,7 @@ BackgroundItem {
         }
     }
     Image {
-        visible: tweet.retweet
+        visible: tweet.retweet && !miniDisplayMode
         anchors.bottom: holder.bottom
         anchors.bottomMargin: -Theme.paddingSmall
         anchors.left: holder.left

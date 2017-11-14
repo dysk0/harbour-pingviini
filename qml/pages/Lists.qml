@@ -126,7 +126,7 @@ Page {
                     color: (pressed ? Theme.secondaryHighlightColor : Theme.secondaryColor)
                 }
                 onClicked: {
-                    pageStack.push(Qt.resolvedUrl("../Profile.qml"), {
+                    pageStack.push(Qt.resolvedUrl("Profile.qml"), {
                                        "name": model.name,
                                        "username": model.screen_name,
                                        "avatar": model.avatar

@@ -189,7 +189,7 @@ Page {
         remove: Transition {
             NumberAnimation { properties: "x,y"; duration: 800; easing.type: Easing.InOutBack }
         }
-        delegate: Tweet{}
+        delegate: CmpTweet{ tweet: modelCO2}
         VerticalScrollDecorator {}
     }
 

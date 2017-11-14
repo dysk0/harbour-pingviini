@@ -9,10 +9,10 @@ Page {
     property string mediaURL: ""
     allowedOrientations: Orientation.All
     Component.onCompleted: function(){
-        console.log(type)
-        console.log(previewURL)
-        console.log(mediaURL)
-        if (type != 'gifv' && type != 'video') {
+        console.log("type > " + type)
+        console.log("previewURL > " + previewURL)
+        console.log("mediaURL > " + mediaURL)
+        if (type != 'animated_gif' && type != 'video') {
             imagePreview.source = mediaURL
             imageFlickable.visible = true;
         } else {

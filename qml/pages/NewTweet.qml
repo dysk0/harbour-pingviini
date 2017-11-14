@@ -10,7 +10,7 @@ import "../lib/codebird.js" as CB
 
 Item {
     id: newTweetPanel
-    property int tweetMaxChar: 280
+    property int tweetMaxChar: type == "DM" ? 1000: 280
     property string type: "New" //"New","Reply", "RT" or "DM"
     property string tweetId
     property string screenName //for "DM"
@@ -112,7 +112,11 @@ Item {
 
         if (type === "DM") {
             msg.model = Logic.modelDMsent
-            msg.params.status = "D @" + screenName + " " + newTweet.text
+            msg.headlessAction = "directMessages_new"
+            msg.params = {
+                "text": newTweet.text,
+                "screen_name": screenName
+            }
         }
         if (type === "Reply") {
             msg.params['in_reply_to_status_id'] = tweetId
