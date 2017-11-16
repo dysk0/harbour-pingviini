@@ -59,7 +59,7 @@ CoverBackground {
                                });
         } else {
             console.log("Skip update!")
-            label.text = timestamp - updateWindow
+            //label.text = timestamp - updateWindow
         }
     }
     WorkerScript {
@@ -76,9 +76,9 @@ CoverBackground {
     Label {
         id: label
         anchors.centerIn: parent
-        text: "status"
+        text: "Pingviini"
     }
-    SilicaGridView {
+    /*SilicaGridView {
         id: grid
         anchors.fill: parent
         header: PageHeader {
@@ -98,7 +98,7 @@ CoverBackground {
             }
 
         }
-    }
+    }*/
     /*PingviiniiLogo {
         id: logo
         anchors {
@@ -125,5 +125,15 @@ CoverBackground {
             iconSource: "image://theme/icon-cover-new"
         }
     }*/
+    CoverActionList {
+        id: coverAction
+        CoverAction {
+            iconSource: "image://theme/icon-cover-new"
+            onTriggered: {
+                pageStack.push(Qt.resolvedUrl("./../pages/Conversation.qml"), {title: qsTrId("new-tweet"), tweetType: "New"})
+                app.activate();
+            }
+        }
+    }
 }
 

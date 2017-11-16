@@ -62,7 +62,7 @@ Page {
     ProfileHeader {
         id: header
         title: Logic.getUserName(user_name)
-        description: '@'+user_screen_name
+        description: user_screen_name ? '@'+user_screen_name : ""
         image: user_avatar
     }
 

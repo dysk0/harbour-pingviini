@@ -58,14 +58,14 @@ Page {
         if (typeof tweet.id !== "undefined"){
 
             title =  tweet.name
-            screenName =  tweet.screenName
-            header.image = tweet.profileImageUrl
+            screenName =  tweet.screen_name
+            header.image = tweet.avatar
             tweetPanel.tweetId = tweet.id_str;
-            tweetPanel.userId = tweet.userIdStr;
+            tweetPanel.userId = tweet.user_id_str;
             isFavourited = tweet.favorited;
             modelCO.append(tweet)
 
-            var since = tweet.createdAt
+            var since = tweet.created_at
             var until = new Date(new Date().setDate(new Date(since).getDate() + 7));
             console.log(since)
             console.log(until)

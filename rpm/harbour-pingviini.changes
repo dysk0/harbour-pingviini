@@ -1,3 +1,7 @@
+* Thu Oct 16 2017 Duško Angirević <dysko@me.com> 0.7.6-0
+- Tweet rendering improvements
+- Video support added
+- Pinch to zoom added
 * Sat Sep 23 2017 Rudi Timmermans <rudi.timmer@gmx.us> 0.7.5-0
 - Fix Dutch translation string
 - Fix broken translation link into credit page

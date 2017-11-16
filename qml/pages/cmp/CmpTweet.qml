@@ -148,7 +148,7 @@ BackgroundItem {
             leftMargin: Theme.paddingMedium
         }
         truncationMode: TruncationMode.Fade
-        text: '@'+tweet.screen_name + " " + tweet.media.count
+        text: '@'+tweet.screen_name
         font.pixelSize: Theme.fontSizeExtraSmall
         color: (pressed ? Theme.secondaryHighlightColor : Theme.secondaryColor)
     }
@@ -174,7 +174,7 @@ BackgroundItem {
             topMargin: Theme.paddingSmall
             rightMargin: Theme.paddingLarge
         }
-        height: rich_text.length ? paintedHeight : 0
+        height: tweet.rich_text.length ? paintedHeight : 0
         onLinkActivated: {
             console.log(link)
             if (link[0] === "@") {
@@ -199,8 +199,8 @@ BackgroundItem {
 
 
         }
-        text: tweet.rich_text
-        textFormat:Text.StyledText
+        text: tweet.rich_text.replace(new RegExp("<a", 'g'), '<a style="text-decoration: none; color:'+(pressed ?  Theme.secondaryColor : Theme.highlightColor)+'" ')
+        textFormat:Text.RichText
         linkColor : (pressed ? Theme.primaryColor : Theme.highlightColor)
         wrapMode: Text.Wrap
         font.pixelSize: Theme.fontSizeSmall
@@ -326,6 +326,9 @@ BackgroundItem {
         }
     }
     onPressAndHold: {
+        console.log(lblText.text)
+        console.log(tweet.rich_text)
+
         mnu.show(delegate)
     }
 

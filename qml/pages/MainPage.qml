@@ -310,7 +310,7 @@ Page {
         visible: !isPortrait ? true : !infoPanel.open
         icon.source: "image://theme/icon-l-add"
         onClicked: {
-            pageStack.push(Qt.resolvedUrl("TweetDetails.qml"), {title: "New Tweet", tweetType: "New"})
+            pageStack.push(Qt.resolvedUrl("TweetDetails.qml"), {title: qsTrId("new-tweet"), tweetType: "New"})
         }
     }
     function onLinkActivated(href){

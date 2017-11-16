@@ -121,8 +121,9 @@ Item {
         if (type === "Reply") {
             msg.params['in_reply_to_status_id'] = tweetId
             if (msg.params['status'].toLowerCase().indexOf(screenName.toLowerCase()) < 0){
-                msg.params['status'] = "@" + screenName + " " + newTweet.text
+                //msg.params['status'] = "@" + screenName + " " + newTweet.text
             }
+            msg.params['auto_populate_reply_metadata'] = true
         }
 
         console.log(JSON.stringify(msg))
