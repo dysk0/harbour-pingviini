@@ -16,8 +16,6 @@ Item {
                 mdl.remove(mdl.count-1)
             }
         }
-        console.log(JSON.stringify(mdl.get(0)))
-
         switch(mdl.count){
         case 1:
             placeholder1.width = holder.width

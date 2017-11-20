@@ -31,6 +31,10 @@
         <source></source>
         <translation type="unfinished"></translation>
     </message>
+    <message id="new-tweet">
+        <source></source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AccountAdd</name>
@@ -202,21 +206,6 @@
     <message>
         <source>Authorize this app to use your Twitter account in your behalf.</source>
         <translation>Geef deze app toegang tot je Twitter-account.</translation>
-    </message>
-</context>
-<context>
-    <name>Tweet</name>
-    <message>
-        <source>Unfavorite</source>
-        <translation>Vind ik niet meer leuk</translation>
-    </message>
-    <message>
-        <source>Favorite</source>
-        <translation>Vind ik leuk</translation>
-    </message>
-    <message>
-        <source>Retweet</source>
-        <translation>Retweeten</translation>
     </message>
 </context>
 <context>

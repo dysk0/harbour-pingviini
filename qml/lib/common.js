@@ -52,13 +52,13 @@ function parseEntities(tweet, entities){
         if ('user_mentions' in entities){
             entities.user_mentions.forEach(function(item) {
                 //console.info(JSON.stringify(item))
-                tweet.rich_text = tweet.rich_text.replace(new RegExp( '@'+item.screen_name, "gi" ), '<a href="@'+item.screen_name+'">@'+item.screen_name+'</a>');
+                tweet.rich_text = tweet.rich_text.replace(new RegExp( '@'+item.screen_name, "gi" ), '<a style="text-decoration: none; color:COLOR" href="@'+item.screen_name+'">@'+item.screen_name+'</a>');
             });
         }
         if ('hashtags' in entities){
             entities.hashtags.forEach(function(item) {
                 //console.info(JSON.stringify(item))
-                tweet.rich_text = tweet.rich_text.replace('#'+item.text, '<a href="#'+item.text+'">#'+item.text+'</a>');
+                tweet.rich_text = tweet.rich_text.replace('#'+item.text, '<a style="text-decoration: none; color:COLOR" href="#'+item.text+'">#'+item.text+'</a>');
             });
         }
         if ('urls' in entities){
@@ -67,7 +67,7 @@ function parseEntities(tweet, entities){
                     if(item.expanded_url.indexOf("https://twitter.com/") !== -1) {
                         tweet.rich_text = tweet.rich_text.replaceAll(item.url, ' ')
                     }
-                    tweet.rich_text = tweet.rich_text.replaceAll(item.url, '<a href="'+item.url+'">'+item.display_url+"</a>")
+                    tweet.rich_text = tweet.rich_text.replaceAll(item.url, '<a style="text-decoration: none; color:COLOR" href="'+item.url+'">'+item.display_url+"</a>")
                 } else {
                     var media;
                     media = {

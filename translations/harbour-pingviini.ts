@@ -5,31 +5,35 @@
     <name></name>
     <message id="followers">
         <source></source>
-        <translation type="unfinished"></translation>
+        <translation>followers</translation>
     </message>
     <message id="friends">
         <source></source>
-        <translation type="unfinished"></translation>
+        <translation>Friends</translation>
     </message>
     <message id="Followers">
         <source></source>
-        <translation type="unfinished"></translation>
+        <translation>Followers</translation>
     </message>
     <message id="Following">
         <source></source>
-        <translation type="unfinished"></translation>
+        <translation>Following</translation>
     </message>
     <message id="Tweets">
         <source></source>
-        <translation type="unfinished"></translation>
+        <translation>Tweets</translation>
     </message>
     <message id="Favourites">
         <source></source>
-        <translation type="unfinished"></translation>
+        <translation>Favourites</translation>
     </message>
     <message id="retweeted">
         <source></source>
-        <translation type="unfinished"></translation>
+        <translation>retweeted</translation>
+    </message>
+    <message id="new-tweet">
+        <source></source>
+        <translation>New Tweet</translation>
     </message>
 </context>
 <context>
@@ -201,21 +205,6 @@
     </message>
     <message>
         <source>Authorize this app to use your Twitter account in your behalf.</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>Tweet</name>
-    <message>
-        <source>Unfavorite</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Favorite</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Retweet</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

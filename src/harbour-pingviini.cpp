@@ -38,6 +38,7 @@
 #include <QtGui/QGuiApplication>
 #include "selector/imageuploader.h"
 #include "selector/thumbnailprovider.h"
+#include "filedownloader.h"
 #include "selector/filesmodel.h"
 
 
@@ -55,6 +56,8 @@ int main(int argc, char *argv[])
 
 
     QQmlEngine* engine = view->engine();
+    FileDownloader *fd = new FileDownloader(engine);
+    view->rootContext()->setContextProperty("FileDownloader", fd);
     QObject::connect(engine, SIGNAL(quit()), app.data(), SLOT(quit()));
     //engine->addImageProvider(QStringLiteral("thumbnail"), new ThumbnailProvider);
 

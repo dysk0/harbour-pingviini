@@ -199,12 +199,12 @@ BackgroundItem {
 
 
         }
-        text: tweet.rich_text.replace(new RegExp("<a", 'g'), '<a style="text-decoration: none; color:'+(pressed ?  Theme.secondaryColor : Theme.highlightColor)+'" ')
-        textFormat:Text.RichText
+        text: tweet.rich_text //{ return tweet.rich_text.replace(new RegExp("color:COLOR", 'g'), 'color:'+(pressed ?  Theme.secondaryHighlightColor : Theme.highlightColor)) }
+        textFormat: Text.StyledText
         linkColor : (pressed ? Theme.primaryColor : Theme.highlightColor)
         wrapMode: Text.Wrap
         font.pixelSize: Theme.fontSizeSmall
-        color: (pressed ? Theme.highlightColor : Theme.primaryColor)
+        color: pressed ?  Theme.secondaryColor : Theme.primaryColor
     }
     MediaBlock {
         id: mmedia

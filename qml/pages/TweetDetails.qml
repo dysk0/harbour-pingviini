@@ -60,8 +60,10 @@ Page {
             title =  tweet.name
             screenName =  tweet.screen_name
             header.image = tweet.avatar
-            tweetPanel.tweetId = tweet.id_str;
-            tweetPanel.userId = tweet.user_id_str;
+            if (tweet.id_str)
+                tweetPanel.tweetId = tweet.id_str;
+            if (tweet.user_id_str)
+                tweetPanel.userId = tweet.user_id_str;
             isFavourited = tweet.favorited;
             modelCO.append(tweet)
 

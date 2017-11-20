@@ -23,6 +23,7 @@ SOURCES += src/harbour-pingviini.cpp \
     src/selector/exif/exif.cpp \
     src/selector/thumbnailprovider.cpp \
     src/selector/filesmodel.cpp \
+    src/filedownloader.cpp \
     src/selector/imageuploader.cpp \
     src/selector/filesmodelworker.cpp
 
@@ -69,7 +70,6 @@ DISTFILES += \
     qml/pages/Profile.qml \
     qml/pages/cmp/ProfileHeader.qml \
     qml/pages/cmp/PingviiniiLogo.qml \
-    qml/pages/cmp/Tweet.qml \
     qml/pages/cmp/MediaBlock.qml \
     qml/pages/cmp/MyImage.qml \
     qml/pages/ImageFullScreen.qml \
@@ -89,6 +89,7 @@ DISTFILES += \
     qml/pages/cmp/CmpListItem.qml
 
 HEADERS += \
+    src/filedownloader.h \
     src/selector/imageuploader.h \
     src/selector/exif/exif.h \
     src/selector/filesmodel.h \
