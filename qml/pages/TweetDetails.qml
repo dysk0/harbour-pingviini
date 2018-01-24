@@ -36,8 +36,8 @@ import "./cmp/"
 Page {
     property variant tweet
     property string selected;
-    property alias title: header.title;
-    property alias avatar: header.image;
+    property string  title;
+    property string  avatar;
     property string tweet_id;
     property string user_id;
 
@@ -48,67 +48,23 @@ Page {
     WorkerScript {
         id: worker
         source: "../lib/Worker.js"
-        onMessage: myText.text = messageObject.reply
+        onMessage: {
+         console.log(messageObject.reply)
+        }
     }
 
 
     // The effective value will be restricted by ApplicationWindow.allowedOrientations
     allowedOrientations: Orientation.All
-    Component.onCompleted: {
-        if (typeof tweet.id !== "undefined"){
 
-            title =  tweet.name
-            screenName =  tweet.screen_name
-            header.image = tweet.avatar
-            if (tweet.id_str)
-                tweetPanel.tweetId = tweet.id_str;
-            if (tweet.user_id_str)
-                tweetPanel.userId = tweet.user_id_str;
-            isFavourited = tweet.favorited;
-            modelCO.append(tweet)
 
-            var since = tweet.created_at
-            var until = new Date(new Date().setDate(new Date(since).getDate() + 7));
-            console.log(since)
-            console.log(until)
-            //console.log(since.toISOString().substr(0, 10))
-            //console.log(until.toISOString().substr(0, 10))
-            var user = '@'+tweet.screenName + (tweet.inReplyToStatusId ? ' OR @'+tweet.inReplyToScreenName : '')
-            var msg = {
-                'bgAction'    : 'search_tweets',
-                'params': {
-                    f: "tweets",
-                    count: 100,
-                    result_type: "recent",
-                    q: user + ' -RT  filter:replies since:'+since.toISOString().substr(0, 10)+ ' until:'+until.toISOString().substr(0, 10),
-                    since_id: tweet.inReplyToStatusId ? tweet.inReplyToStatusId: tweet.id
-                },
-                'mode'      : 'prepend',
-                'model'     : modelCO,
-                'conf'      : Logic.getConfTW()
-            };
-            worker.sendMessage(msg);
-        }
-    }
-    ListModel {
-        id: modelCO
-        onCountChanged: {
-            modelCO2.clear()
-            for(var i= 0; i < count; i++) {
-                console.log(i)
-                modelCO2.insert(0, get(i))
-            }
-        }
-    }
-    ListModel {
-        id: modelCO2
-    }
 
-    ProfileHeader {
+
+    /*ProfileHeader {
         id: header
         title: ""
         description: screenName ? '@'+screenName : ""
-    }
+    }*/
     DockedPanel {
         id: panel
         open: true
@@ -130,10 +86,16 @@ Page {
 
 
     SilicaListView {
+        BusyIndicator {
+            size: BusyIndicatorSize.Large
+            running: listView.model.count === 0;
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.horizontalCenter: parent.horizontalCenter
+        }
         id: listView
-        model: modelCO2
+        model: ListModel {}
         RemorseItem { id: remorse }
-        PullDownMenu {
+        /*PullDownMenu {
             id: menu
             spacing: Theme.paddingLarge
             MenuItem {
@@ -166,9 +128,9 @@ Page {
                     tweet.favorited = !tweet.favorited
                 }
             }
-        }
+        }*/
         anchors {
-            top: header.bottom
+            top: parent.top
             bottom: panel.top
             left: parent.left
             right: parent.right
@@ -191,8 +153,76 @@ Page {
         remove: Transition {
             NumberAnimation { properties: "x,y"; duration: 800; easing.type: Easing.InOutBack }
         }
-        delegate: CmpTweet{ tweet: modelCO2}
+        delegate: CmpTweet{ tweet: model}
         VerticalScrollDecorator {}
+        Component.onCompleted: {
+            if (typeof tweet.id !== "undefined"){
+
+                title =  tweet.name
+                screenName =  tweet.screen_name + " "+ tweet.id_str
+                //header.image = tweet.avatar
+                if (tweet.id_str)
+                    tweetPanel.tweetId = tweet.id_str;
+                if (tweet.user_id_str)
+                    tweetPanel.userId = tweet.user_id_str;
+                isFavourited = tweet.favorited;
+
+                var req = 'http://api.grave-design.com/conversation/?username=' + tweet.screen_name + '&id='+tweet.id_str;
+                console.log(req)
+                Logic.request(req, function (data) {
+                    // log the json response
+                    data = JSON.parse(data.responseText)
+                    var i;
+                    if (data.ancestors) {
+                        for(i= 0; i < data.ancestors.length; i++) {
+                            data.ancestors[i] = Logic.parseTweet(data.ancestors[i])
+                        }
+                    }
+                    if (data.tweet) {
+                        for(i= 0; i < data.tweet.length; i++) {
+                            data.tweet[i] = Logic.parseTweet(data.tweet[i])
+                            data.tweet[i]["enlarge"] = true
+                        }
+                    }
+                    if (data.descendants) {
+                        for(i= 0; i < data.descendants.length; i++) {
+                            data.descendants[i] = Logic.parseTweet(data.descendants[i])
+                        }
+                    }
+                    model.clear();
+                    model.append(data.ancestors)
+                    model.append(data.tweet)
+                    model.append(data.descendants)
+
+                    positionViewAtIndex(data.ancestors.length, ListView.Center)
+                    console.log(JSON.stringify(data.tweet))
+                });
+
+
+
+                /*var since = tweet.created_at
+                var until = new Date(new Date().setDate(new Date(since).getDate() + 7));
+                console.log(since)
+                console.log(until)
+                //console.log(since.toISOString().substr(0, 10))
+                //console.log(until.toISOString().substr(0, 10))
+                var user = '@'+screenName + (tweet.inReplyToStatusId ? ' OR @'+tweet.inReplyToScreenName : '')
+                var msg = {
+                    'bgAction'    : 'search_tweets',
+                    'params': {
+                        f: "tweets",
+                        count: 100,
+                        result_type: "recent",
+                        q: user + ' -RT  filter:replies since:'+since.toISOString().substr(0, 10)+ ' until:'+until.toISOString().substr(0, 10),
+                        since_id: tweet.inReplyToStatusId ? tweet.inReplyToStatusId: tweet.id
+                    },
+                    'mode'      : 'prepend',
+                    'model'     : modelCO,
+                    'conf'      : Logic.getConfTW()
+                };
+                //worker.sendMessage(msg);*/
+            }
+        }
     }
 
 }

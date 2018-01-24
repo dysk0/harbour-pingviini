@@ -11,6 +11,7 @@ import "../lib/codebird.js" as CB
 Item {
     id: newTweetPanel
     property int tweetMaxChar: type == "DM" ? 1000: 280
+    property int userId
     property string type: "New" //"New","Reply", "RT" or "DM"
     property string tweetId
     property string screenName //for "DM"

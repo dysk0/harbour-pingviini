@@ -12,6 +12,13 @@ BackgroundItem {
     property bool miniDisplayMode: false;
     width: parent.width
     height: 2*Theme.paddingLarge + smallHead.height + (lblText.height + lblName.height > avatar.height ? lblText.height + lblName.height : avatar.height)+ mmedia.height + (tweet.is_quote_status ? loader.height : 0) + mnu.height
+    Rectangle {
+        visible: (tweet.hasOwnProperty("enlarge") && tweet.enlarge)
+        anchors.fill: parent
+        opacity: 0.3
+        color: Theme.highlightDimmerColor
+
+    }
     GlassItem {
         anchors.horizontalCenter: parent.left
         visible: false //tweet.retweet
@@ -57,6 +64,8 @@ BackgroundItem {
         color: Theme.highlightDimmerColor
         width: miniDisplayMode ? Theme.iconSizeSmall : Theme.iconSizeMedium
         height: width
+
+
 
         Image {
             anchors.centerIn: parent
@@ -107,6 +116,8 @@ BackgroundItem {
         opacity: status === Image.Ready ? 1.0 : 0.0
         Behavior on opacity { FadeAnimator {} }
     }
+
+
 
 
     Label {
@@ -199,7 +210,7 @@ BackgroundItem {
 
 
         }
-        text: tweet.rich_text //{ return tweet.rich_text.replace(new RegExp("color:COLOR", 'g'), 'color:'+(pressed ?  Theme.secondaryHighlightColor : Theme.highlightColor)) }
+        text: tweet.rich_text  //{ return tweet.rich_text.replace(new RegExp("color:COLOR", 'g'), 'color:'+(pressed ?  Theme.secondaryHighlightColor : Theme.highlightColor)) }
         textFormat: Text.StyledText
         linkColor : (pressed ? Theme.primaryColor : Theme.highlightColor)
         wrapMode: Text.Wrap
@@ -225,8 +236,8 @@ BackgroundItem {
         opacity: 0.3
         radius: 2
         color: Theme.highlightDimmerColor
-
     }
+
     Loader {
         id: loader
         width: parent.width
@@ -249,6 +260,7 @@ BackgroundItem {
     }
 
     onClicked: {
+        console.log(tweet)
         if(pageStack.depth > 1) {
             pageStack.replace(Qt.resolvedUrl("../TweetDetails.qml"), { "tweet": tweet })
         } else {
