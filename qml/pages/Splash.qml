@@ -142,20 +142,7 @@ Page {
             console.log(typeof arguments)
             console.log('confLoaded');
             console.log(JSON.stringify(Logic.conf))
-            //console.log(JSON.stringify(Logic.getConfTW()))
 
-            //pullData()
-            //pageStack.pushAttached(Qt.resolvedUrl("FirstPage.qml"), {})
-            /*Logic.modelTL.append(Logic.parseTweet(Logic.tweet1))
-            Logic.modelTL.append(Logic.parseTweet(Logic.tweet2))
-            Logic.modelTL.append(Logic.parseTweet(Logic.tweet3))
-            Logic.modelTL.append(Logic.parseTweet(Logic.tweet4))
-            Logic.modelTL.append(Logic.parseTweet(Logic.tweet5))
-            Logic.modelTL.append(Logic.parseTweet(Logic.tweet6))
-            Logic.modelTL.append(Logic.parseTweet(Logic.tweet7))*/
-
-
-            //splashTimer.running = true
             logo.opacity = 1;
             console.log("https://api.twitter.com/1.1/account/verify_credentials.json")
 

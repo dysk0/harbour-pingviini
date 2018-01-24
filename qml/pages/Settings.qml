@@ -34,7 +34,7 @@ Page {
                 }
             }
             SectionHeader {
-                text: "Credits and license"
+                text: qsTr("Credits and license")
             }
             Label {
                 anchors {
@@ -48,7 +48,7 @@ Page {
                 linkColor: Theme.highlightColor
                 color: Theme.primaryColor
                 font.pixelSize: Theme.fontSizeExtraSmall
-                text: "<a style='text-decoration:none' href='https://github.com/dysk0/harbour-pingviini/'>Pingviini</a> is a Twitter client for SailfishOS created by Duško Angirević and licensed under GNU GPL v3. All product names, logos, and brands are property of their respective owners."
+                text: qsTr("<a style='text-decoration:none' href='https://github.com/dysk0/harbour-pingviini/'>Pingviini</a> is a Twitter client for SailfishOS created by Duško Angirević and licensed under GNU GPL v3. All product names, logos, and brands are property of their respective owners.")
             }
 
             Label {
@@ -63,16 +63,26 @@ Page {
                 linkColor: Theme.secondaryHighlightColor
                 color: Theme.secondaryColor
                 font.pixelSize: Theme.fontSizeExtraSmall
-                text: "This project is heavily based on <a style='text-decoration:none' href='https://github.com/jublonet/codebird-js'>Codebird JS</a> by Jublo Solutions. Thanks for making it available under the conditions of the GNU GPL v3."
+                text: qsTr("This project is heavily based on <a style='text-decoration:none' href='https://github.com/jublonet/codebird-js'>Codebird JS</a> by Jublo Solutions. Thanks for making it available under the conditions of the GNU GPL v3.")
             }
 
 
             ButtonLayout {
                 preferredWidth: Theme.buttonWidthMedium
-                   Button {
+                Button {
                     ButtonLayout.newLine: true
-                    text: "Credits"
+                    text: qsTr("Credits")
                     onClicked: pageStack.push(Qt.resolvedUrl("CreditsTranslations.qml"))
+                }
+                Button {
+                    ButtonLayout.newLine: true
+                    text: qsTr("Terms of Service")
+                    onClicked: pageStack.push(Qt.resolvedUrl("Terms.qml"), { title: text, action: 'help_tos'})
+                }
+                Button {
+                    ButtonLayout.newLine: true
+                    text: qsTr("Twitter Privacy Policy")
+                    onClicked: pageStack.push(Qt.resolvedUrl("Terms.qml"), { title: text, action: 'help_privacy'})
                 }
             }
         }

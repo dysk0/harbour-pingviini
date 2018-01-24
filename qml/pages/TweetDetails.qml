@@ -86,6 +86,9 @@ Page {
 
 
     SilicaListView {
+        header: PageHeader {
+            title: qsTr("Conversation")
+        }
         BusyIndicator {
             size: BusyIndicatorSize.Large
             running: listView.model.count === 0;
