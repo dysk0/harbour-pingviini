@@ -62,33 +62,33 @@
     <name>CmpTweet</name>
     <message>
         <source>Unfavorite</source>
-        <translation type="unfinished"></translation>
+        <translation>Unfavorite</translation>
     </message>
     <message>
         <source>Favorite</source>
-        <translation type="unfinished"></translation>
+        <translation>Favorite</translation>
     </message>
     <message>
         <source>Retweet</source>
-        <translation type="unfinished"></translation>
+        <translation>Retweet</translation>
     </message>
 </context>
 <context>
     <name>CreditsTranslations</name>
     <message>
         <source>Translate App</source>
-        <translation type="unfinished"></translation>
+        <translation>Translate App</translation>
     </message>
     <message>
         <source>Credits</source>
-        <translation type="unfinished"></translation>
+        <translation>Credits</translation>
     </message>
 </context>
 <context>
     <name>DirectMessages</name>
     <message>
         <source>Messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Messages</translation>
     </message>
     <message>
         <source>Pingviini</source>
@@ -121,19 +121,19 @@
     </message>
     <message>
         <source>Messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Messages</translation>
     </message>
     <message>
         <source>Timeline</source>
-        <translation type="unfinished"></translation>
+        <translation>Timeline</translation>
     </message>
     <message>
         <source>Mentions</source>
-        <translation type="unfinished"></translation>
+        <translation>Mentions</translation>
     </message>
     <message>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>Search</translation>
     </message>
 </context>
 <context>
@@ -144,11 +144,7 @@
     </message>
     <message>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Users</source>
-        <translation type="unfinished"></translation>
+        <translation>Settings</translation>
     </message>
 </context>
 <context>
@@ -162,42 +158,42 @@
     <name>Profile</name>
     <message>
         <source>Summary</source>
-        <translation type="unfinished"></translation>
+        <translation>Summary</translation>
     </message>
     <message>
         <source>Location</source>
-        <translation type="unfinished"></translation>
+        <translation>Location</translation>
     </message>
     <message>
         <source>Unfollow</source>
-        <translation type="unfinished"></translation>
+        <translation>Unfollow</translation>
     </message>
     <message>
         <source>Follow</source>
-        <translation type="unfinished"></translation>
+        <translation>Follow</translation>
     </message>
     <message>
         <source>Mute</source>
-        <translation type="unfinished"></translation>
+        <translation>Mute</translation>
     </message>
     <message>
         <source>Unmute</source>
-        <translation type="unfinished"></translation>
+        <translation>Unmute</translation>
     </message>
 </context>
 <context>
     <name>Settings</name>
     <message>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Settings</translation>
     </message>
     <message>
         <source>Add / Replace Account</source>
-        <translation type="unfinished"></translation>
+        <translation>Add / Replace Account</translation>
     </message>
     <message>
         <source>Load images in tweets</source>
-        <translation type="unfinished"></translation>
+        <translation>Load images in tweets</translation>
     </message>
     <message>
         <source>Disable this option if you want to preserve your data connection.</source>
@@ -211,20 +207,24 @@
 <context>
     <name>TweetDetails</name>
     <message>
+        <source>Report as spam</source>
+        <translation>Report as spam</translation>
+    </message>
+    <message>
         <source>Retweet</source>
-        <translation type="unfinished"></translation>
+        <translation>Retweet</translation>
     </message>
     <message>
         <source>Unfavorite</source>
-        <translation type="unfinished"></translation>
+        <translation>Unfavorite</translation>
     </message>
     <message>
         <source>Favorite</source>
-        <translation type="unfinished"></translation>
+        <translation>Favorite</translation>
     </message>
     <message>
-        <source>Report as spam</source>
-        <translation type="unfinished"></translation>
+        <source>Conversation</source>
+        <translation>Conversation</translation>
     </message>
 </context>
 </TS>

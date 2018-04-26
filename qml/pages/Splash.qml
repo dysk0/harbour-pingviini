@@ -60,7 +60,6 @@ Page {
 
             if(Logic.getConfTW().OAUTH_TOKEN){
                 pageStack.replace(Qt.resolvedUrl("MainPage.qml"), {})
-                //pageStack.replace(Qt.resolvedUrl("TweetDetails.qml"), {})
             } else {
                 pageStack.replace(Qt.resolvedUrl("AccountAdd.qml"), {})
             }

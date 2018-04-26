@@ -34,6 +34,7 @@ import "../lib/Logic.js" as Logic
 import "./cmp/"
 
 Page {
+    id: myList
     property variant tweet
     property string selected;
     property string  title;
@@ -92,10 +93,14 @@ Page {
             anchors.verticalCenter: parent.verticalCenter
             anchors.horizontalCenter: parent.horizontalCenter
         }
+        header: PageHeader {
+            title: qsTr("Conversation")
+            description: "beta feature"
+        }
         id: listView
         model: ListModel {}
         RemorseItem { id: remorse }
-        /*PullDownMenu {
+        PullDownMenu {
             id: menu
             spacing: Theme.paddingLarge
             MenuItem {
@@ -128,7 +133,7 @@ Page {
                     tweet.favorited = !tweet.favorited
                 }
             }
-        }*/
+        }
         anchors {
             top: parent.top
             bottom: panel.top

@@ -66,6 +66,21 @@ Page {
                 text: "This project is heavily based on <a style='text-decoration:none' href='https://github.com/jublonet/codebird-js'>Codebird JS</a> by Jublo Solutions. Thanks for making it available under the conditions of the GNU GPL v3."
             }
 
+            Label {
+                anchors {
+                    left: parent.left
+                    leftMargin: Theme.paddingLarge
+                    right: parent.right
+                    rightMargin: Theme.paddingLarge
+                }
+                textFormat: Text.StyledText
+                wrapMode: Text.Wrap
+                linkColor: Theme.secondaryHighlightColor
+                color: Theme.secondaryColor
+                font.pixelSize: Theme.fontSizeExtraSmall
+                text: "We do not collect our user's data of but some data processing is done on remote servers (mostly for more complex things like Tweet threads displaying) and those data is sent beck to and from device."
+            }
+
 
             ButtonLayout {
                 preferredWidth: Theme.buttonWidthMedium

@@ -278,6 +278,10 @@ BackgroundItem {
                     'headlessAction': 'favorites_' + (tweet.favorited ? 'destroy' : 'create'),
                     'params': {'id': tweet.id_str}
                 };
+                if (!tweet.favorited)
+                    tweet.favorite_count++;
+                else
+                    tweet.favorite_count--;
                 Logic.mediator.publish("bgCommand", msg)
                 tweet.favorited = !tweet.favorited
             }
@@ -311,6 +315,10 @@ BackgroundItem {
                     'headlessAction': 'statuses_retweet_ID',
                     'params': {'id': tweet.id_str}
                 };
+                if (!tweet.retweeted)
+                    tweet.retweet_count++;
+                else
+                    tweet.retweet_count--;
                 Logic.mediator.publish("bgCommand", msg)
                 tweet.retweeted = true;
             }
