@@ -151,7 +151,7 @@
     <name>NewTweet</name>
     <message>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation type="finished">Delete</translation>
     </message>
 </context>
 <context>
@@ -197,15 +197,12 @@
     </message>
     <message>
         <source>Disable this option if you want to preserve your data connection.</source>
-        <translation type="unfinished"></translation>
+        <translation type="finished">Disable this option if you want to preserve your data connection.</translation>
     </message>
     <message>
         <source>Authorize this app to use your Twitter account in your behalf.</source>
-        <translation type="unfinished"></translation>
+        <translation type="finished">Authorize this app to use your Twitter account in your behalf.</translation>
     </message>
-</context>
-<context>
-    <name>TweetDetails</name>
     <message>
         <source>Report as spam</source>
         <translation>Report as spam</translation>
@@ -225,6 +222,35 @@
     <message>
         <source>Conversation</source>
         <translation>Conversation</translation>
+        <source>Credits and license</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;a style=&apos;text-decoration:none&apos; href=&apos;https://github.com/dysk0/harbour-pingviini/&apos;&gt;Pingviini&lt;/a&gt; is a Twitter client for SailfishOS created by Duško Angirević and licensed under GNU GPL v3. All product names, logos, and brands are property of their respective owners.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This project is heavily based on &lt;a style=&apos;text-decoration:none&apos; href=&apos;https://github.com/jublonet/codebird-js&apos;&gt;Codebird JS&lt;/a&gt; by Jublo Solutions. Thanks for making it available under the conditions of the GNU GPL v3.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Credits</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Terms of Service</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Twitter Privacy Policy</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TweetDetails</name>
+    <message>
+        <source>Conversation</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

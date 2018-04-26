@@ -80,13 +80,14 @@ WorkerScript.onMessage = function(msg) {
                     msg.headlessAction,
                     msg.params,
                     function (reply, rate, err) {
-                        if (reply){
-                            WorkerScript.sendMessage({ 'success': true, 'key': msg.headlessAction,  "reply": reply})
-                        }
                         console.log("$$$$$$$$$$$$$$$$$$$ headlessAction $$$$$$$$$$$$$$");
                         console.log(JSON.stringify(reply));
                         console.log(JSON.stringify(err));
                         console.log("$$$$$$$$$$$$$$$$$$$ headlessAction $$$$$$$$$$$$$$");
+
+                        if (reply){
+                            WorkerScript.sendMessage({ 'success': true, 'key': msg.headlessAction,  "reply": reply})
+                        }
 
 
                         //Logic.modelDMsent

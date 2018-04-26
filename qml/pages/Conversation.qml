@@ -154,10 +154,10 @@ Page {
                             rightMargin: Theme.paddingLarge
                             leftMargin: Theme.paddingLarge
                         }
-                        width: Theme.itemSizeExtraLarge;
+                        width: Theme.iconSizeLarge;
                         height: width
 
-                        source: "image://theme/icon-l-play?" + (pressed
+                        source: "image://theme/icon-l-image?" + (pressed
                                                                 ? Theme.highlightColor
                                                                 : Theme.primaryColor)
 
@@ -169,7 +169,7 @@ Page {
                             }
                             if (rep.model.get(index).type === "sticker") {
                                 source = rep.model.get(index).cover
-                                height = width = Theme.itemSizeLarge
+                                height = width = Theme.iconSizeLarge
 
                             } else {
                                 height = width = Math.round(parent.width*0.75)
@@ -182,9 +182,9 @@ Page {
                                 var url = rep.model.get(index).cover;
                                 var sign = cb._sign('GET', url);
 
-                                url = "http://api.grave-design.com/pingviini/?img="+encodeURIComponent(rep.model.get(index).cover)+'&oauth='+encodeURIComponent(sign)
+                                //url = "http://api.grave-design.com/pingviini/?img="+encodeURIComponent(rep.model.get(index).cover)+'&oauth='+encodeURIComponent(sign)
                                 //console.log(sign); console.log(JSON.stringify(rep.model.get(index).cover)) ; console.log(url)
-                                source = url
+                                //source = url
                             }
                         }
                         MouseArea {

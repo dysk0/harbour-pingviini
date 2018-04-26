@@ -5,35 +5,35 @@
     <name></name>
     <message id="followers">
         <source></source>
-        <translation type="unfinished"></translation>
+        <translation>abonats</translation>
     </message>
     <message id="friends">
         <source></source>
-        <translation type="unfinished"></translation>
+        <translation>Amics</translation>
     </message>
     <message id="Followers">
         <source></source>
-        <translation type="unfinished"></translation>
+        <translation>Abonats</translation>
     </message>
     <message id="Following">
         <source></source>
-        <translation type="unfinished"></translation>
+        <translation>Abonaments</translation>
     </message>
     <message id="Tweets">
         <source></source>
-        <translation type="unfinished"></translation>
+        <translation>Tweets</translation>
     </message>
     <message id="Favourites">
         <source></source>
-        <translation type="unfinished"></translation>
+        <translation>Favoris</translation>
     </message>
     <message id="retweeted">
         <source></source>
-        <translation type="unfinished"></translation>
+        <translation>retweets</translation>
     </message>
     <message id="new-tweet">
         <source></source>
-        <translation type="unfinished"></translation>
+        <translation>tweets novèls</translation>
     </message>
 </context>
 <context>
@@ -62,15 +62,15 @@
     <name>CmpTweet</name>
     <message>
         <source>Unfavorite</source>
-        <translation type="unfinished">Levar dels favorits</translation>
+        <translation>Levar dels favorits</translation>
     </message>
     <message>
         <source>Favorite</source>
-        <translation type="unfinished">Metre en favorits</translation>
+        <translation>Metre en favorits</translation>
     </message>
     <message>
         <source>Retweet</source>
-        <translation type="unfinished">Tornar tweetejar</translation>
+        <translation>Tornar tweetejar</translation>
     </message>
 </context>
 <context>
@@ -103,7 +103,7 @@
     <name>ImageFullScreen</name>
     <message>
         <source>Error loading</source>
-        <translation type="unfinished"></translation>
+        <translation>Error en cargar</translation>
     </message>
 </context>
 <context>
@@ -141,10 +141,6 @@
     <message>
         <source>Load more</source>
         <translation>Cargar mai</translation>
-    </message>
-    <message>
-        <source>Users</source>
-        <translation>Utilizaires</translation>
     </message>
     <message>
         <source>Settings</source>
@@ -207,24 +203,36 @@
         <source>Authorize this app to use your Twitter account in your behalf.</source>
         <translation>Autorizatz l&apos;aplicacion a utilizar vòstre compte Twitter.</translation>
     </message>
+     <message>
+        <source>Credits and license</source>
+        <translation>Crèdits e licéncia</translation>
+    </message>
+    <message>
+        <source>&lt;a style=&apos;text-decoration:none&apos; href=&apos;https://github.com/dysk0/harbour-pingviini/&apos;&gt;Pingviini&lt;/a&gt; is a Twitter client for SailfishOS created by Duško Angirević and licensed under GNU GPL v3. All product names, logos, and brands are property of their respective owners.</source>
+        <translation>&lt;a style=&apos;text-decoration:none&apos; href=&apos;https://github.com/dysk0/harbour-pingviini/&apos;&gt;Pingviini&lt;/a&gt; es un client Twitter per SailfishOS creat per Duško Angirević e jos licéncia GNU GPL v3. Totes los noms, logos e marcas son la proprietat de lor proprietaris respectius.</translation>
+    </message>
+    <message>
+        <source>This project is heavily based on &lt;a style=&apos;text-decoration:none&apos; href=&apos;https://github.com/jublonet/codebird-js&apos;&gt;Codebird JS&lt;/a&gt; by Jublo Solutions. Thanks for making it available under the conditions of the GNU GPL v3.</source>
+        <translation>Aqueste projècte es fòrtament basat sus &lt;a style=&apos;text-decoration:none&apos; href=&apos;https://github.com/jublonet/codebird-js&apos;&gt;Codebird JS&lt;/a&gt; de Jublo Solutions. Mercés de l’aver fach disponible jos las condicions de la GNU GPL v3.</translation>
+    </message>
+    <message>
+        <source>Credits</source>
+        <translation>Crèdits</translation>
+    </message>
+    <message>
+        <source>Terms of Service</source>
+        <translation>Condicion d’utilizacion</translation>
+    </message>
+    <message>
+        <source>Twitter Privacy Policy</source>
+        <translation>Politica de privacitat de Twitter</translation>
+</message>
 </context>
 <context>
     <name>TweetDetails</name>
     <message>
-        <source>Retweet</source>
-        <translation>Tornar tweetejar</translation>
-    </message>
-    <message>
-        <source>Unfavorite</source>
-        <translation>Levar dels favorits</translation>
-    </message>
-    <message>
-        <source>Favorite</source>
-        <translation>Metre en favorits</translation>
-    </message>
-    <message>
-        <source>Report as spam</source>
-        <translation>Senhaler coma indesirable</translation>
+        <source>Conversation</source>
+        <translation>Conversacion</translation>
     </message>
 </context>
 </TS>

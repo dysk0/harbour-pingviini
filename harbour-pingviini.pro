@@ -86,7 +86,8 @@ DISTFILES += \
     rpm/harbour-pingviini.changes \
     qml/lib/twitter-text.js \
     qml/pages/cmp/CmpTweet.qml \
-    qml/pages/cmp/CmpListItem.qml
+    qml/pages/cmp/CmpListItem.qml \
+    qml/pages/Terms.qml
 
 HEADERS += \
     src/filedownloader.h \
