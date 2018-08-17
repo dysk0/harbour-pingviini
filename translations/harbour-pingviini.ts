@@ -92,18 +92,18 @@
     </message>
     <message>
         <source>Pingviini</source>
-        <translation type="unfinished"></translation>
+        <translation>Pingviini</translation>
     </message>
     <message>
         <source>Load more</source>
-        <translation type="unfinished"></translation>
+        <translation>Load more</translation>
     </message>
 </context>
 <context>
     <name>ImageFullScreen</name>
     <message>
         <source>Error loading</source>
-        <translation type="unfinished"></translation>
+        <translation>Error loading</translation>
     </message>
 </context>
 <context>
@@ -117,7 +117,7 @@
     <name>MainPage</name>
     <message>
         <source>Pingviini</source>
-        <translation type="unfinished"></translation>
+        <translation>Pingviini</translation>
     </message>
     <message>
         <source>Messages</source>
@@ -151,7 +151,7 @@
     <name>NewTweet</name>
     <message>
         <source>Delete</source>
-        <translation type="finished">Delete</translation>
+        <translation>Delete</translation>
     </message>
 </context>
 <context>
@@ -197,11 +197,42 @@
     </message>
     <message>
         <source>Disable this option if you want to preserve your data connection.</source>
-        <translation type="finished">Disable this option if you want to preserve your data connection.</translation>
+        <translation>Disable this option if you want to preserve your data connection.</translation>
     </message>
     <message>
         <source>Authorize this app to use your Twitter account in your behalf.</source>
-        <translation type="finished">Authorize this app to use your Twitter account in your behalf.</translation>
+        <translation>Authorize this app to use your Twitter account in your behalf.</translation>
+    </message>
+    <message>
+        <source>Credits and license</source>
+        <translation>Credits and license</translation>
+    </message>
+    <message>
+        <source>&lt;a style=&apos;text-decoration:none&apos; href=&apos;https://github.com/dysk0/harbour-pingviini/&apos;&gt;Pingviini&lt;/a&gt; is a Twitter client for SailfishOS created by Duško Angirević and licensed under GNU GPL v3. All product names, logos, and brands are property of their respective owners.</source>
+        <translation>&lt;a style=&apos;text-decoration:none&apos; href=&apos;https://github.com/dysk0/harbour-pingviini/&apos;&gt;Pingviini&lt;/a&gt; is a Twitter client for SailfishOS created by Duško Angirević and licensed under GNU GPL v3. All product names, logos, and brands are property of their respective owners.</translation>
+    </message>
+    <message>
+        <source>This project is heavily based on &lt;a style=&apos;text-decoration:none&apos; href=&apos;https://github.com/jublonet/codebird-js&apos;&gt;Codebird JS&lt;/a&gt; by Jublo Solutions. Thanks for making it available under the conditions of the GNU GPL v3.</source>
+        <translation>This project is heavily based on &lt;a style=&apos;text-decoration:none&apos; href=&apos;https://github.com/jublonet/codebird-js&apos;&gt;Codebird JS&lt;/a&gt; by Jublo Solutions. Thanks for making it available under the conditions of the GNU GPL v3.</translation>
+    </message>
+    <message>
+        <source>Credits</source>
+        <translation>Credits</translation>
+    </message>
+    <message>
+        <source>Terms of Service</source>
+        <translation>Terms of Service</translation>
+    </message>
+    <message>
+        <source>Twitter Privacy Policy</source>
+        <translation>Twitter Privacy Policy</translation>
+    </message>
+</context>
+<context>
+    <name>TweetDetails</name>
+    <message>
+        <source>Conversation</source>
+        <translation>Conversation</translation>
     </message>
     <message>
         <source>Report as spam</source>
@@ -218,39 +249,6 @@
     <message>
         <source>Favorite</source>
         <translation>Favorite</translation>
-    </message>
-    <message>
-        <source>Conversation</source>
-        <translation>Conversation</translation>
-        <source>Credits and license</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&lt;a style=&apos;text-decoration:none&apos; href=&apos;https://github.com/dysk0/harbour-pingviini/&apos;&gt;Pingviini&lt;/a&gt; is a Twitter client for SailfishOS created by Duško Angirević and licensed under GNU GPL v3. All product names, logos, and brands are property of their respective owners.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>This project is heavily based on &lt;a style=&apos;text-decoration:none&apos; href=&apos;https://github.com/jublonet/codebird-js&apos;&gt;Codebird JS&lt;/a&gt; by Jublo Solutions. Thanks for making it available under the conditions of the GNU GPL v3.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Credits</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Terms of Service</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Twitter Privacy Policy</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>TweetDetails</name>
-    <message>
-        <source>Conversation</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>
