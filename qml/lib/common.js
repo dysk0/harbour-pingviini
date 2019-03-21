@@ -135,27 +135,20 @@ function parseTrends(json) {
 }
 
 function parseDM(json) {
+    //console.log(JSON.stringify(json))
     var tweet = {}
     try {
         tweet = {
             id: json.id,
-            id_str: json.id_str,
-            sent: false,
-            created_at: getValidDate(json.created_at),
-            text: (json.full_text ? json.full_text : json.text),
-            sender_id: json.sender_id_str,
-            sender_name: json.sender_screen_name,
-            sender_screen_name: json.sender.screen_name,
-            sender_avatar: json.sender.profile_image_url_https,
-            recipient_id: json.recipient_id_str,
-            recipient_name: json.recipient.name,
-            recipient_screen_name: json.recipient_screen_name,
-            recipient_avatar: json.recipient.profile_image_url_https,
-            media: []
+            type: json.type,
+            created_at: new Date(json.created_timestamp),
+            recipient_id: json.message_create.target.recipient_id,
+            sender_id: json.message_create.sender_id,
+            text: json.message_create.message_data
         }
-        tweet = parseEntities(tweet, json.entities);
-        //console.log(JSON.stringify(json.entities))
-        tweet.section = getDate(tweet.created_at)
+        //tweet = parseEntities(tweet, json.entities);
+        ////console.log(JSON.stringify(json.entities))
+        tweet.section = tweet.created_at
     } catch(err) {
         console.log(err.message);
     }

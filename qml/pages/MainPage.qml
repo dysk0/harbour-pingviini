@@ -70,7 +70,7 @@ Page {
             }
             mdl: Logic.modelDM
             action: "directMessages_events_list"
-            vars: { }
+            vars: {"count":46 }
             conf: Logic.getConfTW()
             width: parent.width
             height: parent.height
@@ -119,7 +119,7 @@ Page {
                         topMargin: Theme.paddingLarge
                         right: lblDate.left
                     }
-                    text: Logic.getUserName(model.sender_name)
+                    text: model.recipient_id //Logic.getUserName(model.recipient_id)
                     color: (pressed ? Theme.highlightColor : Theme.primaryColor)
                     wrapMode: Text.NoWrap
                 }
@@ -163,7 +163,7 @@ Page {
             }
             function loadData(mode){
                 console.log(mode)
-                worker.sendMessage({conf: Logic.getConfTW(), model: Logic.modelDMreceived, mode: 'append', bgAction: 'directMessages_events_list', params: {count: 40, next_cursor: ""}});
+                worker.sendMessage({conf: Logic.getConfTW(), model: Logic.modelDMreceived, mode: 'append', bgAction: 'directMessages_events_list', params: {count: 41}});
                 //worker.sendMessage({conf: Logic.getConfTW(), model: Logic.modelDMsent, mode: 'append', bgAction: 'directMessages_sent', params: {count: 200, skip_status: true, include_entities: true, full_text: true}});
             }
         }

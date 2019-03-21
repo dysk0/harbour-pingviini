@@ -93,7 +93,7 @@ Page {
         }
         BusyIndicator {
             size: BusyIndicatorSize.Large
-            running: listView.model.count === 0;
+            running: listView.model.count === 0 && (tweet && typeof tweet.id !== "undefined")
             anchors.verticalCenter: parent.verticalCenter
             anchors.horizontalCenter: parent.horizontalCenter
         }

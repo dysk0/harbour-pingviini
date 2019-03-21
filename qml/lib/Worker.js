@@ -110,6 +110,7 @@ WorkerScript.onMessage = function(msg) {
         if (msg.model && msg.model.count === 0) {
             msg.mode = "append";
         }
+
         if (msg.next_cursor === ""){
             if (msg.model && msg.model.count) {
                 if (msg.mode === "append") {
@@ -120,10 +121,13 @@ WorkerScript.onMessage = function(msg) {
                 }
             }
         } else {
-            if (msg.mode === "prepend" )
-                msg.params['cursor'] = msg.previous_cursor
-            else
-                msg.params['cursor'] = msg.next_cursor
+            if (msg.mode === "prepend" ) {
+                if (msg.previous_cursor)
+                    msg.params['cursor'] = msg.previous_cursor
+            } else {
+                if (msg.next_cursor)
+                    msg.params['cursor'] = msg.next_cursor
+            }
         }
 
 
@@ -177,9 +181,9 @@ WorkerScript.onMessage = function(msg) {
                     items = reply;
                     parser = parseTweet
                     break;
-                case "directMessages":
+                case "directMessages_events_list":
                 case "directMessages_sent":
-                    items = reply;
+                    items = reply.events;
                     parser = parseDM
                     break;
                 default:
