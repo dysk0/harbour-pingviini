@@ -89,16 +89,13 @@ Page {
     SilicaListView {
         header: PageHeader {
             title: qsTr("Conversation")
+            description: "beta feature"
         }
         BusyIndicator {
             size: BusyIndicatorSize.Large
             running: listView.model.count === 0;
             anchors.verticalCenter: parent.verticalCenter
             anchors.horizontalCenter: parent.horizontalCenter
-        }
-        header: PageHeader {
-            title: qsTr("Conversation")
-            description: "beta feature"
         }
         id: listView
         model: ListModel {}
@@ -127,7 +124,7 @@ Page {
                 }
             }
             MenuItem {
-                text: (typeof tweet.favorited !== "undefined" && tweet.favorited ? qsTr("Unfavorite") : qsTr("Favorite"))
+                text: (tweet && typeof tweet.favorited !== "undefined" && tweet.favorited ? qsTr("Unfavorite") : qsTr("Favorite"))
                 onClicked: {
                     Logic.mediator.publish("bgCommand", {
                                                'headlessAction': 'favorites_' + (tweet.favorited ? 'destroy' : 'create'),
@@ -164,7 +161,7 @@ Page {
         delegate: CmpTweet{ tweet: model}
         VerticalScrollDecorator {}
         Component.onCompleted: {
-            if (typeof tweet.id !== "undefined"){
+            if (tweet && typeof tweet.id !== "undefined"){
 
                 title =  tweet.name
                 screenName =  tweet.screen_name + " "+ tweet.id_str

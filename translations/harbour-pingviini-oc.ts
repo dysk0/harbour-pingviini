@@ -3,236 +3,312 @@
 <TS version="2.1">
 <context>
     <name></name>
-    <message id="followers">
+    <message id="new-tweet">
+        <location filename="../qml/cover/CoverPage.qml" line="133"/>
+        <location filename="../qml/pages/MainPage.qml" line="313"/>
         <source></source>
-        <translation>abonats</translation>
-    </message>
-    <message id="friends">
-        <source></source>
-        <translation>Amics</translation>
-    </message>
-    <message id="Followers">
-        <source></source>
-        <translation>Abonats</translation>
-    </message>
-    <message id="Following">
-        <source></source>
-        <translation>Abonaments</translation>
-    </message>
-    <message id="Tweets">
-        <source></source>
-        <translation>Tweets</translation>
-    </message>
-    <message id="Favourites">
-        <source></source>
-        <translation>Favoris</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message id="retweeted">
+        <location filename="../qml/pages/cmp/CmpTweet.qml" line="52"/>
         <source></source>
-        <translation>retweets</translation>
+        <translation type="unfinished"></translation>
     </message>
-    <message id="new-tweet">
+    <message id="Followers">
+        <location filename="../qml/pages/Profile.qml" line="104"/>
         <source></source>
-        <translation>tweets novèls</translation>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="followers">
+        <location filename="../qml/pages/Profile.qml" line="112"/>
+        <source></source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="Following">
+        <location filename="../qml/pages/Profile.qml" line="117"/>
+        <source></source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="friends">
+        <location filename="../qml/pages/Profile.qml" line="125"/>
+        <source></source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="Tweets">
+        <location filename="../qml/pages/Profile.qml" line="131"/>
+        <source></source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="Favourites">
+        <location filename="../qml/pages/Profile.qml" line="137"/>
+        <source></source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>AccountAdd</name>
     <message>
+        <location filename="../qml/pages/AccountAdd.qml" line="58"/>
         <source>Add Account</source>
-        <translation>Ajustar un compte</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>Browser</name>
     <message>
-        <source>Web mode</source>
-        <translation>Mòde web</translation>
-    </message>
-    <message>
-        <source>Reading mode</source>
-        <translation>Mòde lectura</translation>
-    </message>
-    <message>
+        <location filename="../qml/pages/Browser.qml" line="120"/>
+        <location filename="../qml/pages/Browser.qml" line="175"/>
         <source>Open in Browser</source>
-        <translation>Dobrir dins lo navigator</translation>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/Browser.qml" line="126"/>
+        <location filename="../qml/pages/Browser.qml" line="181"/>
+        <source>Web mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/Browser.qml" line="126"/>
+        <location filename="../qml/pages/Browser.qml" line="181"/>
+        <source>Reading mode</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>CmpTweet</name>
     <message>
+        <location filename="../qml/pages/cmp/CmpTweet.qml" line="275"/>
         <source>Unfavorite</source>
-        <translation>Levar dels favorits</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../qml/pages/cmp/CmpTweet.qml" line="275"/>
         <source>Favorite</source>
-        <translation>Metre en favorits</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../qml/pages/cmp/CmpTweet.qml" line="311"/>
         <source>Retweet</source>
-        <translation>Tornar tweetejar</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>CreditsTranslations</name>
     <message>
+        <location filename="../qml/pages/CreditsTranslations.qml" line="15"/>
         <source>Translate App</source>
-        <translation>Traduire l&apos;aplicacion</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../qml/pages/CreditsTranslations.qml" line="21"/>
         <source>Credits</source>
-        <translation>Crèdits</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>DirectMessages</name>
     <message>
+        <location filename="../qml/pages/DirectMessages.qml" line="56"/>
         <source>Messages</source>
-        <translation>Messatges</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../qml/pages/DirectMessages.qml" line="57"/>
         <source>Pingviini</source>
-        <translation>Pingviini</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../qml/pages/DirectMessages.qml" line="61"/>
+        <location filename="../qml/pages/DirectMessages.qml" line="71"/>
         <source>Load more</source>
-        <translation>Cargar mai</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>ImageFullScreen</name>
     <message>
+        <location filename="../qml/pages/ImageFullScreen.qml" line="287"/>
         <source>Error loading</source>
-        <translation>Error en cargar</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>ImageUploader</name>
     <message>
+        <location filename="../src/selector/imageuploader.cpp" line="83"/>
         <source>The file %1 does not exists</source>
-        <translation>Lo fichièr %1 existís pas</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>MainPage</name>
     <message>
+        <location filename="../qml/pages/MainPage.qml" line="36"/>
         <source>Timeline</source>
-        <translation>Fil d&apos;actualitat</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../qml/pages/MainPage.qml" line="37"/>
+        <location filename="../qml/pages/MainPage.qml" line="53"/>
+        <location filename="../qml/pages/MainPage.qml" line="69"/>
         <source>Pingviini</source>
-        <translation>Pingviini</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../qml/pages/MainPage.qml" line="52"/>
         <source>Mentions</source>
-        <translation>Mencions</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../qml/pages/MainPage.qml" line="68"/>
         <source>Messages</source>
-        <translation>Messatges</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../qml/pages/MainPage.qml" line="233"/>
+        <location filename="../qml/pages/MainPage.qml" line="257"/>
         <source>Search</source>
-        <translation>Recercar</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>MyList</name>
     <message>
-        <source>Load more</source>
-        <translation>Cargar mai</translation>
+        <location filename="../qml/pages/cmp/MyList.qml" line="57"/>
+        <source>Settings</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Settings</source>
-        <translation>Paramètres</translation>
+        <location filename="../qml/pages/cmp/MyList.qml" line="61"/>
+        <source>Load more</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>NewTweet</name>
     <message>
+        <location filename="../qml/pages/NewTweet.qml" line="219"/>
         <source>Delete</source>
-        <translation>Suprimir</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>Profile</name>
     <message>
+        <location filename="../qml/pages/Profile.qml" line="92"/>
         <source>Summary</source>
-        <translation>Resumit</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../qml/pages/Profile.qml" line="97"/>
         <source>Location</source>
-        <translation>Lòc</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../qml/pages/Profile.qml" line="148"/>
         <source>Unfollow</source>
-        <translation>Quitar de seguir</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../qml/pages/Profile.qml" line="148"/>
         <source>Follow</source>
-        <translation>Seguir</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../qml/pages/Profile.qml" line="162"/>
         <source>Unmute</source>
-        <translation>Mostrar</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../qml/pages/Profile.qml" line="162"/>
         <source>Mute</source>
-        <translation>Amagar</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>Settings</name>
     <message>
+        <location filename="../qml/pages/Settings.qml" line="17"/>
         <source>Settings</source>
-        <translation>Paramètres</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../qml/pages/Settings.qml" line="23"/>
         <source>Add / Replace Account</source>
-        <translation>Ajustar / Remplaçar un compte</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Load images in tweets</source>
-        <translation>Cargar los imatges dels tweets</translation>
-    </message>
-    <message>
-        <source>Disable this option if you want to preserve your data connection.</source>
-        <translation>Desactivatz aquesta opcion per estalviar vòstra connexion Internet.</translation>
-    </message>
-    <message>
+        <location filename="../qml/pages/Settings.qml" line="24"/>
         <source>Authorize this app to use your Twitter account in your behalf.</source>
-        <translation>Autorizatz l&apos;aplicacion a utilizar vòstre compte Twitter.</translation>
+        <translation type="unfinished"></translation>
     </message>
-     <message>
+    <message>
+        <location filename="../qml/pages/Settings.qml" line="31"/>
+        <source>Load images in tweets</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/Settings.qml" line="32"/>
+        <source>Disable this option if you want to preserve your data connection.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/Settings.qml" line="37"/>
         <source>Credits and license</source>
-        <translation>Crèdits e licéncia</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../qml/pages/Settings.qml" line="51"/>
         <source>&lt;a style=&apos;text-decoration:none&apos; href=&apos;https://github.com/dysk0/harbour-pingviini/&apos;&gt;Pingviini&lt;/a&gt; is a Twitter client for SailfishOS created by Duško Angirević and licensed under GNU GPL v3. All product names, logos, and brands are property of their respective owners.</source>
-        <translation>&lt;a style=&apos;text-decoration:none&apos; href=&apos;https://github.com/dysk0/harbour-pingviini/&apos;&gt;Pingviini&lt;/a&gt; es un client Twitter per SailfishOS creat per Duško Angirević e jos licéncia GNU GPL v3. Totes los noms, logos e marcas son la proprietat de lor proprietaris respectius.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../qml/pages/Settings.qml" line="66"/>
         <source>This project is heavily based on &lt;a style=&apos;text-decoration:none&apos; href=&apos;https://github.com/jublonet/codebird-js&apos;&gt;Codebird JS&lt;/a&gt; by Jublo Solutions. Thanks for making it available under the conditions of the GNU GPL v3.</source>
-        <translation>Aqueste projècte es fòrtament basat sus &lt;a style=&apos;text-decoration:none&apos; href=&apos;https://github.com/jublonet/codebird-js&apos;&gt;Codebird JS&lt;/a&gt; de Jublo Solutions. Mercés de l’aver fach disponible jos las condicions de la GNU GPL v3.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../qml/pages/Settings.qml" line="89"/>
         <source>Credits</source>
-        <translation>Crèdits</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../qml/pages/Settings.qml" line="94"/>
         <source>Terms of Service</source>
-        <translation>Condicion d’utilizacion</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../qml/pages/Settings.qml" line="99"/>
         <source>Twitter Privacy Policy</source>
-        <translation>Politica de privacitat de Twitter</translation>
-</message>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>TweetDetails</name>
     <message>
+        <location filename="../qml/pages/TweetDetails.qml" line="91"/>
         <source>Conversation</source>
-        <translation>Conversacion</translation>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/TweetDetails.qml" line="107"/>
+        <source>Report as spam</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/TweetDetails.qml" line="116"/>
+        <source>Retweet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/TweetDetails.qml" line="127"/>
+        <source>Unfavorite</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/TweetDetails.qml" line="127"/>
+        <source>Favorite</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

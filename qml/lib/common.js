@@ -36,7 +36,6 @@ function parseUser(data){
             created_at: getValidDate(data.created_at),
             verified: data.verified
         }
-        //console.log(JSON.stringify(usr))
     } catch(err) {
         console.log(err.message);
     }
@@ -107,8 +106,6 @@ function parseEntities(tweet, entities){
     } catch(err) {
         console.log(err.message);
         console.log(JSON.stringify(err));
-        console.log(tweet.rich_text);
-        console.log(tweet.text);
 
     }
     finally {
@@ -120,7 +117,7 @@ function parseEntities(tweet, entities){
 function addUsersToModel(modelUsers, data) {
     if (!modelUsers)
         return;
-    console.log(JSON.stringify(data))
+
     var exists = false;
     for(var i = 0; i< modelUsers.count; i++){
         if (modelUsers.get(i).id === data.id){

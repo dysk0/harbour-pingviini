@@ -69,7 +69,7 @@ Page {
                 description: qsTr("Pingviini")
             }
             mdl: Logic.modelDM
-            action: "directMessages_sent"
+            action: "directMessages_events_list"
             vars: { }
             conf: Logic.getConfTW()
             width: parent.width
@@ -163,8 +163,8 @@ Page {
             }
             function loadData(mode){
                 console.log(mode)
-                worker.sendMessage({conf: Logic.getConfTW(), model: Logic.modelDMreceived, mode: 'append', bgAction: 'directMessages', params: {count: 200, skip_status: true, include_entities: true, full_text: true}});
-                worker.sendMessage({conf: Logic.getConfTW(), model: Logic.modelDMsent, mode: 'append', bgAction: 'directMessages_sent', params: {count: 200, skip_status: true, include_entities: true, full_text: true}});
+                worker.sendMessage({conf: Logic.getConfTW(), model: Logic.modelDMreceived, mode: 'append', bgAction: 'directMessages_events_list', params: {count: 40, next_cursor: ""}});
+                //worker.sendMessage({conf: Logic.getConfTW(), model: Logic.modelDMsent, mode: 'append', bgAction: 'directMessages_sent', params: {count: 200, skip_status: true, include_entities: true, full_text: true}});
             }
         }
 

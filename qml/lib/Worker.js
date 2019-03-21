@@ -146,7 +146,7 @@ WorkerScript.onMessage = function(msg) {
             }
             if ('errors' in reply) {
                 reply.errors.forEach(function(entry) {
-                    WorkerScript.sendMessage({ 'error': true,  "message": entry.message})
+                    WorkerScript.sendMessage({ 'error': true,  "message": entry.message, "range": msg.bgAction})
                 });
                 console.log(JSON.stringify(reply.errors))
             }

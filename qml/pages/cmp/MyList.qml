@@ -15,7 +15,7 @@ SilicaListView {
     property bool loadStarted : false;
     property int scrollOffset;
     property string action: ""
-    property variant vars: { }
+    property variant vars: ({ })
     property variant conf
     property bool notifier : false;
     property string next_cursor: ""

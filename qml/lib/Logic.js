@@ -238,8 +238,8 @@ var parseDM = (function(){
 
         var modelThread  = Qt.createQmlObject('import QtQuick 2.0; ListModel {   }', Qt.application, 'InternalQmlObject');
         var thread = data.filter(function(el) {
-            console.log(typeof conf.USER_ID + " " + conf.USER_ID)
-            console.log(typeof el.sender_id + " " + el.sender_id)
+            //console.log(typeof conf.USER_ID + " " + conf.USER_ID)
+            //console.log(typeof el.sender_id + " " + el.sender_id)
             return (el.sender_id == id && el.reciever_id == conf.USER_ID) || (el.sender_id == conf.USER_ID && el.reciever_id == id);
         })
         modelThread.append(thread)
@@ -252,7 +252,7 @@ var parseDM = (function(){
         var list = [];
         for (var i = participiants.length - 1; i >= 0; i--) {
             var participiant = participiants[i];
-            console.log(JSON.stringify(participiant));
+            //console.log(JSON.stringify(participiant));
 
             var msgsByUser = data.filter(function(el) {
                 return (el.sender_id == participiant.user_id && el.reciever_id == user_id) || (el.sender_id == user_id && el.reciever_id == participiant.user_id);
