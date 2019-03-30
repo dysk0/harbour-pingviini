@@ -79,7 +79,6 @@ DISTFILES += \
     qml/pages/cmp/TweetVideo.qml \
     qml/pages/Settings.qml \
     qml/pages/CreditsTranslations.qml \
-    qml/pages/DirectMessages.qml \
     qml/pages/MainPage.qml \
     qml/pages/UsersDebug.qml \
     qml/lib/Parser.js \
@@ -87,7 +86,9 @@ DISTFILES += \
     qml/lib/twitter-text.js \
     qml/pages/cmp/CmpTweet.qml \
     qml/pages/cmp/CmpListItem.qml \
-    qml/pages/Terms.qml
+    qml/pages/Terms.qml \
+    qml/pages/cmp/Banner.qml \
+    qml/pages/DirectMessages.qml
 
 HEADERS += \
     src/filedownloader.h \

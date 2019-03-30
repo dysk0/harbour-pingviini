@@ -85,6 +85,30 @@ WorkerScript.onMessage = function(msg) {
                         console.log(JSON.stringify(err));
                         console.log("$$$$$$$$$$$$$$$$$$$ headlessAction $$$$$$$$$$$$$$");
 
+                        switch(msg.headlessAction) {
+                        case "users_lookup":
+                            for(var j = 0; j < reply.length; j++) {
+                                console.log( reply[j].id )
+                                for(var i = 0; i < msg.modelUsers.count; i++){
+                                    var item = msg.modelUsers.get(i)
+                                    if ( reply[j].id  == item.user_id ) {
+                                        msg.modelUsers.set(i, {
+                                                                    "user_id": reply[j].id,
+                                                                    "name": reply[j].name,
+                                                                    "screen_name": reply[j].screen_name,
+                                                                    "avatar": reply[j].profile_image_url_https
+                                                                })
+                                        console.log("found in model")
+                                    }
+                                }
+                            }
+                            msg.modelUsers.sync();
+
+
+                            break;
+
+                        }
+
                         if (reply){
                             WorkerScript.sendMessage({ 'success': true, 'key': msg.headlessAction,  "reply": reply})
                         }
@@ -159,6 +183,14 @@ WorkerScript.onMessage = function(msg) {
                 var items = [];
                 var parser = false;
                 switch(msg.bgAction){
+                case "users_search":
+                    items = reply;
+                    parser = parseUser
+                    break;
+                case "users_lookup":
+                    items = reply;
+                    parser = parseUser
+                    break;
                 case "trends_place":
                     if (reply[0] && 'trends' in reply[0])
                         items = reply[0].trends;
@@ -217,15 +249,14 @@ WorkerScript.onMessage = function(msg) {
                 if (parser) {
                     for(var k = i; k < length; k++){
                         items[k] = parser(items[k])
-                        //console.log(JSON.stringify(items[i]))
-                        if (items[k].userId && msg.modelUsers) {
-                            msg.modelUsers.append({
-                                                      "id": items[k].userId,
-                                                      "id_str": items[k].userIdStr,
-                                                      "name": items[k].name,
-                                                      "screen_name": items[k].screenName,
-                                                      "avatar": items[k].profileImageUrl+""
-                                                  })
+                        // add users from DM
+                        if (items[k].sender_id) {
+                            addUsersToModel(msg.conf.modelUsers, { "user_id": items[k].sender_id, "name": "", "screen_name": "", "avatar": "" })
+                            addUsersToModel(msg.conf.modelUsers, { "user_id": items[k].recipient_id, "name": "", "screen_name": "", "avatar": "" })
+                        }
+                        // add users from tweets
+                        if (items[k].user_id) {
+                            addUsersToModel(msg.conf.modelUsers, { "user_id": items[k].user_id, "name": items[k].name, "screen_name": items[k].screen_name, "avatar": items[k].avatar })
                         }
                     }
                 }
@@ -247,27 +278,42 @@ WorkerScript.onMessage = function(msg) {
 
             msg.model.sync();
 
-            if (msg.modelUsers){
-                var userIDs = [];
-                var indexesToRemove = [];
-                if (msg.modelUsers && msg.modelUsers.count) {
-                    for (i = msg.modelUsers.count-1; i >= 0; i--) {
-                        var id = msg.modelUsers.get(i).id_str;
-                        //console.log("USERS " + i + " " + id)
-                        if (userIDs.indexOf(id) === -1){
-                            // user is unique keep
-                            userIDs.push(id)
-                        } else {
-                            // user is duplicate
-                            indexesToRemove.push(i)
-                        }
+
+
+            if (msg.modelDM){
+                if (msg.modelDM && msg.modelDM.count) {
+                    for (i = msg.modelDM.count-1; i >= 0; i--) {
+                        msg.modelDM.remove(i)
                     }
-                    indexesToRemove.forEach(function(item) {
-                        msg.modelUsers.remove(item)
-                    });
                 }
-                //console.log("USERS " + JSON.stringify(indexesToRemove))
-                msg.modelUsers.sync();
+                console.log("DM DM DM DM DM " + msg.modelDMraw.count)
+                msg.modelDM.sync();
+            }
+
+            if (msg.conf.modelUsers){
+                var d = []
+                var filter = []
+                var incomplete = []
+                for( i = 0; i < msg.conf.modelUsers.count; i++){
+                    var item = msg.conf.modelUsers.get(i)
+                    if (filter.indexOf(item.user_id) === -1){
+                        if ( item.name === "")
+                            incomplete.push(item.user_id)
+                        d.push({
+                                   "user_id": item.user_id,
+                                   "name": item.name,
+                                   "screen_name": item.screen_name,
+                                   "avatar": item.avatar
+                               })
+                        filter.push(item.user_id)
+                    }
+                }
+                msg.conf.modelUsers.clear();
+                msg.conf.modelUsers.append(d)
+                msg.conf.modelUsers.sync();
+                console.log(incomplete.join(" JAME "))
+
+
             }
 
             WorkerScript.sendMessage({ 'success': true,  "action": msg.bgAction})

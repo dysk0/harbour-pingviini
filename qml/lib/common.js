@@ -21,6 +21,7 @@ function parseUser(data){
     var usr = {}
     try {
         usr = {
+            user_id: data.id,
             id: data.id,
             id_str: data.id_str,
             name: data.name,
@@ -114,19 +115,19 @@ function parseEntities(tweet, entities){
 
 }
 
-function addUsersToModel(modelUsers, data) {
-    if (!modelUsers)
+function addUsersToModel(modelUsers, user) {
+    if (!modelUsers || !user.user_id)
         return;
 
     var exists = false;
     for(var i = 0; i< modelUsers.count; i++){
-        if (modelUsers.get(i).id === data.id){
+        if (modelUsers.get(i).user_id === user.user_id){
             exists = true;
             break;
         }
     }
     if (!exists){
-        modelUsers.append(data)
+        modelUsers.append(user)
     }
 }
 
@@ -140,15 +141,15 @@ function parseDM(json) {
     try {
         tweet = {
             id: json.id,
-            type: json.type,
-            created_at: new Date(json.created_timestamp),
-            recipient_id: json.message_create.target.recipient_id,
+            created_at: new Date(json.created_timestamp*1),
+            text: json.message_create.message_data.text,
             sender_id: json.message_create.sender_id,
-            text: json.message_create.message_data
+            recipient_id: json.message_create.target.recipient_id,
+            group: (json.message_create.sender_id*1)+(json.message_create.target.recipient_id*1)
         }
         //tweet = parseEntities(tweet, json.entities);
         ////console.log(JSON.stringify(json.entities))
-        tweet.section = tweet.created_at
+        tweet.section = getDate(tweet.created_at)
     } catch(err) {
         console.log(err.message);
     }

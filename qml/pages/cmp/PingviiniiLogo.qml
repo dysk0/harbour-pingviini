@@ -5,6 +5,7 @@ Item {
     width: Theme.itemSizeMedium
     height: width
     property int w: width
+    property bool running: true;
     property double opac: 1.0
     property int line: w*0.13
     property int eyeW:   w*0.45
@@ -98,7 +99,7 @@ Item {
             color: "#000"
         }
         Timer{
-            interval: 2; running: true; repeat: true
+            interval: 2; running: running; repeat: true
             onTriggered: {
                 parent.rotation = parent.rotation+1
             }

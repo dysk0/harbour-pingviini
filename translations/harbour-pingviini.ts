@@ -74,6 +74,13 @@
     </message>
 </context>
 <context>
+    <name>CoverPage</name>
+    <message>
+        <source>Hello, I&apos;m a banner notification!</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CreditsTranslations</name>
     <message>
         <source>Translate App</source>
@@ -88,15 +95,11 @@
     <name>DirectMessages</name>
     <message>
         <source>Messages</source>
-        <translation>Messages</translation>
+        <translation type="unfinished">Messages</translation>
     </message>
     <message>
         <source>Pingviini</source>
-        <translation>Pingviini</translation>
-    </message>
-    <message>
-        <source>Load more</source>
-        <translation>Load more</translation>
+        <translation type="unfinished">Pingviini</translation>
     </message>
 </context>
 <context>
@@ -116,24 +119,20 @@
 <context>
     <name>MainPage</name>
     <message>
-        <source>Pingviini</source>
-        <translation>Pingviini</translation>
-    </message>
-    <message>
-        <source>Messages</source>
-        <translation>Messages</translation>
-    </message>
-    <message>
         <source>Timeline</source>
-        <translation>Timeline</translation>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pingviini</source>
+        <translation type="unfinished">Pingviini</translation>
     </message>
     <message>
         <source>Mentions</source>
-        <translation>Mentions</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Search</source>
-        <translation>Search</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -145,6 +144,10 @@
     <message>
         <source>Settings</source>
         <translation>Settings</translation>
+    </message>
+    <message>
+        <source>Users Test</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -249,6 +252,14 @@
     <message>
         <source>Favorite</source>
         <translation>Favorite</translation>
+    </message>
+    <message>
+        <source>New Tweet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>beta feature</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

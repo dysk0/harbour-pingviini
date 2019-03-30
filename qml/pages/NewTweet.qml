@@ -21,6 +21,26 @@ Item {
     property bool attachGeo: false
     property bool setFocus: false
     property string nextImageSrc: ""
+
+    property ListModel suggestedModel;
+    property string suggestedUser: ""
+    onSuggestedUserChanged: {
+        console.log(suggestedUser)
+        suggestedModel = Qt.createQmlObject('import QtQuick 2.0; ListModel {   }', Qt.application, 'InternalQmlObject');
+        if (suggestedUser.length > 0) {
+            var msg = {
+                'headlessAction'    : 'users_lookup',
+                'modelUsers'     :  suggestedModel,
+                'mode'      : "append",
+                'params'    : { "screen_name": suggestedUser, "include_entities": false, "tweet_mode": "compat"},
+                'conf'      : Logic.getConfTW()
+            };
+            worker.sendMessage(msg);
+        }
+    }
+
+
+
     width: parent.width
     height: newTweet.height + btnLocation.height + uploadedImages.height
     anchors {
@@ -31,7 +51,7 @@ Item {
     PositionSource {
         id: positionSource
         active: attachGeo
-        //updateInterval: 120000 // 2 mins
+        updateInterval: 120000 // 2 mins
         property variant fromCoordinate: QtPositioning.coordinate(latitude, longitude)
         onPositionChanged:  {
             //var currentPosition = positionSource.position.coordinate
@@ -81,10 +101,14 @@ Item {
         id: worker
         source: "../lib/Worker.js"
         onMessage: {
-            if (messageObject.success) {
-                console.log(JSON.stringify(messageObject))
+            if (messageObject.success && messageObject.key === "directMessages_events_new") {
                 newTweet.text = "";
             }
+            if (messageObject.success && messageObject.key === "statuses_update") {
+                newTweet.text = "";
+            }
+
+            console.log(JSON.stringify(messageObject))
             newTweet.enabled = true;
             sendBtn.enabled = true;
         }
@@ -113,11 +137,22 @@ Item {
 
         if (type === "DM") {
             msg.model = Logic.modelDMsent
-            msg.headlessAction = "directMessages_new"
+            msg.headlessAction = "directMessages_events_new"
             msg.params = {
-                "text": newTweet.text,
-                "screen_name": screenName
+                "event": {
+                    "type": "message_create",
+                    "message_create": {
+                        "target": {
+                            "recipient_id": userId+""
+                        },
+                        "message_data": {
+                            "text": newTweet.text
+                        }
+                    }
+                }
             }
+
+
         }
         if (type === "Reply") {
             msg.params['in_reply_to_status_id'] = tweetId
@@ -185,10 +220,38 @@ Item {
         horizontalAlignment: Text.AlignLeft
         // EnterKey.onClicked: { tweet() }
         onTextChanged: {
+            if (text.length % 3 === 0){
+                triggerIndicatior()
+            }
+
             sendBtn.enabled = text.length > tweetMaxChar ? false : true
             newTweet.color = (text.length > tweetMaxChar ? "red": Theme.primaryColor)
+
+            textOperations.text = newTweet.text
+            textOperations.cursorPosition = newTweet.cursorPosition
+            textOperations.selectWord()
+            textOperations.select(textOperations.selectionStart ? textOperations.selectionStart-1 : 0, textOperations.selectionEnd)
+            //console.log(textOperations.text.substr(textOperations.selectionStart, textOperations.selectionEnd))
+            suggestedUser = ""
+            if (textOperations.selectedText.charAt(0) === "@") {
+                suggestedUser = textOperations.selectedText.trim().substring(1);
+            }
         }
 
+        function triggerIndicatior() {
+            console.log("triggered")
+            if ( newTweetPanel.type === "DM"){
+                worker.sendMessage({
+                   conf  : Logic.getConfTW(),
+                   headlessAction: "directMessages_indicateTyping",
+                   params: {"recipient_id": newTweetPanel.userId }
+               });
+            }
+        }
+        TextInput {
+            id: textOperations
+            visible: false
+        }
     }
 
 
@@ -304,5 +367,6 @@ Item {
         anchors.left: parent.left
         height: 3
     }
+
 
 }

@@ -38,7 +38,8 @@ function getConfTW(){
         OAUTH_TOKEN_SECRET: OAUTH_TOKEN_SECRET,
         USER_AGENT: USER_AGENT,
         SCREEN_NAME: SCREEN_NAME,
-        USER_ID: USER_ID
+        USER_ID: USER_ID,
+        modelUsers: modelUsers
     }
 }
 
@@ -112,10 +113,10 @@ var modelTL = Qt.createQmlObject('import QtQuick 2.0; ListModel {   }', Qt.appli
 var modelMN = Qt.createQmlObject('import QtQuick 2.0; ListModel {   }', Qt.application, 'InternalQmlObject');
 var modelSE = Qt.createQmlObject('import QtQuick 2.0; ListModel {   }', Qt.application, 'InternalQmlObject');
 var modelDM = Qt.createQmlObject('import QtQuick 2.0; ListModel {   }', Qt.application, 'InternalQmlObject');
-var modelDMsent = Qt.createQmlObject('import QtQuick 2.0; ListModel {   }', Qt.application, 'InternalQmlObject');
-var modelDMreceived = Qt.createQmlObject('import QtQuick 2.0; ListModel {   }', Qt.application, 'InternalQmlObject');
-var modelUsers = Qt.createQmlObject('import QtQuick 2.0; ListModel { function cleanup(){ console.log("Users" + count) }  }', Qt.application, 'InternalQmlObject');
-var modelRawDM= Qt.createQmlObject('import QtQuick 2.0; ListModel {   }', Qt.application, 'InternalQmlObject');
+var modelDMraw = Qt.createQmlObject('import QtQuick 2.0; ListModel {   }', Qt.application, 'InternalQmlObject');
+
+var modelUsers = Qt.createQmlObject('import QtQuick 2.0; ListModel { dynamicRoles: true; function cleanup(){ console.log("Users" + count) }  }', Qt.application, 'InternalQmlObject');
+
 var mediator = (function(){
     var subscribe = function(channel, fn){
         if(!mediator.channels[channel]) mediator.channels[channel] = [];
@@ -293,10 +294,20 @@ var parseDM = (function(){
 })();
 
 
-var getUserName = function(name) {
+var getUserData= function(uid, key) {
     for(var i = 0; i < modelUsers.count; i++){
-        if (modelUsers.get(i).screen_name === name)
-            return modelUsers.get(i).name
+        if (modelUsers.get(i).user_id == uid && modelUsers.get(i)[key].length>2)
+            return modelUsers.get(i)[key]
     }
-    return "@"+name
+    return ""
+}
+var getIncompleteUsers = function() {
+    var incomplete = [];
+    // user_id, name, screen_name, avatar
+    for (var i = 0; i < modelUsers.count; i++){
+        var item = modelUsers.get(i)
+        if ( item.name === "")
+            incomplete.push(item.user_id)
+    }
+    return incomplete.join(",")
 }

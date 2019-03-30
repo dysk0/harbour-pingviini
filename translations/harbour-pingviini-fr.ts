@@ -4,8 +4,7 @@
 <context>
     <name></name>
     <message id="new-tweet">
-        <location filename="../qml/cover/CoverPage.qml" line="133"/>
-        <location filename="../qml/pages/MainPage.qml" line="313"/>
+        <location filename="../qml/pages/MainPage.qml" line="217"/>
         <source></source>
         <translation type="unfinished"></translation>
     </message>
@@ -93,6 +92,14 @@
     </message>
 </context>
 <context>
+    <name>CoverPage</name>
+    <message>
+        <location filename="../qml/cover/CoverPage.qml" line="164"/>
+        <source>Hello, I&apos;m a banner notification!</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CreditsTranslations</name>
     <message>
         <location filename="../qml/pages/CreditsTranslations.qml" line="15"/>
@@ -108,19 +115,13 @@
 <context>
     <name>DirectMessages</name>
     <message>
-        <location filename="../qml/pages/DirectMessages.qml" line="56"/>
+        <location filename="../qml/pages/DirectMessages.qml" line="8"/>
         <source>Messages</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/DirectMessages.qml" line="57"/>
+        <location filename="../qml/pages/DirectMessages.qml" line="9"/>
         <source>Pingviini</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/DirectMessages.qml" line="61"/>
-        <location filename="../qml/pages/DirectMessages.qml" line="71"/>
-        <source>Load more</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -143,30 +144,24 @@
 <context>
     <name>MainPage</name>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="36"/>
+        <location filename="../qml/pages/MainPage.qml" line="39"/>
         <source>Timeline</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="37"/>
-        <location filename="../qml/pages/MainPage.qml" line="53"/>
-        <location filename="../qml/pages/MainPage.qml" line="69"/>
+        <location filename="../qml/pages/MainPage.qml" line="40"/>
+        <location filename="../qml/pages/MainPage.qml" line="56"/>
         <source>Pingviini</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="52"/>
+        <location filename="../qml/pages/MainPage.qml" line="55"/>
         <source>Mentions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="68"/>
-        <source>Messages</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/MainPage.qml" line="233"/>
-        <location filename="../qml/pages/MainPage.qml" line="257"/>
+        <location filename="../qml/pages/MainPage.qml" line="137"/>
+        <location filename="../qml/pages/MainPage.qml" line="161"/>
         <source>Search</source>
         <translation type="unfinished"></translation>
     </message>
@@ -175,11 +170,16 @@
     <name>MyList</name>
     <message>
         <location filename="../qml/pages/cmp/MyList.qml" line="57"/>
-        <source>Settings</source>
+        <source>Users Test</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/pages/cmp/MyList.qml" line="61"/>
+        <source>Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/cmp/MyList.qml" line="65"/>
         <source>Load more</source>
         <translation type="unfinished"></translation>
     </message>
@@ -187,7 +187,7 @@
 <context>
     <name>NewTweet</name>
     <message>
-        <location filename="../qml/pages/NewTweet.qml" line="219"/>
+        <location filename="../qml/pages/NewTweet.qml" line="282"/>
         <source>Delete</source>
         <translation type="unfinished"></translation>
     </message>
@@ -286,27 +286,37 @@
 <context>
     <name>TweetDetails</name>
     <message>
-        <location filename="../qml/pages/TweetDetails.qml" line="91"/>
+        <location filename="../qml/pages/TweetDetails.qml" line="93"/>
         <source>Conversation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/TweetDetails.qml" line="107"/>
+        <location filename="../qml/pages/TweetDetails.qml" line="93"/>
+        <source>New Tweet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/TweetDetails.qml" line="94"/>
+        <source>beta feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/TweetDetails.qml" line="110"/>
         <source>Report as spam</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/TweetDetails.qml" line="116"/>
+        <location filename="../qml/pages/TweetDetails.qml" line="120"/>
         <source>Retweet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/TweetDetails.qml" line="127"/>
+        <location filename="../qml/pages/TweetDetails.qml" line="131"/>
         <source>Unfavorite</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/TweetDetails.qml" line="127"/>
+        <location filename="../qml/pages/TweetDetails.qml" line="131"/>
         <source>Favorite</source>
         <translation type="unfinished"></translation>
     </message>

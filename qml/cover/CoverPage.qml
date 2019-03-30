@@ -30,6 +30,8 @@
 
 import QtQuick 2.0
 import Sailfish.Silica 1.0
+import QtGraphicalEffects 1.0
+
 import "../pages/cmp/"
 import "../lib/Logic.js" as Logic
 
@@ -73,19 +75,16 @@ CoverBackground {
             }
         }
     }
-    Label {
-        id: label
-        anchors.centerIn: parent
-        text: "Pingviini"
+    Banner {
+        id: banner
     }
-    /*SilicaGridView {
+
+
+    SilicaGridView {
         id: grid
         anchors.fill: parent
-        header: PageHeader {
-            title: Logic.modelUsers.count + " Users"
-        }
         model: Logic.modelUsers
-        cellWidth: width / 4
+        cellWidth: width / 6
         cellHeight: cellWidth
 
         delegate: BackgroundItem {
@@ -93,23 +92,48 @@ CoverBackground {
             height: grid.cellWidth
             Image {
                 id: avatarImg
-                anchors.fill: parent
                 source: model.avatar
+                sourceSize: Qt.size(parent.width, parent.height)
+                visible: true
+                opacity: 0.2
+            }
+            ColorOverlay {
+                visible: false
+                anchors.fill: avatarImg
+                source: avatarImg
+                color: Theme.highlightColor
             }
 
         }
-    }*/
-    /*PingviiniiLogo {
+    }
+    PingviiniiLogo {
         id: logo
         anchors {
             centerIn: parent
         }
-        width: parent.width
-        height: parent.width
+        width: parent.width*0.6
+        height: width
         opacity: 1;
-        anchors.fill: parent
+        running: false;
         Behavior on opacity { NumberAnimation {} }
-    }*/
+    }
+    Timer {
+        interval: 500;
+        running: true;
+        repeat: true
+        onTriggered:  {
+            var user_ids = Logic.getIncompleteUsers()
+            if (user_ids) {
+                worker.sendMessage({
+                                       conf: Logic.getConfTW(),
+                                       headlessAction: 'users_lookup',
+                                       modelUsers: Logic.modelUsers,
+                                       params: {"user_id": user_ids}
+                                   });
+            }
+        }
+    }
+
 
 
 
@@ -130,8 +154,15 @@ CoverBackground {
         CoverAction {
             iconSource: "image://theme/icon-cover-new"
             onTriggered: {
-                pageStack.push(Qt.resolvedUrl("./../pages/Conversation.qml"), {title: qsTrId("new-tweet"), tweetType: "New"})
+                pageStack.push(Qt.resolvedUrl("./../pages/TweetDetails.qml"), { tweetType: "New"})
                 app.activate();
+            }
+        }
+        CoverAction {
+            iconSource: "image://theme/icon-cover-sync"
+            onTriggered: {
+                banner.notify(qsTr("Hello, I'm a banner notification!"))
+
             }
         }
     }

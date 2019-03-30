@@ -134,7 +134,7 @@ SilicaGridView {
         }
         onClicked: {
             slideshowShow(index)
-            console.log(index)
+            //console.log(index)
             navigateTo(model.slug)
             effect.state = "right"
         }
@@ -147,7 +147,7 @@ SilicaGridView {
             else
                 listModel.setProperty(i, 'active', false);
         }
-        console.log(slug)
+        //console.log(slug)
     }
 
 

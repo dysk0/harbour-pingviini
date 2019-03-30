@@ -79,7 +79,14 @@ Page {
                     Logic.conf['USER_ID'] = messageObject.reply.id;
                     Logic.conf['SCREEN_NAME'] = messageObject.reply.screen_name;
                     Logic.conf['USER'] = messageObject.reply.name;
+                    Logic.conf['AVATAR'] = messageObject.reply.profile_image_url_https;
                     console.log(JSON.stringify(messageObject.reply))
+                    Logic.modelUsers.append({
+                               "user_id": Logic.conf['USER_ID'],
+                               "name": Logic.conf['USER'],
+                               "screen_name": Logic.conf['SCREEN_NAME'],
+                               "avatar": Logic.conf['AVATAR']
+                           })
                     pageStack.replace(Qt.resolvedUrl("MainPage.qml"), {})
                     //pageStack.replace(Qt.resolvedUrl("Lists.qml"), {})
                     //pageStack.replace(Qt.resolvedUrl("TweetDetails.qml"), {tweet:{}})

@@ -59,7 +59,9 @@ Page {
     allowedOrientations: Orientation.All
 
 
-
+    Banner {
+        id: banner
+    }
 
     /*ProfileHeader {
         id: header
@@ -88,8 +90,8 @@ Page {
 
     SilicaListView {
         header: PageHeader {
-            title: qsTr("Conversation")
-            description: "beta feature"
+            title: tweetType === "New" ? qsTr("New Tweet") : qsTr("Conversation")
+            description: tweetType === "New" ? "" : qsTr("beta feature")
         }
         BusyIndicator {
             size: BusyIndicatorSize.Large
@@ -102,6 +104,7 @@ Page {
         RemorseItem { id: remorse }
         PullDownMenu {
             id: menu
+            visible: tweetType !== "New"
             spacing: Theme.paddingLarge
             MenuItem {
                 text: qsTr("Report as spam")
@@ -110,6 +113,7 @@ Page {
                                                'headlessAction': 'users_reportSpam',
                                                'params': {'screen_name': tweet.screenName, 'user_id': tweet.id_str}
                                            })
+                    //banner.notify(qsTr("Hello, I'm a banner notification!"))
                 }
             }
             MenuItem {

@@ -13,7 +13,7 @@ Page {
             title: Logic.modelUsers.count + " Users"
         }
         model: Logic.modelUsers
-        cellWidth: width / 8
+        cellWidth: width / 2
         cellHeight: cellWidth
 
         delegate: BackgroundItem {
@@ -23,29 +23,28 @@ Page {
                 id: avatarImg
                 anchors.fill: parent
                 source: model.avatar
-                /*Label {
-                    text: id_str
-                    font.pixelSize: Theme.fontSizeExtraSmall
-                    anchors.margins: 20
-                }*/
+                Column {
+                    anchors {
+                        left: avatarImg.left
+                        verticalCenter: parent.verticalCenter
+                        margins: 20
+                    }
+                    Label {
+                        text: model.user_id
+                        font.pixelSize: Theme.fontSizeExtraSmall
+                    }
+
+                    Label {
+                        text: model.name
+                        font.family: Theme.fontFamilyHeading
+                    }
+
+                    Label {
+                        text: '@'+model.screen_name
+                        font.pixelSize: Theme.fontSizeExtraSmall
+                    }
+                }
             }
-
-            /*Column {
-                anchors {
-                    left: avatarImg.right
-                    verticalCenter: parent.verticalCenter
-                }
-
-                Label {
-                    text: name
-                    font.family: Theme.fontFamilyHeading
-                }
-
-                Label {
-                    text: '@'+screen_name
-                    font.pixelSize: Theme.fontSizeExtraSmall
-                }
-            }*/
         }
     }
 }

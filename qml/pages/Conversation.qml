@@ -7,8 +7,9 @@ import "./cmp/"
 
 
 Page {
-
+    id: coversation
     property var locale: Qt.locale()
+    property int group : 0;
     property string recipient_id : "";
     property string user_id : "";
     property string user_name : "";
@@ -16,52 +17,37 @@ Page {
     property string user_avatar: "";
     property bool listloaded: false;
     signal navigateTo(string link)
+    function isSent(id) {
+        return id != Logic.conf.USER_ID
+    }
 
-
-    Component.onCompleted: {
-        var msg = {
-            parser_action : "create_conversation",
-            sender_id: user_id,
-            recipient_id: recipient_id,
-            modelSent: Logic.modelDMsent,
-            modelReceived: Logic.modelDMreceived,
-            modelConversation: tweets
-        }
-
-
-
-
-        var data = [];
-        var i;
-        var item;
-        for (i = 0; i < Logic.modelDMsent.count; i++){
-            if (Logic.modelDMsent.get(i).recipient_id === user_id && Logic.modelDMsent.get(i).sender_id === recipient_id){
-                //item = JSON.parse(JSON.stringify(msg.modelSent.get(i)))
-                item = Logic.modelDMsent.get(i)
-                item['sent'] = true;
-                //console.log(JSON.stringify(item.media))
-                //item['section'] = getDate(item['created_at']);
-                data.push(item)
-            }
-        }
-        for (i = 0; i < Logic.modelDMreceived.count; i++){
-            if ((Logic.modelDMreceived.get(i).sender_id === user_id)){
-                //item = JSON.parse(JSON.stringify(msg.modelReceived.get(i)))
-                item = Logic.modelDMreceived.get(i)
-                item['sent'] = false;
-                //item['section'] = getDate(item['created_at']);
-                data.push(item)
-            }
+    function generateData() {
+        var t;
+        if (!group){
+            return;
         }
         tweets.clear();
-        data = data.sort(function(a,b){ return a.created_at - b.created_at; })
-        tweets.append(data);
-        //parser.sendMessage(msg)
+        console.log("Items in model: " + Logic.modelDMraw.count)
+        for(var i = Logic.modelDMraw.count; i >= 0 ; i--){
+            t = Logic.modelDMraw.get(i); // i can't beleive what I am doing...
+            console.log("DBG: "+JSON.stringify(t))
+
+            //console.log(t.recipient_id )
+            //if ((t.sender_id*1 + t.recipient_id*1 )=== group)
+                tweets.append(t)
+        }
+        listloaded = true
+        list.positionViewAtEnd()
+
+    }
+
+    Component.onCompleted: {
+        generateData();
     }
 
     ProfileHeader {
         id: header
-        title: Logic.getUserName(user_name)
+        title: user_name
         description: user_screen_name ? '@'+user_screen_name : ""
         image: user_avatar
     }
@@ -80,9 +66,47 @@ Page {
             }
         }
         NewTweet {
+            suggestedModel: ListModel {}
             type: "DM"
+            userId: user_id
             screenName: user_screen_name
             id: tweetPanel
+        }
+    }
+    Rectangle {
+        id: predictionList
+        visible: true
+        anchors.bottom: panel.top
+        anchors.left: panel.left
+        anchors.right: panel.right
+        height: suggestedModel.count > 3 ? Theme.itemSizeExtraSmall * 3 : Theme.itemSizeExtraSmall * suggestedModel.count
+        color: Theme.highlightBackgroundColor //Theme.highlightDimmerColor
+
+        SilicaListView {
+            anchors.fill: parent
+            model: tweetPanel.suggestedModel
+            clip: true
+
+            delegate: BackgroundItem {
+                Label {
+                    text: "@" + model.screen_name
+                }
+                onClicked: {
+                    var start = newTweet.cursorPosition;
+                    while(newTweet.text[start] !== "@" && start > 0){
+                        start--;
+                    }
+                    textOperations.text = newTweet.text
+                    textOperations.cursorPosition = newTweet.cursorPosition
+                    textOperations.moveCursorSelection(start-1,TextInput.SelectWords)
+                    newTweet.text = textOperations.text.substring(0, textOperations.selectionStart) + ' @'+model.screen_name + ' ' + textOperations.text.substring(textOperations.selectionEnd).trim()
+
+                    newTweet.cursorPosition = newTweet.text.indexOf('@'+model.screen_name)
+                }
+            }
+            onCountChanged: {
+                positionViewAtIndex(suggestedModel.count-1, ListView.End )
+            }
         }
     }
     SilicaListView {
@@ -105,17 +129,12 @@ Page {
         }
         clip: true
         property var locale: Qt.locale()
-        section {
-            property: 'section'
-            delegate: SectionHeader  {
-                height: Theme.itemSizeExtraSmall
-                text: Format.formatDate(section, Formatter.DateMedium)
-            }
-        }
 
         delegate: Item {
             width: parent.width
-            height: col.height+Theme.paddingLarge
+            visible: model.group == coversation.group
+            height: model.group == coversation.group ? col.height+Theme.paddingLarge : 0
+
             Column {
                 id: col
                 width: parent.width
@@ -135,12 +154,14 @@ Page {
                     linkColor : Theme.highlightColor
                     wrapMode: Text.Wrap
                     font.pixelSize: Theme.fontSizeSmall
-                    horizontalAlignment: !model.sent ? Text.AlignLeft :Text.AlignRight
-                    color: (pressed ? Theme.highlightColor : (!model.sent ? Theme.highlightColor : Theme.primaryColor))
+                    horizontalAlignment: isSent(model.sender_id) ? Text.AlignLeft :Text.AlignRight
+                    color: (pressed ? Theme.highlightColor : (isSent(model.sender_id) ? Theme.highlightColor : Theme.primaryColor))
                 }
                 Repeater {
                     id: rep
-                    model: media
+                    model: ListModel {
+                        id: media
+                    }
                     Label {
                         text: type
                     }
@@ -235,7 +256,7 @@ Page {
                     color: (pressed ? Theme.highlightColor : Theme.secondaryColor)
                     text: Format.formatDate(created_at, new Date() - created_at < 60*60*1000 ? Formatter.DurationElapsedShort : Formatter.TimepointRelativeCurrentDayDetailed)
                     font.pixelSize: Theme.fontSizeExtraSmall
-                    horizontalAlignment: !model.sent ? Text.AlignLeft :Text.AlignRight
+                    horizontalAlignment: isSent(model.sender_id) ? Text.AlignLeft :Text.AlignRight
                     width: lblText.width
                     anchors {
                         left: parent.left

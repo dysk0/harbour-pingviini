@@ -3,287 +3,121 @@ import Sailfish.Silica 1.0
 import "../lib/Logic.js" as Logic
 import QtGraphicalEffects 1.0
 
-
 SilicaListView {
-    id: timelineDM
-
-    property string next_cursor: "";
-    Component.onCompleted: {
-        if (modelDM.count === 0){
-            loadData("append")
-        }
-    }
-    ViewPlaceholder {
-        enabled: modelDM.count == 0
-        text: "Loading tweets"
-        hintText: "Please wait..."
-    }
-
-    ListModel {
-        id: modelDM
-    }
-
-    WorkerScript {
-        id: dmWorker
-        source: "../lib/Worker.js"
-        onMessage: {
-            console.log(JSON.stringify(messageObject))
-            if (messageObject.next_cursor)
-                next_cursor = messageObject.next_cursor
-        }
-    }
-    function loadData(placement){
-
-        var msg = {
-            'action': 'directMessages_events_list',
-            'model' : Logic.modelDM,
-            'viewModel' : modelDM,
-            'cursor' : next_cursor,
-            'conf'  : Logic.getConfTW()
-        };
-
-        dmWorker.sendMessage(msg);
-        /*msg = {
-            'action': 'directMessages_sent',
-            'model' : Logic.modelDMsent,
-            'mode'  : placement,
-            'conf'  : Logic.getConfTW()
-        };
-        worker.sendMessage(msg);*/
-    }
-
     header: PageHeader {
         title: qsTr("Messages")
         description: qsTr("Pingviini")
     }
-    PullDownMenu {
-        MenuItem {
-            text: qsTr("Load more")
-            onClicked: {
-                next_cursor = ""
-                loadData("prepend")
-            }
-        }
-    }
-    PushUpMenu {
-        spacing: Theme.paddingLarge
-        MenuItem {
-            text: qsTr("Load more")
-            onClicked: {
-                timelineDM.loadData("append")
-            }
-        }
-    }
-
-    property var locale: Qt.locale()
+    clip: true
     section {
         property: 'section'
-        criteria: ViewSection.FullString
         delegate: SectionHeader  {
-            text: {
-                var dat = Date.fromLocaleDateString(locale, section);
-                dat = Format.formatDate(dat, Formatter.TimepointRelativeCurrentDay)
-                if (dat === "00:00:00" || dat === "00:00") {
-                    visible = false;
-                    height = 0;
-                    return  " ";
-                }else {
-                    return dat;
-                }
-
-            }
-
+            height: Theme.itemSizeExtraSmall
+            text: Format.formatDate(section, Formatter.DateMedium)
         }
     }
-
-    clip: isPortrait && (infoPanel.expanded)
-
-
-    model: modelDM
+    model:  Logic.modelDM
     delegate: BackgroundItem {
-        height: Theme.itemSizeLarge
+        height: Theme.itemSizeMedium + Theme.paddingMedium*2
+        anchors.left: parent.left
+        anchors.right: parent.right
         Image {
-            id: avatar
-            x: Theme.horizontalPageMargin
+            id: mainAvatar
             anchors {
-                verticalCenter: parent.verticalCenter
+                top: parent.top
+                topMargin: Theme.paddingLarge
+                left: parent.left
+                leftMargin: Theme.horizontalPageMargin
             }
+            width: Theme.iconSizeMedium
+            height: width
+            //source: model.sender_id != Logic.conf.USER_ID ? Logic.getUserData(model.sender_id, "avatar"): Logic.conf.AVATAR
+            source: Logic.getUserData(model.sender_id, "avatar")
+            smooth: true
+            opacity: status === Image.Ready ? 1.0 : 0.0
+            Behavior on opacity { FadeAnimator {} }
             asynchronous: true
-            width: Theme.iconSizeMedium
-            height: width
-            smooth: true
-            source: profileImageUrl
-            visible: false
-        }
-        Rectangle {
-            id: avatarMask
-            x: Theme.horizontalPageMargin
-            y: Theme.paddingLarge
-            width: Theme.iconSizeMedium
-            height: width
-            smooth: true
-            color: Theme.primaryColor
-            radius: Theme.iconSizeMedium
-            anchors.centerIn: avatar
-            visible: true
-        }
-
-        /*OpacityMask {
-            id: maskedProfilePicture
-            source: avatar
-            maskSource: avatarMask
-            anchors.fill: avatar
-            visible: avatar.status === Image.Ready ? true : false
-            opacity: avatar.status === Image.Ready ? 1 : 0
-            Behavior on opacity { NumberAnimation {} }
-            MouseArea {
-                anchors.fill: parent
-                onClicked: {
-                    // pageStack.push( avatar );
+            Image {
+                anchors {
+                    bottom: parent.bottom
+                    bottomMargin: -width/3
+                    left: parent.left
+                    leftMargin: -width/3
                 }
+                asynchronous: true
+                width: Theme.iconSizeSmall
+                height: width
+                smooth: true
+                opacity: status === Image.Ready ? 1.0 : 0.0
+                Behavior on opacity { FadeAnimator {} }
+                source: Logic.getUserData(model.recipient_id, "avatar")
             }
-        }*/
+        }
         Label {
             id: lblName
             anchors {
-                top: avatar.top
-                topMargin: -Theme.paddingSmall
-                left: avatar.right
-                leftMargin: Theme.paddingMedium
-            }
-            text: name
-            font.weight: Font.Bold
-            font.pixelSize: Theme.fontSizeSmall
-            color: (pressed ? Theme.highlightColor : Theme.primaryColor)
-        }
-
-        Image {
-            id: iconVerified
-            y: Theme.paddingLarge
-            anchors {
-                left: lblName.right
-                leftMargin: Theme.paddingSmall
-                verticalCenter: lblName.verticalCenter
-            }
-            visible: isVerified
-            width: isVerified ? Theme.iconSizeExtraSmall : 0
-            height: width
-            source: "image://theme/icon-s-installed?" + (pressed ? Theme.primaryColor : Theme.secondaryColor)
-        }
-
-        Label {
-            id: lblScreenName
-            anchors {
-                left: iconVerified.right
+                left: mainAvatar.right
+                leftMargin: Theme.paddingLarge
+                top: parent.top
+                topMargin: Theme.paddingLarge
                 right: lblDate.left
-                leftMargin: Theme.paddingMedium
-                baseline: lblName.baseline
             }
-            truncationMode: TruncationMode.Fade
-            text: '@'+screenName
-            font.pixelSize: Theme.fontSizeExtraSmall
-            color: (pressed ? Theme.secondaryHighlightColor : Theme.secondaryColor)
+            text: Logic.getUserData(model.sender_id != Logic.conf.USER_ID ? model.sender_id : model.recipient_id, "name")
+            color: (pressed ? Theme.highlightColor : Theme.primaryColor)
+            wrapMode: Text.NoWrap
         }
         Label {
-            function timestamp() {
-                var txt = Format.formatDate(createdAt, Formatter.Timepoint)
-                var elapsed = Format.formatDate(createdAt, Formatter.DurationElapsedShort)
-                return (elapsed ? elapsed  : txt )
-            }
             id: lblDate
             color: (pressed ? Theme.highlightColor : Theme.primaryColor)
-            text: Format.formatDate(createdAt, new Date() - createdAt < 60*60*1000 ? Formatter.DurationElapsedShort : Formatter.TimeValueTwentyFourHours)
+            text: Format.formatDate(created_at, new Date() - created_at < 60*60*1000 ? Formatter.DurationElapsedShort : Formatter.TimeValueTwentyFourHours)
             font.pixelSize: Theme.fontSizeExtraSmall
             horizontalAlignment: Text.AlignRight
             anchors {
                 right: parent.right
                 baseline: lblName.baseline
-                rightMargin: Theme.paddingLarge
+                rightMargin: Theme.horizontalPageMargin
             }
         }
-
         Label {
-            id: lblText
-            width: parent.width
             anchors {
                 left: lblName.left
-                right: parent.right
-                top: lblScreenName.bottom
-                topMargin: Theme.paddingSmall
-                rightMargin: Theme.paddingLarge
+                right: lblDate.right
+                top: lblName.bottom
             }
-            text: richText
-            maximumLineCount: 1
-            elide: Text.ElideRight
+            text: model.text
             wrapMode: Text.NoWrap
+            elide: Text.ElideRight
             font.pixelSize: Theme.fontSizeSmall
-            color: (pressed ? Theme.highlightColor : Theme.primaryColor)
+            maximumLineCount: 1
+            color: (pressed ? Theme.secondaryHighlightColor : Theme.secondaryColor)
         }
         onClicked: {
-            var name, username, profileImage;
-            /*sent.concat(rec).forEach(function(el){
-                if (el.sender_screen_name == "BerislavB" || el.recipient_screen_name == "BerislavB" )
-                console.log(el)
-            });*/
-            var tweets = [];
-            for (var i = 0; i < Logic.modelDMrecived.count; i++){
-                var item = Logic.modelDMrecived.get(i)
-                if (item.screenName === screenName) {
-                    username = item.screenName;
-                    name = item.name;
-                    profileImage = item.profileImageUrl;
-                    tweets.push(item)
-                }
-            }
-
-            for (i = 0; i < Logic.modelDMsent.count; i++){
-                item = Logic.modelDMsent.get(i)
-                if (item.screenName === screenName) {
-                    tweets.push(item)
-                }
-            }
-
-            console.log(JSON.stringify(tweets))
-            tweets.sort(function(a, b){return a.id-b.id});
-            console.log(JSON.stringify(tweets))
-
-            var _tweets = Qt.createQmlObject('import QtQuick 2.0; ListModel {   }', Qt.application, 'InternalQmlObject');
-            tweets.forEach(function(el){
-                _tweets.append(el)
-            });
-
+            banner.notify(Logic.conf.USER_ID + " " + model.group)
             pageStack.push(Qt.resolvedUrl("Conversation.qml"), {
-                               "tweets": _tweets,
-                               "name": name,
-                               "username" : username,
-                               "profileImage": profileImage
-                           })
-
+               "group" : model.group,
+               user_id : model.sender_id != Logic.conf.USER_ID ? model.sender_id : model.recipient_id,
+               //recipient_id : model.recipient_id,
+               user_name : Logic.getUserData(model.sender_id != Logic.conf.USER_ID ? model.sender_id : model.recipient_id, "name"),
+               user_screen_name : Logic.getUserData(model.sender_id != Logic.conf.USER_ID ? model.sender_id : model.recipient_id, "screen_name"),
+               user_avatar: Logic.getUserData(model.sender_id != Logic.conf.USER_ID ? model.sender_id : model.recipient_id, "avatar")
+           })
 
         }
     }
-
-    VerticalScrollDecorator {}
-
-    onMovementEnded: {
-        scrollOffsetDM = contentY
-        currentIndexDM = currentIndex
+    Timer {
+        id: timer
     }
-    onContentYChanged: {
-        //console.log(".....contentY: " + contentY)
+    function delay(delayTime, cb) {
+            timer.interval = delayTime;
+            timer.repeat = false;
+            timer.triggered.connect(cb);
+            timer.start();
+        }
+    Component.onCompleted: {
+        delay(500, function() {
+            worker.sendMessage({conf: Logic.getConfTW(), model: Logic.modelDMraw, model2: Logic.modelDM, mode: 'append', bgAction: 'directMessages_events_list', params: {count: 50}});
+            //worker.sendMessage({conf: Logic.getConfTW(), model: Logic.modelUsers, mode: '', bgAction: 'users_lookup', params: {"user_id": "19210452,253986430,17104521,45883815,330188211,47890560"}});
+        })
 
-        if(contentY+200 > timelineDM.contentHeight-timelineDM.height&& !loadStarted){
-            loadStarted = true;
-        }
-        //console.log((contentY+200) + ' ' + listView.contentHeight)
-        if (contentY > scrollOffsetDM) {
-            openDrawer(false)
-        } else {
-            if (contentY < 100 && !loadStarted){
-                //timelineDM.loadData("prepend")
-                //loadStarted = true;
-            }
-            openDrawer(true)
-        }
     }
 }
