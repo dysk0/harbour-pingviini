@@ -292,6 +292,7 @@ Page {
                         color: (pressed ? Theme.highlightColor : Theme.primaryColor)
                     }
                     onClicked: {
+                        tweetPanel.insertUsername(model.screen_name+"")
                         suggestedUsers.clear()
                     }
                 }

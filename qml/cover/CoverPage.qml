@@ -95,7 +95,14 @@ CoverBackground {
                 source: model.avatar
                 sourceSize: Qt.size(parent.width, parent.height)
                 visible: true
-                opacity: 0.2
+                opacity: status === Image.Ready ? 0.2 : 0.0
+                Behavior on opacity { FadeAnimator {} }
+                onStatusChanged: {
+                    if (status === Image.Error)
+                        source = "image://theme/icon-m-person?" + (pressed
+                                                                   ? Theme.highlightColor
+                                                                   : Theme.primaryColor)
+                }
             }
             ColorOverlay {
                 visible: false
@@ -137,18 +144,6 @@ CoverBackground {
 
 
 
-
-    /*CoverActionList {
-        id: coverAction
-
-        CoverAction {
-            iconSource: "image://theme/icon-cover-sync"
-        }
-
-        CoverAction {
-            iconSource: "image://theme/icon-cover-new"
-        }
-    }*/
     CoverActionList {
         id: coverAction
         CoverAction {
@@ -158,13 +153,12 @@ CoverBackground {
                 app.activate();
             }
         }
-        CoverAction {
-            iconSource: "image://theme/icon-cover-sync"
-            onTriggered: {
-                banner.notify(qsTr("Hello, I'm a banner notification!"))
-
-            }
-        }
+        //CoverAction {
+        //    iconSource: "image://theme/icon-cover-sync"
+        //    onTriggered: {
+        //        banner.notify(qsTr("Hello, I'm a banner notification!"))
+        //    }
+        //}
     }
 }
 

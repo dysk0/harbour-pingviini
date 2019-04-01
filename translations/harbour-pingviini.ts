@@ -74,13 +74,6 @@
     </message>
 </context>
 <context>
-    <name>CoverPage</name>
-    <message>
-        <source>Hello, I&apos;m a banner notification!</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>CreditsTranslations</name>
     <message>
         <source>Translate App</source>

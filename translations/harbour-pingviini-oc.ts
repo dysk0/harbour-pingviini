@@ -92,14 +92,6 @@
     </message>
 </context>
 <context>
-    <name>CoverPage</name>
-    <message>
-        <location filename="../qml/cover/CoverPage.qml" line="164"/>
-        <source>Hello, I&apos;m a banner notification!</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>CreditsTranslations</name>
     <message>
         <location filename="../qml/pages/CreditsTranslations.qml" line="15"/>

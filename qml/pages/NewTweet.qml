@@ -384,5 +384,19 @@ Item {
         height: 3
     }
 
+    function insertUsername(username) {
+        console.log(username)
+        var start = newTweet.cursorPosition;
+        while(newTweet.text[start] !== "@" && start > 0){
+            start--;
+        }
+        textOperations.text = newTweet.text
+        textOperations.cursorPosition = newTweet.cursorPosition
+        textOperations.moveCursorSelection(start-1,TextInput.SelectWords)
+        newTweet.text = textOperations.text.substring(0, textOperations.selectionStart) + ' @'+username + ' ' + textOperations.text.substring(textOperations.selectionEnd).trim()
+        newTweet.forceActiveFocus()
+        newTweet.cursorPosition = newTweet.text.indexOf('@'+username)
+    }
+
 
 }
