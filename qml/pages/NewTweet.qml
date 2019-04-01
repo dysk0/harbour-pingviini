@@ -10,6 +10,8 @@ import "../lib/codebird.js" as CB
 
 Item {
     id: newTweetPanel
+    signal addTweet (string tw)
+    signal addSuggestedUsers(string users)
     property int tweetMaxChar: type == "DM" ? 1000: 280
     property int userId
     property string type: "New" //"New","Reply", "RT" or "DM"
@@ -103,12 +105,26 @@ Item {
         onMessage: {
             if (messageObject.success && messageObject.key === "directMessages_events_new") {
                 newTweet.text = "";
-            }
-            if (messageObject.success && messageObject.key === "statuses_update") {
+            } else if (messageObject.success && messageObject.key === "statuses_update") {
+                addTweet (JSON.stringify(messageObject.reply))
                 newTweet.text = "";
+            } else if (messageObject.success && messageObject.key === "users_lookup") {
+                var prediction = [];
+                for(var j = 0; j < messageObject.reply.length; j++) {
+                    prediction.push({
+                        "user_id": messageObject.reply[j].id,
+                        "name": messageObject.reply[j].name,
+                        "screen_name": messageObject.reply[j].screen_name,
+                        "avatar": messageObject.reply[j].profile_image_url_https
+                    });
+                }
+                addSuggestedUsers(JSON.stringify(prediction))
+            } else {
+                console.log(JSON.stringify(messageObject))
             }
 
-            console.log(JSON.stringify(messageObject))
+
+
             newTweet.enabled = true;
             sendBtn.enabled = true;
         }
@@ -143,7 +159,7 @@ Item {
                     "type": "message_create",
                     "message_create": {
                         "target": {
-                            "recipient_id": userId+""
+                            "recipient_id": userId
                         },
                         "message_data": {
                             "text": newTweet.text
@@ -239,7 +255,7 @@ Item {
         }
 
         function triggerIndicatior() {
-            console.log("triggered")
+            //console.log("triggered")
             if ( newTweetPanel.type === "DM"){
                 worker.sendMessage({
                    conf  : Logic.getConfTW(),

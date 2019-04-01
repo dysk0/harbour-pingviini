@@ -187,7 +187,7 @@
 <context>
     <name>NewTweet</name>
     <message>
-        <location filename="../qml/pages/NewTweet.qml" line="282"/>
+        <location filename="../qml/pages/NewTweet.qml" line="298"/>
         <source>Delete</source>
         <translation type="unfinished"></translation>
     </message>
@@ -286,37 +286,37 @@
 <context>
     <name>TweetDetails</name>
     <message>
-        <location filename="../qml/pages/TweetDetails.qml" line="93"/>
+        <location filename="../qml/pages/TweetDetails.qml" line="80"/>
         <source>Conversation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/TweetDetails.qml" line="93"/>
+        <location filename="../qml/pages/TweetDetails.qml" line="80"/>
         <source>New Tweet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/TweetDetails.qml" line="94"/>
+        <location filename="../qml/pages/TweetDetails.qml" line="81"/>
         <source>beta feature</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/TweetDetails.qml" line="110"/>
+        <location filename="../qml/pages/TweetDetails.qml" line="97"/>
         <source>Report as spam</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/TweetDetails.qml" line="120"/>
+        <location filename="../qml/pages/TweetDetails.qml" line="107"/>
         <source>Retweet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/TweetDetails.qml" line="131"/>
+        <location filename="../qml/pages/TweetDetails.qml" line="118"/>
         <source>Unfavorite</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/TweetDetails.qml" line="131"/>
+        <location filename="../qml/pages/TweetDetails.qml" line="118"/>
         <source>Favorite</source>
         <translation type="unfinished"></translation>
     </message>

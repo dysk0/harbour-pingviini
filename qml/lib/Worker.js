@@ -87,8 +87,17 @@ WorkerScript.onMessage = function(msg) {
 
                         switch(msg.headlessAction) {
                         case "users_lookup":
+                            if (msg.suggestedModel)
+                                msg.suggestedModel.clear()
                             for(var j = 0; j < reply.length; j++) {
                                 console.log( reply[j].id )
+                                if (msg.suggestedModel)
+                                    msg.suggestedModel.append({
+                                                               "user_id": reply[j].id,
+                                                               "name": reply[j].name,
+                                                               "screen_name": reply[j].screen_name,
+                                                               "avatar": reply[j].profile_image_url_https
+                                                           })
                                 for(var i = 0; i < msg.modelUsers.count; i++){
                                     var item = msg.modelUsers.get(i)
                                     if ( reply[j].id  == item.user_id ) {
@@ -103,6 +112,8 @@ WorkerScript.onMessage = function(msg) {
                                 }
                             }
                             msg.modelUsers.sync();
+                            if (msg.suggestedModel)
+                                msg.suggestedModel.sync()
 
 
                             break;

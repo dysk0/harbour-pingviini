@@ -45,12 +45,16 @@ Page {
     property alias screenName: tweetPanel.screenName;
     property string tweetType: "Reply";
     property bool isFavourited: false;
+    ListModel {
+        id: suggestedUsers
+    }
+
 
     WorkerScript {
         id: worker
         source: "../lib/Worker.js"
         onMessage: {
-         console.log(messageObject.reply)
+            console.log(messageObject.reply)
         }
     }
 
@@ -68,27 +72,10 @@ Page {
         title: ""
         description: screenName ? '@'+screenName : ""
     }*/
-    DockedPanel {
-        id: panel
-        open: true
-        height: tweetPanel.height
-        width: parent.width
-        onExpandedChanged: {
-            if (!expanded) {
-                show()
-            }
-        }
-        NewTweet {
-            width: parent.width
-            id: tweetPanel
-            type: tweetType
-            tweetId: tweet_id
-            screenName: screenName ? screenName : ""
-        }
-    }
 
 
     SilicaListView {
+        id: listView
         header: PageHeader {
             title: tweetType === "New" ? qsTr("New Tweet") : qsTr("Conversation")
             description: tweetType === "New" ? "" : qsTr("beta feature")
@@ -99,7 +86,7 @@ Page {
             anchors.verticalCenter: parent.verticalCenter
             anchors.horizontalCenter: parent.horizontalCenter
         }
-        id: listView
+
         model: ListModel {}
         RemorseItem { id: remorse }
         PullDownMenu {
@@ -234,4 +221,84 @@ Page {
         }
     }
 
+    DockedPanel {
+        id: panel
+        open: true
+        height: tweetPanel.height
+        width: parent.width
+        onExpandedChanged: {
+            if (!expanded) {
+                show()
+            }
+        }
+        NewTweet {
+            width: parent.width
+            id: tweetPanel
+            type: tweetType
+            tweetId: tweet_id
+            screenName: screenName ? screenName : ""
+            suggestedModel: suggestedUsers
+            onAddTweet: {
+                listView.model.append(Logic.parseTweet(JSON.parse(tw)))
+            }
+            onAddSuggestedUsers: {
+                suggestedUsers.clear();
+                suggestedUsers.append(JSON.parse(users))
+            }
+
+        }
+
+
+        Rectangle {
+            visible: suggestedUsers.count
+            height: (suggestedUsers.count > 4 ? 4 : suggestedUsers.count )*Theme.itemSizeExtraSmall
+            width: parent.width
+            color: Theme.highlightDimmerColor
+            anchors {
+                bottom: tweetPanel.top
+                left: tweetPanel.left
+                right: tweetPanel.right
+            }
+
+            SilicaListView {
+                model: suggestedUsers
+                visible: model.count
+                width: parent.width
+                anchors.fill: parent
+                clip: true
+                height: (model.count > 4 ? 4 : model.count )*Theme.itemSizeExtraSmall
+
+                delegate: BackgroundItem {
+                    width: parent.width
+                    height: Theme.itemSizeExtraSmall
+
+                    Image {
+                        id: av
+                        width: Theme.itemSizeExtraSmall - 2*Theme.paddingSmall
+                        height: width
+                        source: model.avatar
+                        anchors.leftMargin: Theme.paddingSmall
+                        anchors.topMargin: Theme.paddingSmall
+
+                        anchors.left: parent.left
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
+                    Label {
+                        text: model.name
+                        anchors.left: av.right
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.leftMargin: Theme.paddingSmall
+                        font.pixelSize: Theme.fontSizeSmall
+                        color: (pressed ? Theme.highlightColor : Theme.primaryColor)
+                    }
+                    onClicked: {
+                        suggestedUsers.clear()
+                    }
+                }
+                onCountChanged: {
+                    positionViewAtIndex(suggestedUsers.count-1, ListView.End )
+                }
+            }
+        }
+    }
 }
